@@ -3,6 +3,7 @@ package com.workvenue.backend.data.entity;
 
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.constraints.Length;
@@ -17,7 +18,9 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "visiters")
-public class Visiter extends BaseEntity{
+@PrimaryKeyJoinColumn(name = "user_id")
+@EqualsAndHashCode(callSuper=false)
+public class Visiter extends User{
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -32,8 +35,6 @@ public class Visiter extends BaseEntity{
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    //User Entitiy olmadığından şimdilik böyle yazdım
-    //private String user_id;
 
     @Length(max = 155)
     private String description;
