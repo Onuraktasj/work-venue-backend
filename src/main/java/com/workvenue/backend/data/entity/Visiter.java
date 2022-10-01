@@ -44,11 +44,7 @@ public class Visiter extends User{
 
     private Boolean isActive;
 
-    //Image için bir örnek buldum şimdilik böyle kalsın tartışalım onu
     private String image;
 
-    //@OneToMany(mappedBy="visiter", cascade= CascadeType.REMOVE)
-    //private List<Post> posts;
-    //ManytoOne ile userı maplicaz Post entitiyde
 
 }
