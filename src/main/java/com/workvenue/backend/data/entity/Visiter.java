@@ -25,16 +25,9 @@ public class Visiter extends User{
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
             name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator",
-            parameters = {
-                    @Parameter(
-                            name = "uuid_gen_strategy_class",
-                            value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
-                    )
-            })
-    @Column(name = "id", updatable = false, nullable = false)
+            strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id")
     private UUID id;
-
 
     @Length(max = 155)
     private String description;
