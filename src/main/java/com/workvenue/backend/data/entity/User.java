@@ -8,7 +8,6 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.UUID;
@@ -22,14 +21,8 @@ public class User {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
             name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator",
-            parameters = {
-                    @Parameter(
-                            name = "uuid_gen_strategy_class",
-                            value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
-                    )
-            })
-    @Column(name = "id", updatable = false, nullable = false)
+            strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id")
     private UUID id;
 
     @NotNull
