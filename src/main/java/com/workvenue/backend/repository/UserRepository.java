@@ -1,12 +1,13 @@
 package com.workvenue.backend.repository;
 
-import com.workvenue.backend.data.entity.Visiter;
+import com.workvenue.backend.data.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface VisiterRepository extends JpaRepository<Visiter, UUID> {
-
+public interface UserRepository extends JpaRepository<User, UUID> {
+    Optional<User> getUserByEmail(String email);
 }

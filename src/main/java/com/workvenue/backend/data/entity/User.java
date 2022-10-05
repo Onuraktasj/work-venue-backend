@@ -1,15 +1,13 @@
 package com.workvenue.backend.data.entity;
 
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -17,17 +15,15 @@ import java.util.UUID;
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
+
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue
     @Column(name = "id")
     private UUID id;
 
     @NotNull
     @NotBlank
-    @Email
+//    @Email(message = "Bu mail adresi kayıtlı.")
     @Column(name = "email", unique = true)
     private String email;
 
@@ -46,12 +42,12 @@ public class User {
     private String lastName;
 
     @Column(name = "created_date")
-    private Date createdDate;
+    private LocalDateTime createdDate;
 
     @Column(name = "updated_date")
-    private Date updatedDate;
+    private LocalDateTime updatedDate;
 
     @Column(name = "deleted_date")
-    private Date deletedDate;
+    private LocalDateTime deletedDate;
 
 }

@@ -5,14 +5,11 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class CreateVisiterControllerRequest {
-    private UUID id;
+public class RegisterVisiterControllerRequest {
     private String email;
     private String password;
-    private String firstname;
+    private String firstName;
     private String lastName;
     private String description;
     private String link;
-    private String image;
-
 }
