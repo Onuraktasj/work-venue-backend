@@ -1,7 +1,7 @@
 package com.workvenue.backend.service;
 
 
-import com.workvenue.backend.core.exception.custom.BusinessControllerException;
+import com.workvenue.backend.exception.custom.ControllerException;
 import com.workvenue.backend.data.dto.request.RegisterVisiterControllerRequest;
 import com.workvenue.backend.data.dto.response.RegisterVisiterControllerResponse;
 import com.workvenue.backend.data.entity.User;
@@ -12,9 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class VisiterService {
@@ -23,14 +22,14 @@ public class VisiterService {
     private final VisiterRepository visiterRepository;
 
     @Autowired
-    public VisiterService(UserRepository userRepository,VisiterRepository visiterRepository) {
+    public VisiterService(UserRepository userRepository, VisiterRepository visiterRepository) {
         this.userRepository = userRepository;
-        this.visiterRepository=visiterRepository;
+        this.visiterRepository = visiterRepository;
     }
 
-    public RegisterVisiterControllerResponse registerVisiter(RegisterVisiterControllerRequest request) throws BusinessControllerException {
+    public RegisterVisiterControllerResponse registerVisiter(RegisterVisiterControllerRequest request) throws Exception {
         Optional<User> userOptional = userRepository.getUserByEmail(request.getEmail());
-        RegisterVisiterControllerResponse registerVisiterControllerResponse=new RegisterVisiterControllerResponse();
+        RegisterVisiterControllerResponse registerVisiterControllerResponse = new RegisterVisiterControllerResponse();
 
         if (!userOptional.isPresent()) {
             Visiter visiter = new Visiter();
@@ -48,8 +47,12 @@ public class VisiterService {
             registerVisiterControllerResponse.setLastName(visiter.getLastName());
         } else {
             //TODO: Burada kullanıcı maili kayıtlı hatası fırlatacak!
-            throw new BusinessControllerException("mert");
+            throw new Exception();
         }
         return registerVisiterControllerResponse;
+    }
+
+    public List<Visiter> getAllVisiter() throws ControllerException {
+        return visiterRepository.findAll();
     }
 }
