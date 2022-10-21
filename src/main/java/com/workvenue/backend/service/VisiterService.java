@@ -1,6 +1,7 @@
 package com.workvenue.backend.service;
 
 
+import com.workvenue.backend.data.dto.response.GetAllVisiterControllerResponse;
 import com.workvenue.backend.exception.custom.ControllerException;
 import com.workvenue.backend.data.dto.request.RegisterVisiterControllerRequest;
 import com.workvenue.backend.data.dto.response.RegisterVisiterControllerResponse;
@@ -8,10 +9,13 @@ import com.workvenue.backend.data.entity.User;
 import com.workvenue.backend.data.entity.Visiter;
 import com.workvenue.backend.repository.UserRepository;
 import com.workvenue.backend.repository.VisiterRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +38,7 @@ public class VisiterService {
         if (!userOptional.isPresent()) {
             Visiter visiter = new Visiter();
             visiter.setEmail(request.getEmail());
-            visiter.setPassword(request.getPassword()); //TODO: parola çevirimi ve kontrolü yapılcak.
+            visiter.setPassword(request.getPassword());
             visiter.setFirstName(request.getFirstName());
             visiter.setLastName(request.getLastName());
             visiter.setCreatedDate(LocalDateTime.now());
@@ -46,13 +50,27 @@ public class VisiterService {
             registerVisiterControllerResponse.setFirstName(visiter.getFirstName());
             registerVisiterControllerResponse.setLastName(visiter.getLastName());
         } else {
-            //TODO: Burada kullanıcı maili kayıtlı hatası fırlatacak!
-            throw new Exception();
+            throw new Exception("Kullanıcı maili sistemde kayıtlı.");
         }
         return registerVisiterControllerResponse;
     }
 
-    public List<Visiter> getAllVisiter() throws ControllerException {
-        return visiterRepository.findAll();
+    public List<GetAllVisiterControllerResponse> getAllVisiter() throws Exception {
+
+        List<GetAllVisiterControllerResponse> getAllVisiterControllerResponseList = Collections.emptyList();
+        List<Visiter> visiterList;
+        try{
+            visiterList=visiterRepository.findAll();
+            Iterator<Visiter> visiter = visiterList.iterator();
+
+            while (visiter.hasNext()){
+                GetAllVisiterControllerResponse response = new GetAllVisiterControllerResponse();
+                BeanUtils.copyProperties(visiter.next(), response);
+                getAllVisiterControllerResponseList.add(response);
+            }
+        } catch (Exception ex){
+            throw new Exception("Liste getirilirken hata oluştu.");
+        }
+        return getAllVisiterControllerResponseList;
     }
 }

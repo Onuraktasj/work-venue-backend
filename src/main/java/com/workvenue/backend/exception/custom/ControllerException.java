@@ -10,6 +10,6 @@ public class ControllerException extends Exception{
     }
 
     public String getMessage() {
-        return message+" "+value+"(Controller Exception)";
+        return message+" "+value+" Controller Exception";
     }
 }

@@ -31,35 +31,27 @@ public class VisiterController {
     }
 
     @PostMapping()
-    public ResponseEntity<RegisterVisiterControllerResponse> registerVisiter(@RequestBody RegisterVisiterControllerRequest registerVisiterControllerRequest) throws ControllerException {
+    public ResponseEntity<RegisterVisiterControllerResponse> registerVisiter(@RequestBody RegisterVisiterControllerRequest registerVisiterControllerRequest) throws Exception {
         RegisterVisiterControllerResponse registerVisiterControllerResponse;
         try {
-            RegisterVisiterControllerResponse response=visiterService.registerVisiter(registerVisiterControllerRequest);
-            registerVisiterControllerResponse=response;
+            RegisterVisiterControllerResponse response = visiterService.registerVisiter(registerVisiterControllerRequest);
+            registerVisiterControllerResponse = response;
             registerVisiterControllerResponse.setHeader(new RestHeader(true, MessageUtil.getMessage("Visiter", RestMessage.CREATED), null));
         } catch (Exception ex) {
-            throw new ControllerException("Hata oluştu","mert");
+            throw new Exception("Register Visiter Exception: " + ex);
         }
         return new ResponseEntity(registerVisiterControllerResponse, HttpStatus.CREATED);
     }
 
     @GetMapping()
-    public ResponseEntity<List<GetAllVisiterControllerResponse>> getAllVisiter() throws ControllerException {
-        GetAllVisiterControllerResponse response = new GetAllVisiterControllerResponse();
-        List<GetAllVisiterControllerResponse> getAllVisiterControllerResponseList = Collections.emptyList();
+    public ResponseEntity<List<GetAllVisiterControllerResponse>> getAllVisiter() throws Exception {
+        List<GetAllVisiterControllerResponse> listOfGetAllVisiterControllerResponse;
         try {
-            //TODO Businessı servise taşı
-            List<Visiter> deneme=visiterService.getAllVisiter();
-
-            Iterator<Visiter> it = deneme.iterator();
-            if (it.hasNext()){
-                BeanUtils.copyProperties(it.next(),response);
-                getAllVisiterControllerResponseList.add(response);
-            }
+            listOfGetAllVisiterControllerResponse = visiterService.getAllVisiter();
+            //TODO: MultiValueMap casting for setting header.
         } catch (Exception ex) {
-            throw new IllegalStateException();
+            throw new Exception("Get All Visiter Exception: " + ex);
         }
-        return new ResponseEntity(getAllVisiterControllerResponseList, HttpStatus.CREATED);
+        return new ResponseEntity<>(listOfGetAllVisiterControllerResponse, HttpStatus.CREATED);
     }
 }
-// https://stackoverflow.com/questions/51739509/spring-boot-global-controller-advice-is-not-loaded-in-spring-context

@@ -8,7 +8,9 @@ Swagger: http://localhost:8000/api/v1/swagger-ui/
 ## API Design
 
 ## Branch Rules 
-* Ex: mb/create-swagger
+* mb/feature/create-swagger
+* by/bugfix/visiter-service-uuid
+* by/refactor/user-service
 
 ## Target Techs
 * Swagger

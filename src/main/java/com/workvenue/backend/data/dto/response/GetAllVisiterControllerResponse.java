@@ -1,6 +1,6 @@
 package com.workvenue.backend.data.dto.response;
 
-public class GetAllVisiterControllerResponse extends BaseControllerResponse{
+public class GetAllVisiterControllerResponse{
     private String email;
     private String firstName;
     private String lastName;
