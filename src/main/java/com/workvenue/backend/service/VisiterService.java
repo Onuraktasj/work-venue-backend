@@ -1,20 +1,19 @@
 package com.workvenue.backend.service;
 
 
-import com.workvenue.backend.data.dto.response.GetAllVisiterControllerResponse;
-import com.workvenue.backend.exception.custom.ControllerException;
-import com.workvenue.backend.data.dto.request.RegisterVisiterControllerRequest;
-import com.workvenue.backend.data.dto.response.RegisterVisiterControllerResponse;
+import com.workvenue.backend.data.dto.GetVisiterDTO;
 import com.workvenue.backend.data.entity.User;
 import com.workvenue.backend.data.entity.Visiter;
+import com.workvenue.backend.data.request.RegisterVisiterControllerRequest;
+import com.workvenue.backend.data.response.GetAllVisiterControllerResponse;
+import com.workvenue.backend.data.response.RegisterVisiterControllerResponse;
 import com.workvenue.backend.repository.UserRepository;
 import com.workvenue.backend.repository.VisiterRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -41,10 +40,10 @@ public class VisiterService {
             visiter.setPassword(request.getPassword());
             visiter.setFirstName(request.getFirstName());
             visiter.setLastName(request.getLastName());
-            visiter.setCreatedDate(LocalDateTime.now());
+//            visiter.setCreatedDate(LocalDateTime.now());
             visiter.setDescription(request.getDescription());
             visiter.setLink(request.getLink());
-            visiter.setIsActive(true);
+            visiter.setActive(true);
             visiterRepository.save(visiter);
 
             registerVisiterControllerResponse.setFirstName(visiter.getFirstName());
@@ -55,22 +54,34 @@ public class VisiterService {
         return registerVisiterControllerResponse;
     }
 
-    public List<GetAllVisiterControllerResponse> getAllVisiter() throws Exception {
+    public GetAllVisiterControllerResponse getAllVisiter() throws Exception {
+        GetAllVisiterControllerResponse getAllVisiterControllerResponse=new GetAllVisiterControllerResponse();
 
-        List<GetAllVisiterControllerResponse> getAllVisiterControllerResponseList = Collections.emptyList();
-        List<Visiter> visiterList;
-        try{
-            visiterList=visiterRepository.findAll();
+        try {
+            List<Visiter> visiterList;
+            List<GetVisiterDTO> getVisiterDTOList=new ArrayList<>();
+
+            visiterList = visiterRepository.findAll();
+
             Iterator<Visiter> visiter = visiterList.iterator();
+            GetVisiterDTO getVisiterDTO=new GetVisiterDTO();
 
-            while (visiter.hasNext()){
-                GetAllVisiterControllerResponse response = new GetAllVisiterControllerResponse();
-                BeanUtils.copyProperties(visiter.next(), response);
-                getAllVisiterControllerResponseList.add(response);
+            while (visiter.hasNext()) {
+                BeanUtils.copyProperties(visiter.next(), getVisiterDTO);
+                getVisiterDTOList.add(getVisiterDTO);
             }
-        } catch (Exception ex){
+            getAllVisiterControllerResponse.setGetVisiterDTOList(getVisiterDTOList);
+        } catch (Exception ex) {
             throw new Exception("Liste getirilirken hata oluştu.");
         }
-        return getAllVisiterControllerResponseList;
+        return getAllVisiterControllerResponse;
     }
 }
+//TODO LİST
+/* Controllera hatayı aktarması lazım hata mesajını, gerekli hataların fırlatılması lazım
+* çok fazla aynı nesne varsa bean oluşturulmalı: çalış
+* gerekli yerlere equalsandhascode koy
+* gerekli yerlere toString import et
+* unit test
+*
+* */
