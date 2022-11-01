@@ -1,18 +1,19 @@
 package com.workvenue.backend.controller;
 
-import com.workvenue.backend.core.constant.RestMessage;
+import com.workvenue.backend.core.constant.ErrorMessage;
+import com.workvenue.backend.core.constant.SuccessMessage;
 import com.workvenue.backend.core.util.MessageUtil;
 import com.workvenue.backend.data.other.RestHeader;
 import com.workvenue.backend.data.request.RegisterVisiterControllerRequest;
 import com.workvenue.backend.data.response.GetAllVisiterControllerResponse;
 import com.workvenue.backend.data.response.RegisterVisiterControllerResponse;
+import com.workvenue.backend.exception.custom.ControllerException;
 import com.workvenue.backend.service.VisiterService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/visiters")
@@ -26,28 +27,29 @@ public class VisiterController {
     }
 
     @PostMapping()
+    @ApiOperation(value = "Register New Visiter Account For User")
     public ResponseEntity<RegisterVisiterControllerResponse> registerVisiter(@RequestBody RegisterVisiterControllerRequest registerVisiterControllerRequest) throws Exception {
-        RegisterVisiterControllerResponse registerVisiterControllerResponse;
+
         try {
             RegisterVisiterControllerResponse response = visiterService.registerVisiter(registerVisiterControllerRequest);
-            registerVisiterControllerResponse = response;
-            registerVisiterControllerResponse.setHeader(new RestHeader(true, MessageUtil.getMessage("Visiter", RestMessage.CREATED), null));
+            response.setHeader(new RestHeader(true, MessageUtil.getMessage("Visiter", SuccessMessage.CREATED), null));
+            return new ResponseEntity(response, HttpStatus.CREATED);
+
         } catch (Exception ex) {
             throw new Exception("Register Visiter Exception: " + ex);
         }
-        return new ResponseEntity(registerVisiterControllerResponse, HttpStatus.CREATED);
     }
 
     @GetMapping()
-    public ResponseEntity<GetAllVisiterControllerResponse> getAllVisiter() throws Exception {
-        GetAllVisiterControllerResponse listOfGetAllVisiterControllerResponse;
+    @ApiOperation(value = "Get All Visiters For Admin", notes = "Must adding authorization for access just admin.")
+    public ResponseEntity<GetAllVisiterControllerResponse> getAllVisiters() throws Exception {
         try {
-            listOfGetAllVisiterControllerResponse = visiterService.getAllVisiter();
-            listOfGetAllVisiterControllerResponse.setHeader(new RestHeader(true, MessageUtil.getMessage("Visiter", RestMessage.FOUND), null));
+            GetAllVisiterControllerResponse listOfGetAllVisiterControllerResponse;
+            listOfGetAllVisiterControllerResponse = visiterService.getAllVisiters();
+            listOfGetAllVisiterControllerResponse.setHeader(new RestHeader(true, MessageUtil.getMessage("Visiter", SuccessMessage.FOUND), null));
+            return new ResponseEntity<>(listOfGetAllVisiterControllerResponse, HttpStatus.CREATED);
         } catch (Exception ex) {
-//            throw new Exception("Get All Visiter Exception: " + ex);
-            throw new IllegalStateException();
+            throw new ControllerException(ex.getMessage());
         }
-        return new ResponseEntity<>(listOfGetAllVisiterControllerResponse, HttpStatus.CREATED);
     }
 }

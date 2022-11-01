@@ -1,15 +1,25 @@
 package com.workvenue.backend.exception.custom;
 
-public class ControllerException extends Exception{
-    private final String message;
-    private final String value;
+public class ControllerException extends Exception {
+    private String errorMessage;
 
-    public ControllerException(String message,String value) {
-        this.message=message;
-        this.value=value;
+    public ControllerException() {
     }
 
-    public String getMessage() {
-        return message+" "+value+" Controller Exception";
+    public ControllerException(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    @Override
+    public String toString() {
+        return errorMessage + " Controller Exception";
     }
 }

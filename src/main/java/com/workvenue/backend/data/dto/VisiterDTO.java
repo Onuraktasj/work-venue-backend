@@ -1,15 +1,15 @@
 package com.workvenue.backend.data.dto;
 
-public class GetVisiterDTO {
+public class VisiterDTO {
 
     private String email;
     private String firstName;
     private String lastName;
     private String description;
 
-    public GetVisiterDTO() {}
+    public VisiterDTO() {}
 
-    public GetVisiterDTO(String email, String firstName, String lastName, String description) {
+    public VisiterDTO(String email, String firstName, String lastName, String description) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;

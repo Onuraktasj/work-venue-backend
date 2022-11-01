@@ -21,7 +21,7 @@
             </roles>
         </developer>
         <developer>
-            <id>mb</id>
+            <id>by</id>
             <name>Berkin YARDIMCI</name>
             <email>berkinyardimci98@gmail.com</email>
             <roles>
@@ -43,6 +43,7 @@
         <swagger.version>3.0.0</swagger.version>
         <postgresql.version>42.5.0</postgresql.version>
         <javax.version>4.0.1</javax.version>
+        <modelmapper.version>3.1.0</modelmapper.version>
     </properties>
 
     <dependencies>
@@ -91,6 +92,12 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
+        </dependency>
+        <!-- Model Converter -->
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>${modelmapper.version}</version>
         </dependency>
     </dependencies>
 
