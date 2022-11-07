@@ -1,6 +1,6 @@
-package com.workvenue.backend.data.request;
+package com.workvenue.backend.data.dto;
 
-public class RegisterVisiterControllerRequest {
+public class VisitorDTO {
 
     private String email;
     private String password;
@@ -9,7 +9,10 @@ public class RegisterVisiterControllerRequest {
     private String description;
     private String link;
 
-    public RegisterVisiterControllerRequest(String email, String password, String firstName, String lastName, String description, String link) {
+    public VisitorDTO() {
+    }
+
+    public VisitorDTO(String email, String password, String firstName, String lastName, String description, String link) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;

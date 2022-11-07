@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {IllegalArgumentException.class, IllegalStateException.class, NullPointerException.class, HttpServerErrorException.InternalServerError.class, Exception.class})
     public ResponseEntity<BaseControllerResponse> handleIllegalStateException(IllegalStateException ex, WebRequest request) {
         BaseControllerResponse baseControllerResponse = new BaseControllerResponse();
-        ErrorDetail errorDetail = new ErrorDetail(ErrorCode.GENERAL_EXCEPTION.getValue(), ErrorCode.GENERAL_EXCEPTION + " " + ex.getMessage(), new Date());
+        ErrorDetail errorDetail = new ErrorDetail(ErrorCode.ILLEGAL_STATE_EXCEPTION.getValue(), ErrorCode.ILLEGAL_STATE_EXCEPTION.getReasonPhrase() + " " + ex.getMessage(), new Date());
         baseControllerResponse.setHeader(new RestHeader(false, ErrorMessage.GENERAL_ERROR, errorDetail));
         LOGGER.error("An error occurred: " + errorDetail + " and request details: " + request.toString());
         return new ResponseEntity<>(baseControllerResponse, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -34,8 +34,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {ControllerException.class})
     public ResponseEntity<BaseControllerResponse> handleControllerException(ControllerException ex, WebRequest request) {
         BaseControllerResponse baseControllerResponse = new BaseControllerResponse();
-        ErrorDetail errorDetail = new ErrorDetail(ErrorCode.ILLEGAL_STATE_EXCEPTION.getValue(), ErrorCode.ILLEGAL_STATE_EXCEPTION + " " + ex.getMessage(), new Date());
-        baseControllerResponse.setHeader(new RestHeader(false, ex.toString(), errorDetail));
+        ErrorDetail errorDetail = new ErrorDetail(ErrorCode.CONTROLLER_EXCEPTION.getValue(), ErrorCode.CONTROLLER_EXCEPTION.getReasonPhrase() + " " + ex.toString(), new Date());
+        baseControllerResponse.setHeader(new RestHeader(false, ex.getErrorMessage(), errorDetail));
         LOGGER.error("An error occurred: " + errorDetail + " and request details: " + request.toString());
         return new ResponseEntity<>(baseControllerResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }

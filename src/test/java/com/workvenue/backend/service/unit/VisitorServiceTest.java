@@ -2,13 +2,13 @@ package com.workvenue.backend.service.unit;
 
 import org.junit.jupiter.api.Test;
 
-class VisiterServiceTest {
+class VisitorServiceTest {
 
     @Test
-    void registerVisiter() {
+    void registerVisitor() {
     }
 
     @Test
-    void getAllVisiter() {
+    void getAllVisitor() {
     }
 }

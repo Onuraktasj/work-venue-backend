@@ -5,9 +5,9 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "visiters")
+@Table(name = "visitors")
 @PrimaryKeyJoinColumn(name = "user_id")
-public class Visiter extends User{
+public class Visitor extends User{
 
     @Length(max = 155)
     private String description;
@@ -19,10 +19,10 @@ public class Visiter extends User{
 
     private String image;
 
-    public Visiter() {
+    public Visitor() {
     }
 
-    public Visiter(String description, String link, Boolean isActive, String image) {
+    public Visitor(String description, String link, Boolean isActive, String image) {
         this.description = description;
         this.link = link;
         this.isActive = isActive;

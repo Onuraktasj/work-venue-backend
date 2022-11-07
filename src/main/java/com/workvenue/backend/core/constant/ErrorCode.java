@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 
 public enum ErrorCode {
     ILLEGAL_STATE_EXCEPTION(10500,"Illegal State"),
-    GENERAL_EXCEPTION(10100,"General Exception")
+    CONTROLLER_EXCEPTION(10100,"Controller Exception")
     ;
 
     private final int value;
@@ -15,5 +15,9 @@ public enum ErrorCode {
     }
     public int getValue() {
         return value;
+    }
+
+    public String getReasonPhrase() {
+        return reasonPhrase;
     }
 }
