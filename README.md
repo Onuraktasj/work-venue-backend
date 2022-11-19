@@ -8,7 +8,9 @@ Swagger: http://localhost:8000/api/v1/swagger-ui/
 ## API Design
 
 ## Branch Rules 
-* Ex: mb/create-swagger
+* mb/feature/create-swagger
+* by/bugfix/visitor-service-uuid
+* by/refactor/user-service
 
 ## Target Techs
 * Swagger
@@ -18,3 +20,10 @@ Swagger: http://localhost:8000/api/v1/swagger-ui/
 * Docker
 * CI/CD
 * Deploy
+
+
+## TODO LİST
+* Controllera hatayı aktarması lazım hata mesajını, gerekli hataların fırlatılması lazım
+* çok fazla aynı nesne varsa bean oluşturulmalı: çalış
+* gerekli yerlere equals and hascode koy
+* gerekli yerlere toString import et

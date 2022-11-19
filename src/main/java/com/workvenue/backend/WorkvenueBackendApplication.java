@@ -1,5 +1,6 @@
 package com.workvenue.backend;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,12 @@ public class WorkvenueBackendApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(WorkvenueBackendApplication.class, args);
+	}
+
+	//Custom Beans
+	@Bean
+	public ModelMapper modelMapper() {
+		return new ModelMapper();
 	}
 
 	//Belong Swagger Below Two Methods

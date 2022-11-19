@@ -21,7 +21,7 @@
             </roles>
         </developer>
         <developer>
-            <id>mb</id>
+            <id>by</id>
             <name>Berkin YARDIMCI</name>
             <email>berkinyardimci98@gmail.com</email>
             <roles>
@@ -41,9 +41,9 @@
     <properties>
         <java.version>11</java.version>
         <swagger.version>3.0.0</swagger.version>
-        <lombok.version>1.18.24</lombok.version>
         <postgresql.version>42.5.0</postgresql.version>
         <javax.version>4.0.1</javax.version>
+        <modelmapper.version>3.1.0</modelmapper.version>
     </properties>
 
     <dependencies>
@@ -71,13 +71,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-        <!-- Lombok Dependency-->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-            <version>${lombok.version}</version>
-        </dependency>
         <!-- Swagger Dependencies -->
         <dependency>
             <groupId>io.springfox</groupId>
@@ -99,6 +92,12 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
+        </dependency>
+        <!-- Model Converter -->
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>${modelmapper.version}</version>
         </dependency>
     </dependencies>
 
