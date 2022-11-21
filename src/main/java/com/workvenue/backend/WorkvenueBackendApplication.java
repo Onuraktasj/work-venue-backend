@@ -20,13 +20,7 @@ public class WorkvenueBackendApplication {
 		SpringApplication.run(WorkvenueBackendApplication.class, args);
 	}
 
-	//Custom Beans
-	@Bean
-	public ModelMapper modelMapper() {
-		return new ModelMapper();
-	}
-
-	//Belong Swagger Below Two Methods
+	//Swagger Configurations
 	private ApiInfo apiInfo() {
 		return new ApiInfo(
 				"Spring Boot Simple REST API",
