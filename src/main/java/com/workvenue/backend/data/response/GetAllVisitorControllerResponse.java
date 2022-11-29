@@ -3,11 +3,11 @@ package com.workvenue.backend.data.response;
 import com.workvenue.backend.data.dto.VisitorDTO;
 import com.workvenue.backend.data.other.RestHeader;
 
-import java.util.List;
+import java.util.Set;
 
 public class GetAllVisitorControllerResponse extends BaseControllerResponse{
 
-    List<VisitorDTO> visitorDTOList;
+    Set<VisitorDTO> visitorDTOSet;
 
     public GetAllVisitorControllerResponse() {
     }
@@ -15,16 +15,16 @@ public class GetAllVisitorControllerResponse extends BaseControllerResponse{
         super(header);
     }
 
-    public GetAllVisitorControllerResponse(RestHeader header, List<VisitorDTO> visitorDTOList) {
+    public GetAllVisitorControllerResponse(RestHeader header, Set<VisitorDTO> visitorDTOSet) {
         super(header);
-        this.visitorDTOList = visitorDTOList;
+        this.visitorDTOSet = visitorDTOSet;
     }
 
-    public List<VisitorDTO> getGetVisitorDTOList() {
-        return visitorDTOList;
+    public Set<VisitorDTO> getGetVisitorDTOSet() {
+        return visitorDTOSet;
     }
 
-    public void setGetVisitorDTOList(List<VisitorDTO> visitorDTOList) {
-        this.visitorDTOList = visitorDTOList;
+    public void setGetVisitorDTOSet(Set<VisitorDTO> visitorDTOSet) {
+        this.visitorDTOSet = visitorDTOSet;
     }
 }

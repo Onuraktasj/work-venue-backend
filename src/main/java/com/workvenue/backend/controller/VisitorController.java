@@ -44,10 +44,10 @@ public class VisitorController {
     @ApiOperation(value = "Get All Visitors For Admin", notes = "Must adding authorization for access just admin.")
     public ResponseEntity<GetAllVisitorControllerResponse> getAllVisitors() throws Exception {
         try {
-            GetAllVisitorControllerResponse listOfGetAllVisitorControllerResponse;
-            listOfGetAllVisitorControllerResponse = visitorService.getAllVisitors();
-            listOfGetAllVisitorControllerResponse.setHeader(new RestHeader(true, MessageUtil.getMessage("Visitor", SuccessMessage.FOUND), null));
-            return new ResponseEntity<>(listOfGetAllVisitorControllerResponse, HttpStatus.CREATED);
+            GetAllVisitorControllerResponse setOfGetAllVisitorControllerResponse;
+            setOfGetAllVisitorControllerResponse = visitorService.getAllVisitors();
+            setOfGetAllVisitorControllerResponse.setHeader(new RestHeader(true, MessageUtil.getMessage("Visitor", SuccessMessage.FOUND), null));
+            return new ResponseEntity<>(setOfGetAllVisitorControllerResponse, HttpStatus.CREATED);
         } catch (Exception ex) {
             throw new ControllerException(ex, ControllerName.GET_ALL_VISITOR);
         }

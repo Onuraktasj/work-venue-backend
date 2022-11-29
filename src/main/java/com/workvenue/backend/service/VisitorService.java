@@ -7,15 +7,14 @@ import com.workvenue.backend.data.entity.Visitor;
 import com.workvenue.backend.data.request.RegisterVisitorControllerRequest;
 import com.workvenue.backend.data.response.GetAllVisitorControllerResponse;
 import com.workvenue.backend.data.response.RegisterVisitorControllerResponse;
-import com.workvenue.backend.exception.custom.ControllerException;
 import com.workvenue.backend.repository.UserRepository;
 import com.workvenue.backend.repository.VisitorRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,7 +35,7 @@ public class VisitorService {
         Optional<User> userOptional = userRepository.getUserByEmail(request.getVisitorDTO().getEmail());
         RegisterVisitorControllerResponse registerVisitorControllerResponse = new RegisterVisitorControllerResponse();
 
-        if (!userOptional.isPresent()) {
+        if (userOptional.isEmpty()) {
             Visitor visitor = new Visitor();
             visitor.setEmail(request.getVisitorDTO().getEmail());
             visitor.setPassword(request.getVisitorDTO().getPassword());
@@ -59,16 +58,16 @@ public class VisitorService {
     public GetAllVisitorControllerResponse getAllVisitors() throws Exception {
         try {
             GetAllVisitorControllerResponse getAllVisitorControllerResponse = new GetAllVisitorControllerResponse();
-            List<Visitor> allVisitors = visitorRepository.findAll();
+            Set<Visitor> allVisitors = visitorRepository.getAllVisitors();
             if (allVisitors.isEmpty() || allVisitors == null)
                 throw new Exception(ErrorMessage.GET_USER_NULL_ERROR);
 
-            List<VisitorDTO> visitorDTOList = allVisitors
+            Set<VisitorDTO> visitorDTOSet = allVisitors
                     .stream()
                     .map(visitor -> modelMapper.map(visitor, VisitorDTO.class))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toSet());
 
-            getAllVisitorControllerResponse.setGetVisitorDTOList(visitorDTOList);
+            getAllVisitorControllerResponse.setGetVisitorDTOSet(visitorDTOSet);
             return getAllVisitorControllerResponse;
         } catch (Exception ex) {
             throw new Exception(ex);
