@@ -1,6 +1,8 @@
 package com.workvenue.backend.data.dto;
 
-public class VisitorDTO {
+import java.io.Serializable;
+
+public class VisitorDTO implements Serializable {
 
     private String email;
     private String password;

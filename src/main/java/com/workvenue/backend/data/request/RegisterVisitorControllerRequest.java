@@ -6,6 +6,9 @@ public class RegisterVisitorControllerRequest {
 
     private VisitorDTO visitorDTO;
 
+    public RegisterVisitorControllerRequest(){
+    }
+
     public RegisterVisitorControllerRequest(VisitorDTO visitorDTO) {
         this.visitorDTO = visitorDTO;
     }

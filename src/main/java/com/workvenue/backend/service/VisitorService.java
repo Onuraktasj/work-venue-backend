@@ -7,12 +7,16 @@ import com.workvenue.backend.data.entity.Visitor;
 import com.workvenue.backend.data.request.RegisterVisitorControllerRequest;
 import com.workvenue.backend.data.response.GetAllVisitorControllerResponse;
 import com.workvenue.backend.data.response.RegisterVisitorControllerResponse;
+import com.workvenue.backend.exception.custom.DatabaseException;
 import com.workvenue.backend.repository.UserRepository;
 import com.workvenue.backend.repository.VisitorRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,6 +35,7 @@ public class VisitorService {
         this.visitorRepository = visitorRepository;
     }
 
+    //    @Transactional()
     public RegisterVisitorControllerResponse registerVisitor(RegisterVisitorControllerRequest request) throws Exception {
         Optional<User> userOptional = userRepository.getUserByEmail(request.getVisitorDTO().getEmail());
         RegisterVisitorControllerResponse registerVisitorControllerResponse = new RegisterVisitorControllerResponse();
@@ -45,10 +50,15 @@ public class VisitorService {
             visitor.setDescription(request.getVisitorDTO().getDescription());
             visitor.setLink(request.getVisitorDTO().getLink());
             visitor.setActive(true);
-            visitorRepository.save(visitor);
+            try {
+                visitorRepository.save(visitor);
+            } catch (Exception ex) {
+                throw new DatabaseException("Visitor and User","save");
+            }
+            VisitorDTO visitorDTO = new VisitorDTO();
+            BeanUtils.copyProperties(visitor, visitorDTO);
+            registerVisitorControllerResponse.setVisitorDTO(visitorDTO);
 
-            registerVisitorControllerResponse.getVisitorDTO().setFirstName(visitor.getFirstName());
-            registerVisitorControllerResponse.getVisitorDTO().setLastName(visitor.getLastName());
         } else {
             throw new Exception(ErrorMessage.USER_ALREADY_SAVED);
         }
@@ -58,7 +68,13 @@ public class VisitorService {
     public GetAllVisitorControllerResponse getAllVisitors() throws Exception {
         try {
             GetAllVisitorControllerResponse getAllVisitorControllerResponse = new GetAllVisitorControllerResponse();
-            Set<Visitor> allVisitors = visitorRepository.getAllVisitors();
+            Set<Visitor> allVisitors = new HashSet<>();
+            try {
+                allVisitors = visitorRepository.getAllVisitors();
+            } catch (Exception ex) {
+                throw new DatabaseException("Visitor and User","get");
+            }
+
             if (allVisitors.isEmpty() || allVisitors == null)
                 throw new Exception(ErrorMessage.GET_USER_NULL_ERROR);
 
