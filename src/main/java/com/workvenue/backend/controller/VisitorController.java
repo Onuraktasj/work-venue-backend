@@ -34,8 +34,7 @@ public class VisitorController {
             RegisterVisitorControllerResponse response = visitorService.registerVisitor(registerVisitorControllerRequest);
             response.setHeader(new RestHeader(true, MessageUtil.getMessage("Visitor", SuccessMessage.CREATED), null));
             return new ResponseEntity(response, HttpStatus.CREATED);
-
-        } catch (Exception ex) {
+        }catch (Exception ex) {
             throw new ControllerException(ex, ControllerName.REGISTER_VISITOR);
         }
     }

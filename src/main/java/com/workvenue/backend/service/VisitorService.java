@@ -14,9 +14,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,7 +34,7 @@ public class VisitorService {
         this.visitorRepository = visitorRepository;
     }
 
-    //    @Transactional()
+    @Transactional(rollbackFor = Exception.class)
     public RegisterVisitorControllerResponse registerVisitor(RegisterVisitorControllerRequest request) throws Exception {
         Optional<User> userOptional = userRepository.getUserByEmail(request.getVisitorDTO().getEmail());
         RegisterVisitorControllerResponse registerVisitorControllerResponse = new RegisterVisitorControllerResponse();
@@ -68,7 +67,7 @@ public class VisitorService {
     public GetAllVisitorControllerResponse getAllVisitors() throws Exception {
         try {
             GetAllVisitorControllerResponse getAllVisitorControllerResponse = new GetAllVisitorControllerResponse();
-            Set<Visitor> allVisitors = new HashSet<>();
+            Set<Visitor> allVisitors;
             try {
                 allVisitors = visitorRepository.getAllVisitors();
             } catch (Exception ex) {
