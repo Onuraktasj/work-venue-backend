@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<BaseControllerResponse> handleIllegalStateException(IllegalStateException ex, WebRequest request) {
         BaseControllerResponse baseControllerResponse = new BaseControllerResponse();
         ErrorDetail errorDetail = new ErrorDetail(ErrorCode.ILLEGAL_STATE_EXCEPTION.getValue(), ErrorCode.ILLEGAL_STATE_EXCEPTION.getReasonPhrase() + " " + ex.getMessage(), new Date());
-        baseControllerResponse.setHeader(new RestHeader(true, ErrorMessage.GENERAL_ERROR, errorDetail));
+        baseControllerResponse.setHeader(new RestHeader(true, ErrorMessage.GeneralError.UNEXPECTED_ERROR, errorDetail));
         LOGGER.error("An error occurred: " + errorDetail + " and request details: " + request.toString());
         return new ResponseEntity<>(baseControllerResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }

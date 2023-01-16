@@ -13,4 +13,6 @@ public interface VisitorRepository extends JpaRepository<Visitor, UUID> {
 
     @Query("SELECT i FROM Visitor i")
     Set<Visitor> getAllVisitors();
+    Visitor getUserByEmail(String email);
+
 }

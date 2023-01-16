@@ -4,9 +4,11 @@ import com.workvenue.backend.core.constant.ControllerName;
 import com.workvenue.backend.core.constant.SuccessMessage;
 import com.workvenue.backend.core.util.MessageUtil;
 import com.workvenue.backend.data.other.RestHeader;
-import com.workvenue.backend.data.request.RegisterVisitorControllerRequest;
-import com.workvenue.backend.data.response.GetAllVisitorControllerResponse;
-import com.workvenue.backend.data.response.RegisterVisitorControllerResponse;
+import com.workvenue.backend.data.request.visitor.RegisterVisitorControllerRequest;
+import com.workvenue.backend.data.request.visitor.UpdateVisitorControllerRequest;
+import com.workvenue.backend.data.response.visitor.GetAllVisitorControllerResponse;
+import com.workvenue.backend.data.response.visitor.RegisterVisitorControllerResponse;
+import com.workvenue.backend.data.response.visitor.UpdateVisitorControllerResponse;
 import com.workvenue.backend.exception.custom.ControllerException;
 import com.workvenue.backend.service.VisitorService;
 import io.swagger.annotations.ApiOperation;
@@ -32,9 +34,9 @@ public class VisitorController {
 
         try {
             RegisterVisitorControllerResponse response = visitorService.registerVisitor(registerVisitorControllerRequest);
-            response.setHeader(new RestHeader(true, MessageUtil.getMessage("Visitor", SuccessMessage.CREATED), null));
+            response.setHeader(new RestHeader(true, MessageUtil.getMessage("Kullanıcı", SuccessMessage.CREATED), null));
             return new ResponseEntity(response, HttpStatus.CREATED);
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             throw new ControllerException(ex, ControllerName.REGISTER_VISITOR);
         }
     }
@@ -45,10 +47,24 @@ public class VisitorController {
         try {
             GetAllVisitorControllerResponse setOfGetAllVisitorControllerResponse;
             setOfGetAllVisitorControllerResponse = visitorService.getAllVisitors();
-            setOfGetAllVisitorControllerResponse.setHeader(new RestHeader(true, MessageUtil.getMessage("Visitor", SuccessMessage.FOUND), null));
+            setOfGetAllVisitorControllerResponse.setHeader(new RestHeader(true, MessageUtil.getMessage("Kullanıcı", SuccessMessage.FOUND), null));
             return new ResponseEntity<>(setOfGetAllVisitorControllerResponse, HttpStatus.CREATED);
         } catch (Exception ex) {
             throw new ControllerException(ex, ControllerName.GET_ALL_VISITOR);
         }
     }
+
+    @PutMapping()
+    @ApiOperation(value = "Update Spesific Visitor For Admin and User")
+    public ResponseEntity<UpdateVisitorControllerResponse> updateVisitor(@RequestBody UpdateVisitorControllerRequest updateVisitorControllerRequest) throws Exception {
+        try {
+            UpdateVisitorControllerResponse updateVisitorControllerResponse;
+            updateVisitorControllerResponse = visitorService.updateVisitor(updateVisitorControllerRequest);
+            updateVisitorControllerResponse.setHeader(new RestHeader(true, MessageUtil.getMessage("Kullanıcı", SuccessMessage.UPDATED), null));
+            return new ResponseEntity<>(updateVisitorControllerResponse, HttpStatus.CREATED);
+        } catch (Exception ex) {
+            throw new ControllerException(ex, ControllerName.GET_ALL_VISITOR);
+        }
+    }
+
 }
