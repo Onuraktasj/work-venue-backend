@@ -3,6 +3,7 @@ package com.workvenue.backend.service;
 import com.workvenue.backend.core.constant.ErrorMessage;
 import com.workvenue.backend.data.dto.VisitorDTO;
 import com.workvenue.backend.data.entity.Visitor;
+import com.workvenue.backend.data.enums.Status;
 import com.workvenue.backend.data.request.visitor.RegisterVisitorControllerRequest;
 import com.workvenue.backend.data.request.visitor.UpdateVisitorControllerRequest;
 import com.workvenue.backend.data.response.visitor.GetAllVisitorControllerResponse;
@@ -69,7 +70,7 @@ public class VisitorService {
                     .lastName(request.getVisitorDTO().getLastName())
                     .description(request.getVisitorDTO().getDescription())
                     .link(request.getVisitorDTO().getLink())
-                    .status(1)
+                    .status(Status.ACTIVE)
                     .createdDate(OffsetDateTime.now())
                     .build();
             try {
@@ -90,7 +91,7 @@ public class VisitorService {
     public UpdateVisitorControllerResponse updateVisitor(UpdateVisitorControllerRequest request) throws Exception {
         UpdateVisitorControllerResponse updateVisitorControllerResponse = new UpdateVisitorControllerResponse();
         Visitor visitor = visitorRepository.getUserByEmail(request.getVisitorDTO().getEmail());
-        if (visitor != null && visitor.getStatus() == 1) { // TODO: 1 constant olarak tanımlanmalı.
+        if (visitor != null && visitor.getStatus() == Status.ACTIVE) {
             visitor.setFirstName(request.getVisitorDTO().getFirstName());
             visitor.setLastName(request.getVisitorDTO().getLastName());
             visitor.setDescription(request.getVisitorDTO().getDescription());
