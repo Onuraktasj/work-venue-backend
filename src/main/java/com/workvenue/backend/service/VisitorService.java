@@ -1,22 +1,21 @@
 package com.workvenue.backend.service;
 
 import com.workvenue.backend.core.constant.ErrorMessage;
-import com.workvenue.backend.core.constant.VisitorConstant;
 import com.workvenue.backend.data.dto.VisitorDTO;
 import com.workvenue.backend.data.entity.Visitor;
-import com.workvenue.backend.data.request.RegisterVisitorControllerRequest;
-import com.workvenue.backend.data.request.UpdateVisitorControllerRequest;
-import com.workvenue.backend.data.response.GetAllVisitorControllerResponse;
-import com.workvenue.backend.data.response.RegisterVisitorControllerResponse;
+import com.workvenue.backend.data.request.visitor.RegisterVisitorControllerRequest;
+import com.workvenue.backend.data.request.visitor.UpdateVisitorControllerRequest;
+import com.workvenue.backend.data.response.visitor.GetAllVisitorControllerResponse;
+import com.workvenue.backend.data.response.visitor.RegisterVisitorControllerResponse;
+import com.workvenue.backend.data.response.visitor.UpdateVisitorControllerResponse;
 import com.workvenue.backend.exception.custom.DatabaseException;
 import com.workvenue.backend.repository.VisitorRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -43,7 +42,7 @@ public class VisitorService {
             }
 
             if (allVisitors.isEmpty() || allVisitors == null)
-                throw new Exception(ErrorMessage.GET_USER_NULL_ERROR);
+                throw new Exception(ErrorMessage.VisitorError.GET_USER_NULL_ERROR);
 
             Set<VisitorDTO> visitorDTOSet = allVisitors
                     .stream()
@@ -70,41 +69,44 @@ public class VisitorService {
                     .lastName(request.getVisitorDTO().getLastName())
                     .description(request.getVisitorDTO().getDescription())
                     .link(request.getVisitorDTO().getLink())
-                    .status(VisitorConstant.WAITING_ACTIVATION)
-                    .createdDate(LocalDateTime.now())
+                    .status(1)
+                    .createdDate(OffsetDateTime.now())
                     .build();
             try {
                 visitorRepository.save(newVisitor);
             } catch (Exception ex) {
-                throw new DatabaseException("Visitor", "save"); //constant
+                throw new DatabaseException("Visitor", "save");
             }
             VisitorDTO visitorDTO = modelMapper.map(newVisitor, VisitorDTO.class);
             registerVisitorControllerResponse.setVisitorDTO(visitorDTO);
-            //TODO: helpera send email onayı servisi yaz, aktive edildikten sonra 1'e çek hesap kapatılcaksa 2'ye çek
+            //TODO: helpera send email onayı servisi yazılcak, aktive edildikten sonra 1'e çek hesap kapatılcaksa 2'ye çek
         } else {
-            throw new Exception(ErrorMessage.USER_ALREADY_SAVED); //email kullanımda dön
+            throw new Exception(ErrorMessage.VisitorError.USER_ALREADY_SAVED);
         }
         return registerVisitorControllerResponse;
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void updateVisitor(UpdateVisitorControllerRequest request) throws Exception { //controller
-
+    public UpdateVisitorControllerResponse updateVisitor(UpdateVisitorControllerRequest request) throws Exception {
+        UpdateVisitorControllerResponse updateVisitorControllerResponse = new UpdateVisitorControllerResponse();
         Visitor visitor = visitorRepository.getUserByEmail(request.getVisitorDTO().getEmail());
-        if (visitor != null && visitor.getStatus() == 1) {
+        if (visitor != null && visitor.getStatus() == 1) { // TODO: 1 constant olarak tanımlanmalı.
             visitor.setFirstName(request.getVisitorDTO().getFirstName());
             visitor.setLastName(request.getVisitorDTO().getLastName());
             visitor.setDescription(request.getVisitorDTO().getDescription());
             visitor.setLink(request.getVisitorDTO().getLink());
-            visitor.setUpdatedDate(LocalDateTime.now());
+            visitor.setUpdatedDate(OffsetDateTime.now());
             try {
                 visitorRepository.save(visitor);
             } catch (Exception ex) {
-                throw new Exception(ErrorMessage.USER_ALREADY_SAVED); //emaile kayıtlı kullanıcı yok
+                throw new Exception(ErrorMessage.VisitorError.EMAIL_NOT_FOUND);
             }
+
+            VisitorDTO visitorDTO = modelMapper.map(visitor, VisitorDTO.class);
+            updateVisitorControllerResponse.setVisitorDTO(visitorDTO);
+            return updateVisitorControllerResponse;
         } else {
             throw new Exception("Visitor bulunamadı.");
         }
-
     }
 }

@@ -1,8 +1,9 @@
-package com.workvenue.backend.data.request;
+package com.workvenue.backend.data.request.visitor;
 
 import com.workvenue.backend.data.dto.VisitorDTO;
+import com.workvenue.backend.data.request.BaseControllerRequest;
 
-public class RegisterVisitorControllerRequest implements BaseControllerRequest{
+public class RegisterVisitorControllerRequest implements BaseControllerRequest {
 
     private VisitorDTO visitorDTO;
 

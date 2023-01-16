@@ -6,7 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
@@ -20,7 +20,7 @@ public class Visitor {
 
     @NotNull
     @NotBlank
-    @Email(message = "Bu mail adresi kayıtlı.")
+    @Email(message = "Bu mail adresi zaten kayıtlı.")
     @Column(name = "email", unique = true)
     private String email;
 
@@ -54,13 +54,13 @@ public class Visitor {
     private String image;
 
     @Column(name = "created_date")
-    private LocalDateTime createdDate;
+    private OffsetDateTime createdDate;
 
     @Column(name = "updated_date")
-    private LocalDateTime updatedDate;
+    private OffsetDateTime updatedDate;
 
     @Column(name = "deleted_date")
-    private LocalDateTime deletedDate;
+    private OffsetDateTime deletedDate;
 
     public Visitor() {}
 
@@ -150,27 +150,27 @@ public class Visitor {
         this.image = image;
     }
 
-    public LocalDateTime getCreatedDate() {
+    public OffsetDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
+    public void setCreatedDate(OffsetDateTime createdDate) {
         this.createdDate = createdDate;
     }
 
-    public LocalDateTime getUpdatedDate() {
+    public OffsetDateTime getUpdatedDate() {
         return updatedDate;
     }
 
-    public void setUpdatedDate(LocalDateTime updatedDate) {
+    public void setUpdatedDate(OffsetDateTime updatedDate) {
         this.updatedDate = updatedDate;
     }
 
-    public LocalDateTime getDeletedDate() {
+    public OffsetDateTime getDeletedDate() {
         return deletedDate;
     }
 
-    public void setDeletedDate(LocalDateTime deletedDate) {
+    public void setDeletedDate(OffsetDateTime deletedDate) {
         this.deletedDate = deletedDate;
     }
 
@@ -183,9 +183,9 @@ public class Visitor {
         private String link;
         private Integer status;
         private String image;
-        private LocalDateTime createdDate;
-        private LocalDateTime updatedDate;
-        private LocalDateTime deletedDate;
+        private OffsetDateTime createdDate;
+        private OffsetDateTime updatedDate;
+        private OffsetDateTime deletedDate;
 
         public VisitorBuilder email(String email) {
             this.email = email;
@@ -219,15 +219,15 @@ public class Visitor {
             this.image = image;
             return this;
         }
-        public VisitorBuilder createdDate(LocalDateTime createdDate) {
+        public VisitorBuilder createdDate(OffsetDateTime createdDate) {
             this.createdDate = createdDate;
             return this;
         }
-        public VisitorBuilder updatedDate(LocalDateTime updatedDate) {
+        public VisitorBuilder updatedDate(OffsetDateTime updatedDate) {
             this.updatedDate = updatedDate;
             return this;
         }
-        public VisitorBuilder deletedDate(LocalDateTime deletedDate) {
+        public VisitorBuilder deletedDate(OffsetDateTime deletedDate) {
             this.deletedDate = deletedDate;
             return this;
         }

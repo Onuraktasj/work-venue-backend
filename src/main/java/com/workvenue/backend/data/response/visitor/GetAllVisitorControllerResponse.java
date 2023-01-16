@@ -1,11 +1,12 @@
-package com.workvenue.backend.data.response;
+package com.workvenue.backend.data.response.visitor;
 
 import com.workvenue.backend.data.dto.VisitorDTO;
 import com.workvenue.backend.data.other.RestHeader;
+import com.workvenue.backend.data.response.BaseControllerResponse;
 
 import java.util.Set;
 
-public class GetAllVisitorControllerResponse extends BaseControllerResponse{
+public class GetAllVisitorControllerResponse extends BaseControllerResponse {
 
     Set<VisitorDTO> visitorDTOSet;
 
