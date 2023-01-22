@@ -1,5 +1,6 @@
-package com.workvenue.backend.service;
+package com.workvenue.backend.business.concretes;
 
+import com.workvenue.backend.business.abstracts.VisitorService;
 import com.workvenue.backend.core.constant.ErrorMessage;
 import com.workvenue.backend.data.dto.VisitorDTO;
 import com.workvenue.backend.data.entity.Visitor;
@@ -21,17 +22,18 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class VisitorService {
+public class VisitorManager implements VisitorService {
 
     private final ModelMapper modelMapper;
     private final VisitorRepository visitorRepository;
 
     @Autowired
-    public VisitorService(ModelMapper modelMapper, VisitorRepository visitorRepository) {
+    public VisitorManager(ModelMapper modelMapper, VisitorRepository visitorRepository) {
         this.modelMapper = modelMapper;
         this.visitorRepository = visitorRepository;
     }
 
+    @Override
     public GetAllVisitorControllerResponse getAllVisitors() throws Exception {
         try {
             GetAllVisitorControllerResponse getAllVisitorControllerResponse = new GetAllVisitorControllerResponse();
@@ -57,6 +59,7 @@ public class VisitorService {
         }
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public RegisterVisitorControllerResponse registerVisitor(RegisterVisitorControllerRequest request) throws Exception {
         RegisterVisitorControllerResponse registerVisitorControllerResponse = new RegisterVisitorControllerResponse();
@@ -87,6 +90,7 @@ public class VisitorService {
         return registerVisitorControllerResponse;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public UpdateVisitorControllerResponse updateVisitor(UpdateVisitorControllerRequest request) throws Exception {
         UpdateVisitorControllerResponse updateVisitorControllerResponse = new UpdateVisitorControllerResponse();

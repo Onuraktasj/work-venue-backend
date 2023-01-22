@@ -1,17 +1,17 @@
-package com.workvenue.backend.data.response;
+package com.workvenue.backend.data.response.venue;
 
 import com.workvenue.backend.data.dto.VenueDTO;
-import com.workvenue.backend.data.dto.VisitorDTO;
 import com.workvenue.backend.data.other.RestHeader;
+import com.workvenue.backend.data.response.BaseControllerResponse;
 
-public class CreateVenueControllerResponse extends BaseControllerResponse{
-
+public class UpdateVenueControllerResponse extends BaseControllerResponse {
     private VenueDTO venueDTO;
 
-    public CreateVenueControllerResponse(){
+    public UpdateVenueControllerResponse() {
+
     }
 
-    public CreateVenueControllerResponse(RestHeader header, VenueDTO venueDTO) {
+    public UpdateVenueControllerResponse(RestHeader header, VenueDTO venueDTO) {
         super(header);
         this.venueDTO = venueDTO;
     }

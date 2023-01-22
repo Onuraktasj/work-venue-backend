@@ -6,7 +6,8 @@ public enum ControllerName {
 
     CREATE_VENUE(3, "Create Venue"),
 
-    UPDATE_VENUE(4, "Update Venue");
+    UPDATE_VENUE(4, "Update Venue"),
+    GET_ALL_VENUES(5,"Get ALL Venue" );
 
     private final int value;
     private final String name;

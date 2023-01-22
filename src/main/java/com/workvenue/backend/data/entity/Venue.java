@@ -17,17 +17,19 @@ public class Venue {
     @GeneratedValue
     @Column(name = "id")
     private UUID id;
-
+    @Column(name = "name")
     private String name;
+    @Column(name = "address")
     private String address;
-
+    @Column(name = "opening_time")
     private OffsetDateTime openingTime;
+    @Column(name = "closing_time")
     private OffsetDateTime closingTime;
-
+    @Column(name = "category")
     private Category category;
-
+    @Column(name = "network")
     private Network network;
-
+    @Column(name = "status")
     private Status status;
 
     public Venue() {

@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="WorkvenueBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <option name="ACTIVE_PROFILES" />
+    <module name="workvenue-backend" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.workvenue.backend.WorkvenueBackendApplication" />
+    <option name="VM_PARAMETERS" value="-Dspring.profiles.active=test" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.workvenue.backend.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

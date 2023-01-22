@@ -1,40 +1,48 @@
-package com.workvenue.backend.service;
+package com.workvenue.backend.business.concretes;
 
+import com.workvenue.backend.business.abstracts.VenueService;
 import com.workvenue.backend.core.constant.ErrorMessage;
 import com.workvenue.backend.data.dto.VenueDTO;
 import com.workvenue.backend.data.entity.Venue;
-import com.workvenue.backend.data.entity.Visitor;
 import com.workvenue.backend.data.enums.Status;
-import com.workvenue.backend.data.request.CreateVenueControllerRequest;
-import com.workvenue.backend.data.request.UpdateVenueControllerRequest;
-import com.workvenue.backend.data.response.CreateVenueControllerResponse;
-import com.workvenue.backend.data.response.UpdateVenueControllerResponse;
+import com.workvenue.backend.data.request.venue.CreateVenueControllerRequest;
+import com.workvenue.backend.data.request.venue.UpdateVenueControllerRequest;
+import com.workvenue.backend.data.response.venue.CreateVenueControllerResponse;
+import com.workvenue.backend.data.response.venue.GetAllVenueControllerResponse;
+import com.workvenue.backend.data.response.venue.UpdateVenueControllerResponse;
 import com.workvenue.backend.exception.custom.DatabaseException;
-import com.workvenue.backend.repository.VenuRepository;
+import com.workvenue.backend.repository.VenueRepository;
 import com.workvenue.backend.repository.VisitorRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLDataException;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
-public class VenueService {
+public class VenueManager implements VenueService {
 
-    private final VenuRepository venuRepository;
+    private final VenueRepository venueRepository;
     private final VisitorRepository visitorRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public VenueService(VenuRepository venuRepository, VisitorRepository visitorRepository) {
-        this.venuRepository = venuRepository;
+    public VenueManager(VenueRepository venueRepository, VisitorRepository visitorRepository, ModelMapper modelMapper) {
+        this.venueRepository = venueRepository;
         this.visitorRepository = visitorRepository;
+        this.modelMapper = modelMapper;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public CreateVenueControllerResponse createVenue(CreateVenueControllerRequest request) throws Exception {
-        Optional<Venue> optionalVenue = venuRepository.getVenueByName(request.getVenueDTO().getName());
+        Optional<Venue> optionalVenue = venueRepository.getVenueByName(request.getVenueDTO().getName());
         CreateVenueControllerResponse createVenueControllerResponse = new CreateVenueControllerResponse();
 
         if (optionalVenue.isEmpty()) {
@@ -47,18 +55,18 @@ public class VenueService {
             venue.setOpeningTime(request.getVenueDTO().getOpeningTime());
             venue.setStatus(Status.ACTIVE);
             try {
-                venuRepository.save(venue);
+                venueRepository.save(venue);
             } catch (Exception ex) {
                 throw new DatabaseException("Venue", "save");
             }
-            VenueDTO venueDTO = new VenueDTO();
-            BeanUtils.copyProperties(venue, venueDTO);
+
+            VenueDTO venueDTO = modelMapper.map(venue, VenueDTO.class);
             createVenueControllerResponse.setVenueDTO(venueDTO);
         }
-
         return createVenueControllerResponse;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public UpdateVenueControllerResponse updateVenue(UpdateVenueControllerRequest request) throws Exception {
 
@@ -73,13 +81,13 @@ public class VenueService {
             venue.setName(request.getVenueDTO().getName());
             venue.setNetwork(request.getVenueDTO().getNetwork());
             venue.setCategory(request.getVenueDTO().getCategory());
+            venue.setStatus(request.getVenueDTO().getStatus());
             try {
-                venuRepository.save(venue);
+                venueRepository.save(venue);
             } catch (Exception ex) {
-
+                throw new DatabaseException("Venue", "save");
             }
-            VenueDTO venueDTO = new VenueDTO();
-            BeanUtils.copyProperties(venue, venueDTO);
+            VenueDTO venueDTO = modelMapper.map(venue, VenueDTO.class);
             updateVenueControllerResponse.setVenueDTO(venueDTO);
         } else {
             throw new DatabaseException("Venue", "Update");
@@ -88,9 +96,34 @@ public class VenueService {
 
     }
 
+    @Override
+    public GetAllVenueControllerResponse getAllVenues() throws Exception {
+        try {
+            GetAllVenueControllerResponse getAllVenueControllerResponse = new GetAllVenueControllerResponse();
+            Set<Venue> allVenues;
+            try {
+                allVenues = venueRepository.getAllVenues();
+            } catch (Exception exception) {
+                throw new DatabaseException("Visitor and User", "get");
+            }
+            if (allVenues.isEmpty() || allVenues == null)
+                throw new Exception(ErrorMessage.VisitorError.GET_VENUE_NULL_ERROR);
+
+            Set<VenueDTO> venueDTOSet = allVenues
+                    .stream()
+                    .map(venue -> modelMapper.map(venue, VenueDTO.class))
+                    .collect(Collectors.toSet());
+            getAllVenueControllerResponse.setVenueDTOSet(venueDTOSet);
+            return getAllVenueControllerResponse;
+        } catch (Exception exception) {
+            throw new Exception(exception);
+        }
+
+    }
+
     private Optional<Venue> findByName(String name) throws Exception {
         try {
-            Optional<Venue> venue = venuRepository.getVenueByName(name);
+            Optional<Venue> venue = venueRepository.getVenueByName(name);
             return venue;
         } catch (Exception ex) {
             throw new DatabaseException("Venue", "Find");
