@@ -1,4 +1,4 @@
-package com.workvenue.backend.data.request;
+package com.workvenue.backend.data.request.venue;
 
 import com.workvenue.backend.data.dto.VenueDTO;
 

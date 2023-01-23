@@ -13,6 +13,7 @@ public class ErrorMessage {
         public final static String USER_ALREADY_SAVED = "Bu mail adresi zaten kayıtlı.";
 
         public final static String EMAIL_NOT_FOUND = "Bu mail adresiyle kayıtlı kullanıcı bulunamadı.";
+        public static final String GET_VENUE_NULL_ERROR = "Herhangi bir mekan bulunamadı";
     }
 
 
