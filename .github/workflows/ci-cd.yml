@@ -3,7 +3,6 @@ name: CI/CD Pipeline
 ## The following codes trigger the pipeline when the code is pushed on the main branch.
 on: [push]
 
-
 jobs:
   ## First Job: Test
   test:
@@ -48,11 +47,11 @@ jobs:
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
           ## Docker Hub Account Number / Repository Name
-          image: 19812381238/product-microservice
+          image: 19812381238/work-venue-backend
           tags: latest
           registry: docker.io
           ## Dockerfile Path
-          dockerfile: product/Dockerfile
+          dockerfile: Dockerfile
           ## Keep these secrets on GitHub for the privacy of our information
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
