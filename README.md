@@ -18,7 +18,7 @@ Swagger: http://localhost:8000/api/v1/swagger-ui/
 ## Target Techs
 * Swagger
 * Spring Security
-* Spring AOP
+* Spring AOP (Log)
 * Spring Cloud Gateway
 * Controller Advice
 * Docker
