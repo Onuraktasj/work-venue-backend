@@ -4,7 +4,7 @@
 Swagger: http://localhost:8000/api/v1/swagger-ui/
 
 ## Deployment Utils
-*
+* 
 
 ## API Design
 * Visitor 
@@ -23,3 +23,8 @@ Swagger: http://localhost:8000/api/v1/swagger-ui/
 * Docker
 * CI/CD
 * Deploy
+
+## TODO List
+* Tests
+* Documentations
+* Rules (branch name)
