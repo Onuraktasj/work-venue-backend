@@ -26,6 +26,6 @@ Swagger: http://localhost:8000/api/v1/swagger-ui/
 * Deploy
 
 ## TODO List
-* Tests
+* Tests (Unit and Integration)
 * Documentations
 * Rules (branch name, main protected)
