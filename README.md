@@ -27,4 +27,4 @@ Swagger: http://localhost:8000/api/v1/swagger-ui/
 ## TODO List
 * Tests
 * Documentations
-* Rules (branch name)
+* Rules (branch name, main protected)
