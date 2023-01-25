@@ -5,10 +5,6 @@ public enum Category {
     LIBRARY,
     RESTAURANT,
     SCHOOL,
-    COFFEE,
-    ;
-
-    Category() {
-    }
+    COFFEE
 
 }

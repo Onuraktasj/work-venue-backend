@@ -29,7 +29,7 @@ public class VisitorController {
     }
 
     @PostMapping()
-    @ApiOperation(value = "Register New Visitor Account For User")
+    @ApiOperation(value = "Register New Visitor Account For User.")
     public ResponseEntity<RegisterVisitorControllerResponse> registerVisitor(@RequestBody RegisterVisitorControllerRequest registerVisitorControllerRequest) throws Exception {
 
         try {
@@ -55,7 +55,7 @@ public class VisitorController {
     }
 
     @PutMapping()
-    @ApiOperation(value = "Update Spesific Visitor For Admin and User")
+    @ApiOperation(value = "Update Spesific Visitor For Admin and User.")
     public ResponseEntity<UpdateVisitorControllerResponse> updateVisitor(@RequestBody UpdateVisitorControllerRequest updateVisitorControllerRequest) throws Exception {
         try {
             UpdateVisitorControllerResponse updateVisitorControllerResponse;

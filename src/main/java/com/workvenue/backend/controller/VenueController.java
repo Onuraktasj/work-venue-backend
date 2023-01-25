@@ -27,37 +27,39 @@ public class VenueController {
         this.venueManager = venueManager;
     }
 
-    @PostMapping()
+    @PostMapping
     @ApiOperation(value = "Create New Venue For Visitor")
     public ResponseEntity<CreateVenueControllerResponse> createVenue(@RequestBody CreateVenueControllerRequest createVenueControllerRequest) throws Exception {
         try {
-            CreateVenueControllerResponse response= venueManager.createVenue(createVenueControllerRequest);
-            response.setHeader(new RestHeader(true,  MessageUtil.getMessage("Venue", SuccessMessage.CREATED), null));
+            CreateVenueControllerResponse response = venueManager.createVenue(createVenueControllerRequest);
+            response.setHeader(new RestHeader(true, MessageUtil.getMessage("Venue", SuccessMessage.CREATED), null));
             return new ResponseEntity(response, HttpStatus.CREATED);
         } catch (Exception ex) {
             throw new ControllerException(ex, ControllerName.CREATE_VENUE);
         }
     }
-    @PutMapping()
+
+    @PutMapping
     @ApiOperation(value = "Update Venue By Name")
     public ResponseEntity<CreateVenueControllerResponse> updateVenue(@RequestBody UpdateVenueControllerRequest updateVenueControllerRequest) throws Exception {
         try {
-            UpdateVenueControllerResponse response= venueManager.updateVenue(updateVenueControllerRequest);
-            response.setHeader(new RestHeader(true,  MessageUtil.getMessage("Venue", SuccessMessage.CREATED), null));
+            UpdateVenueControllerResponse response = venueManager.updateVenue(updateVenueControllerRequest);
+            response.setHeader(new RestHeader(true, MessageUtil.getMessage("Venue", SuccessMessage.CREATED), null));
             return new ResponseEntity(response, HttpStatus.OK);
         } catch (Exception ex) {
             throw new ControllerException(ex, ControllerName.UPDATE_VENUE);
         }
     }
-    @GetMapping()
-    @ApiOperation(value ="Get All Venues")
+
+    @GetMapping
+    @ApiOperation(value = "Get All Venues")
     public ResponseEntity<GetAllVenueControllerResponse> getAllVenues() throws Exception {
         try {
             GetAllVenueControllerResponse response = venueManager.getAllVenues();
-            response.setHeader(new RestHeader(true,MessageUtil.getMessage("Venue",SuccessMessage.FOUND),null));
-            return new ResponseEntity<>(response,HttpStatus.OK);
-        }catch (Exception exception){
-            throw  new ControllerException(exception,ControllerName.GET_ALL_VENUES);
+            response.setHeader(new RestHeader(true, MessageUtil.getMessage("Venue", SuccessMessage.FOUND), null));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception exception) {
+            throw new ControllerException(exception, ControllerName.GET_ALL_VENUES);
         }
     }
 }

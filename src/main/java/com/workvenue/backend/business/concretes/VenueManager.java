@@ -14,12 +14,11 @@ import com.workvenue.backend.exception.custom.DatabaseException;
 import com.workvenue.backend.repository.VenueRepository;
 import com.workvenue.backend.repository.VisitorRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLDataException;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,7 +44,7 @@ public class VenueManager implements VenueService {
         Optional<Venue> optionalVenue = venueRepository.getVenueByName(request.getVenueDTO().getName());
         CreateVenueControllerResponse createVenueControllerResponse = new CreateVenueControllerResponse();
 
-        if (optionalVenue.isEmpty()) {
+        if (optionalVenue.isEmpty() && request.getVenueDTO() !=null) {
             Venue venue = new Venue();
             venue.setName(request.getVenueDTO().getName());
             venue.setAddress(request.getVenueDTO().getAddress());
@@ -73,7 +72,7 @@ public class VenueManager implements VenueService {
         Optional<Venue> optionalVenue = findByName(request.getVenueDTO().getName());
         UpdateVenueControllerResponse updateVenueControllerResponse = new UpdateVenueControllerResponse();
 
-        if (optionalVenue.isPresent()) {
+        if (optionalVenue.isPresent() && request.getVenueDTO()!=null) {
             Venue venue = optionalVenue.get();
             venue.setOpeningTime(request.getVenueDTO().getOpeningTime());
             venue.setClosingTime(request.getVenueDTO().getClosingTime());
@@ -109,11 +108,11 @@ public class VenueManager implements VenueService {
             if (allVenues.isEmpty() || allVenues == null)
                 throw new Exception(ErrorMessage.VisitorError.GET_VENUE_NULL_ERROR);
 
-            Set<VenueDTO> venueDTOSet = allVenues
+            List<VenueDTO> venueDTOSet = allVenues
                     .stream()
                     .map(venue -> modelMapper.map(venue, VenueDTO.class))
-                    .collect(Collectors.toSet());
-            getAllVenueControllerResponse.setVenueDTOSet(venueDTOSet);
+                    .collect(Collectors.toList());
+            getAllVenueControllerResponse.setVenueDTOList(venueDTOSet);
             return getAllVenueControllerResponse;
         } catch (Exception exception) {
             throw new Exception(exception);

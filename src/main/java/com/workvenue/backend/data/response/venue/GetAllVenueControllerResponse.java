@@ -4,28 +4,30 @@ import com.workvenue.backend.data.dto.VenueDTO;
 import com.workvenue.backend.data.other.RestHeader;
 import com.workvenue.backend.data.response.BaseControllerResponse;
 
-import java.util.Set;
+import java.util.List;
+
 
 public class GetAllVenueControllerResponse extends BaseControllerResponse {
 
-    private Set<VenueDTO> venueDTOSet;
+    private List<VenueDTO> venueDTOList;
 
     public GetAllVenueControllerResponse() {
     }
+
     public GetAllVenueControllerResponse(RestHeader header) {
         super(header);
     }
 
-    public GetAllVenueControllerResponse(RestHeader header, Set<VenueDTO> venueDTOSet) {
+    public GetAllVenueControllerResponse(RestHeader header, List<VenueDTO> venueDTOList) {
         super(header);
-        this.venueDTOSet = venueDTOSet;
+        this.venueDTOList = venueDTOList;
     }
 
-    public Set<VenueDTO> getVenueDTOSet() {
-        return venueDTOSet;
+    public List<VenueDTO> getVenueDTOList() {
+        return venueDTOList;
     }
 
-    public void setVenueDTOSet(Set<VenueDTO> venueDTOSet) {
-        this.venueDTOSet = venueDTOSet;
+    public void setVenueDTOList(List<VenueDTO> venueDTOList) {
+        this.venueDTOList = venueDTOList;
     }
 }

@@ -1,7 +1,6 @@
 package com.workvenue.backend.data.response.venue;
 
 import com.workvenue.backend.data.dto.VenueDTO;
-import com.workvenue.backend.data.dto.VisitorDTO;
 import com.workvenue.backend.data.other.RestHeader;
 import com.workvenue.backend.data.response.BaseControllerResponse;
 
