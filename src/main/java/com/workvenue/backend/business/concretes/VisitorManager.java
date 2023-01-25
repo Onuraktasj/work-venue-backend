@@ -1,8 +1,10 @@
-package com.workvenue.backend.service;
+package com.workvenue.backend.business.concretes;
 
+import com.workvenue.backend.business.abstracts.VisitorService;
 import com.workvenue.backend.core.constant.ErrorMessage;
 import com.workvenue.backend.data.dto.VisitorDTO;
 import com.workvenue.backend.data.entity.Visitor;
+import com.workvenue.backend.data.enums.Status;
 import com.workvenue.backend.data.request.visitor.RegisterVisitorControllerRequest;
 import com.workvenue.backend.data.request.visitor.UpdateVisitorControllerRequest;
 import com.workvenue.backend.data.response.visitor.GetAllVisitorControllerResponse;
@@ -20,17 +22,18 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class VisitorService {
+public class VisitorManager implements VisitorService {
 
     private final ModelMapper modelMapper;
     private final VisitorRepository visitorRepository;
 
     @Autowired
-    public VisitorService(ModelMapper modelMapper, VisitorRepository visitorRepository) {
+    public VisitorManager(ModelMapper modelMapper, VisitorRepository visitorRepository) {
         this.modelMapper = modelMapper;
         this.visitorRepository = visitorRepository;
     }
 
+    @Override
     public GetAllVisitorControllerResponse getAllVisitors() throws Exception {
         try {
             GetAllVisitorControllerResponse getAllVisitorControllerResponse = new GetAllVisitorControllerResponse();
@@ -56,6 +59,7 @@ public class VisitorService {
         }
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public RegisterVisitorControllerResponse registerVisitor(RegisterVisitorControllerRequest request) throws Exception {
         RegisterVisitorControllerResponse registerVisitorControllerResponse = new RegisterVisitorControllerResponse();
@@ -69,7 +73,7 @@ public class VisitorService {
                     .lastName(request.getVisitorDTO().getLastName())
                     .description(request.getVisitorDTO().getDescription())
                     .link(request.getVisitorDTO().getLink())
-                    .status(1)
+                    .status(Status.ACTIVE)
                     .createdDate(OffsetDateTime.now())
                     .build();
             try {
@@ -86,11 +90,12 @@ public class VisitorService {
         return registerVisitorControllerResponse;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public UpdateVisitorControllerResponse updateVisitor(UpdateVisitorControllerRequest request) throws Exception {
         UpdateVisitorControllerResponse updateVisitorControllerResponse = new UpdateVisitorControllerResponse();
         Visitor visitor = visitorRepository.getUserByEmail(request.getVisitorDTO().getEmail());
-        if (visitor != null && visitor.getStatus() == 1) { // TODO: 1 constant olarak tanımlanmalı.
+        if (visitor != null && visitor.getStatus() == Status.ACTIVE) {
             visitor.setFirstName(request.getVisitorDTO().getFirstName());
             visitor.setLastName(request.getVisitorDTO().getLastName());
             visitor.setDescription(request.getVisitorDTO().getDescription());

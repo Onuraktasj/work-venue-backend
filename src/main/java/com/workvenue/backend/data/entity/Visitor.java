@@ -1,5 +1,6 @@
 package com.workvenue.backend.data.entity;
 
+import com.workvenue.backend.data.enums.Status;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -48,7 +49,7 @@ public class Visitor {
     private String link;
 
     @Column(name = "status")
-    private Integer status;
+    private Status status;
 
     @Column(name = "image")
     private String image;
@@ -134,11 +135,11 @@ public class Visitor {
         this.link = link;
     }
 
-    public Integer getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -181,7 +182,7 @@ public class Visitor {
         private String lastName;
         private String description;
         private String link;
-        private Integer status;
+        private Status status;
         private String image;
         private OffsetDateTime createdDate;
         private OffsetDateTime updatedDate;
@@ -211,7 +212,7 @@ public class Visitor {
             this.link = link;
             return this;
         }
-        public VisitorBuilder status(Integer status) {
+        public VisitorBuilder status(Status status) {
             this.status = status;
             return this;
         }

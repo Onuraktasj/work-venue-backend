@@ -10,7 +10,7 @@ import com.workvenue.backend.data.response.visitor.GetAllVisitorControllerRespon
 import com.workvenue.backend.data.response.visitor.RegisterVisitorControllerResponse;
 import com.workvenue.backend.data.response.visitor.UpdateVisitorControllerResponse;
 import com.workvenue.backend.exception.custom.ControllerException;
-import com.workvenue.backend.service.VisitorService;
+import com.workvenue.backend.business.concretes.VisitorManager;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,19 +21,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/visitors")
 public class VisitorController {
 
-    private final VisitorService visitorService;
+    private final VisitorManager visitorManager;
 
     @Autowired
-    public VisitorController(VisitorService visitorService) {
-        this.visitorService = visitorService;
+    public VisitorController(VisitorManager visitorManager) {
+        this.visitorManager = visitorManager;
     }
 
     @PostMapping()
-    @ApiOperation(value = "Register New Visitor Account For User")
+    @ApiOperation(value = "Register New Visitor Account For User.")
     public ResponseEntity<RegisterVisitorControllerResponse> registerVisitor(@RequestBody RegisterVisitorControllerRequest registerVisitorControllerRequest) throws Exception {
 
         try {
-            RegisterVisitorControllerResponse response = visitorService.registerVisitor(registerVisitorControllerRequest);
+            RegisterVisitorControllerResponse response = visitorManager.registerVisitor(registerVisitorControllerRequest);
             response.setHeader(new RestHeader(true, MessageUtil.getMessage("Kullanıcı", SuccessMessage.CREATED), null));
             return new ResponseEntity(response, HttpStatus.CREATED);
         } catch (Exception ex) {
@@ -46,7 +46,7 @@ public class VisitorController {
     public ResponseEntity<GetAllVisitorControllerResponse> getAllVisitors() throws Exception {
         try {
             GetAllVisitorControllerResponse setOfGetAllVisitorControllerResponse;
-            setOfGetAllVisitorControllerResponse = visitorService.getAllVisitors();
+            setOfGetAllVisitorControllerResponse = visitorManager.getAllVisitors();
             setOfGetAllVisitorControllerResponse.setHeader(new RestHeader(true, MessageUtil.getMessage("Kullanıcı", SuccessMessage.FOUND), null));
             return new ResponseEntity<>(setOfGetAllVisitorControllerResponse, HttpStatus.CREATED);
         } catch (Exception ex) {
@@ -55,11 +55,11 @@ public class VisitorController {
     }
 
     @PutMapping()
-    @ApiOperation(value = "Update Spesific Visitor For Admin and User")
+    @ApiOperation(value = "Update Spesific Visitor For Admin and User.")
     public ResponseEntity<UpdateVisitorControllerResponse> updateVisitor(@RequestBody UpdateVisitorControllerRequest updateVisitorControllerRequest) throws Exception {
         try {
             UpdateVisitorControllerResponse updateVisitorControllerResponse;
-            updateVisitorControllerResponse = visitorService.updateVisitor(updateVisitorControllerRequest);
+            updateVisitorControllerResponse = visitorManager.updateVisitor(updateVisitorControllerRequest);
             updateVisitorControllerResponse.setHeader(new RestHeader(true, MessageUtil.getMessage("Kullanıcı", SuccessMessage.UPDATED), null));
             return new ResponseEntity<>(updateVisitorControllerResponse, HttpStatus.CREATED);
         } catch (Exception ex) {
