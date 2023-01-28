@@ -1,7 +1,8 @@
 # Work Venue Backend Project
 
 ## URL BASE
-Swagger: http://localhost:8000/api/v1/swagger-ui/
+Swagger Local: http://localhost:8000/local/api/v1/swagger-ui/
+Swagger Test: http://localhost:8000/test/api/v1/swagger-ui/
 
 ## Deployment Utils
 * 
