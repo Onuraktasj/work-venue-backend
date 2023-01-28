@@ -7,12 +7,14 @@ import com.workvenue.backend.data.response.venue.GetAllVenueControllerResponse;
 import com.workvenue.backend.data.response.venue.UpdateVenueControllerResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public interface VenueService {
 
     CreateVenueControllerResponse createVenue(CreateVenueControllerRequest request) throws Exception;
 
-    UpdateVenueControllerResponse updateVenue(UpdateVenueControllerRequest request) throws Exception;
+    UpdateVenueControllerResponse updateVenue(UUID id, UpdateVenueControllerRequest request) throws Exception;
 
     GetAllVenueControllerResponse getAllVenues() throws Exception;
 }

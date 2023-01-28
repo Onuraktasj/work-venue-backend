@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/venues")
 public class VenueController {
@@ -39,12 +41,12 @@ public class VenueController {
         }
     }
 
-    @PutMapping
-    @ApiOperation(value = "Update Venue By Name")
-    public ResponseEntity<CreateVenueControllerResponse> updateVenue(@RequestBody UpdateVenueControllerRequest updateVenueControllerRequest) throws Exception {
+    @PutMapping(value = "/{id}")
+    @ApiOperation(value = "Update Venue By Id")
+    public ResponseEntity<CreateVenueControllerResponse> updateVenue(@PathVariable(value = "id") UUID id, @RequestBody UpdateVenueControllerRequest updateVenueControllerRequest) throws Exception {
         try {
-            UpdateVenueControllerResponse response = venueManager.updateVenue(updateVenueControllerRequest);
-            response.setHeader(new RestHeader(true, MessageUtil.getMessage("Venue", SuccessMessage.CREATED), null));
+            UpdateVenueControllerResponse response = venueManager.updateVenue(id,updateVenueControllerRequest);
+            response.setHeader(new RestHeader(true, MessageUtil.getMessage("Venue", SuccessMessage.UPDATED), null));
             return new ResponseEntity(response, HttpStatus.OK);
         } catch (Exception ex) {
             throw new ControllerException(ex, ControllerName.UPDATE_VENUE);

@@ -10,12 +10,10 @@ public class UpdateVenueControllerResponse extends BaseControllerResponse {
     public UpdateVenueControllerResponse() {
 
     }
-
     public UpdateVenueControllerResponse(RestHeader header, VenueDTO venueDTO) {
         super(header);
         this.venueDTO = venueDTO;
     }
-
     public VenueDTO getVenueDTO() {
         return venueDTO;
     }

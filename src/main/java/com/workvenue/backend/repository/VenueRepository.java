@@ -13,9 +13,9 @@ import java.util.UUID;
 public interface VenueRepository extends JpaRepository<Venue, UUID> {
 
     Optional<Venue> getVenueByName(String name);
+
     @Query("SELECT i FROM Venue i")
     Set<Venue> getAllVenues();
-
     @Query(nativeQuery = true, value = "SELECT * from venues order by random()")
     Set<Venue> getRandomVenues();
 }
