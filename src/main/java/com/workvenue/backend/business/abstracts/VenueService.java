@@ -14,7 +14,7 @@ public interface VenueService {
 
     CreateVenueControllerResponse createVenue(CreateVenueControllerRequest request) throws Exception;
 
-    UpdateVenueControllerResponse updateVenue(UUID id, UpdateVenueControllerRequest request) throws Exception;
+    UpdateVenueControllerResponse updateVenue(UpdateVenueControllerRequest request) throws Exception;
 
     GetAllVenueControllerResponse getAllVenues() throws Exception;
 }
