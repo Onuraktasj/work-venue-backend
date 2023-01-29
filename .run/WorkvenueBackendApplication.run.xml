@@ -3,7 +3,7 @@
     <option name="ACTIVE_PROFILES" />
     <module name="workvenue-backend" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.workvenue.backend.WorkvenueBackendApplication" />
-    <option name="VM_PARAMETERS" value="-Dspring.profiles.active=test" />
+    <option name="VM_PARAMETERS" value="-Dspring.profiles.active=local" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="com.workvenue.backend.*" />
@@ -12,6 +12,8 @@
     </extension>
     <method v="2">
       <option name="Make" enabled="true" />
+      <option name="LaunchBrowser.Before.Run" url="http://localhost:8000/api/v1/swagger-ui/" />
+      <option name="LaunchBrowser.Before.Run" url="http://localhost:8000/local/api/v1/swagger-ui/" />
     </method>
   </configuration>
 </component>
