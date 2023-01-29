@@ -7,8 +7,6 @@ import com.workvenue.backend.data.response.venue.GetAllVenueControllerResponse;
 import com.workvenue.backend.data.response.venue.UpdateVenueControllerResponse;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 public interface VenueService {
 
