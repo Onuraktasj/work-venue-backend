@@ -89,7 +89,7 @@ public class VenueManager implements VenueService {
             VenueDTO venueDTO = modelMapper.map(venue, VenueDTO.class);
             updateVenueControllerResponse.setVenueDTO(venueDTO);
         } else {
-            throw new Exception(ErrorMessage.VisitorError.GET_VENUE_BY_ID_ERROR);
+            throw new DatabaseException("Venue", "Find");
         }
         return updateVenueControllerResponse;
 
@@ -121,12 +121,8 @@ public class VenueManager implements VenueService {
     }
 
     private Optional<Venue> getVenueByName(String name) throws Exception {
-        try {
-            Optional<Venue> venue = venueRepository.getVenueByName(name);
-            return venue;
-        } catch (Exception ex) {
-            throw new DatabaseException("Venue", "Find");
-        }
+        return Optional.ofNullable(venueRepository.getVenueByName(name)
+                .orElseThrow(() ->  new Exception(ErrorMessage.VisitorError.GET_VENUE_BY_NAME_ERROR)));
 
     }
 }
