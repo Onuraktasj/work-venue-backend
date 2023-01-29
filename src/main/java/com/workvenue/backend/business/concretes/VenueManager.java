@@ -69,7 +69,7 @@ public class VenueManager implements VenueService {
     @Transactional(rollbackFor = Exception.class)
     public UpdateVenueControllerResponse updateVenue(UpdateVenueControllerRequest request) throws Exception {
 
-        Optional<Venue> optionalVenue = findByName(request.getVenueDTO().getName());
+        Optional<Venue> optionalVenue = getVenueByName(request.getVenueDTO().getName());
         UpdateVenueControllerResponse updateVenueControllerResponse = new UpdateVenueControllerResponse();
 
         if (optionalVenue.isPresent() && request.getVenueDTO()!=null) {
@@ -89,7 +89,7 @@ public class VenueManager implements VenueService {
             VenueDTO venueDTO = modelMapper.map(venue, VenueDTO.class);
             updateVenueControllerResponse.setVenueDTO(venueDTO);
         } else {
-            throw new DatabaseException("Venue", "Update");
+            throw new DatabaseException("Venue", "Find");
         }
         return updateVenueControllerResponse;
 
@@ -120,13 +120,9 @@ public class VenueManager implements VenueService {
 
     }
 
-    private Optional<Venue> findByName(String name) throws Exception {
-        try {
-            Optional<Venue> venue = venueRepository.getVenueByName(name);
-            return venue;
-        } catch (Exception ex) {
-            throw new DatabaseException("Venue", "Find");
-        }
+    private Optional<Venue> getVenueByName(String name) throws Exception {
+        return Optional.ofNullable(venueRepository.getVenueByName(name)
+                .orElseThrow(() ->  new Exception(ErrorMessage.VisitorError.GET_VENUE_BY_NAME_ERROR)));
 
     }
 }

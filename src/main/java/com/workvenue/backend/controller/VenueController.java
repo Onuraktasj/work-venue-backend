@@ -44,7 +44,7 @@ public class VenueController {
     public ResponseEntity<CreateVenueControllerResponse> updateVenue(@RequestBody UpdateVenueControllerRequest updateVenueControllerRequest) throws Exception {
         try {
             UpdateVenueControllerResponse response = venueManager.updateVenue(updateVenueControllerRequest);
-            response.setHeader(new RestHeader(true, MessageUtil.getMessage("Venue", SuccessMessage.CREATED), null));
+            response.setHeader(new RestHeader(true, MessageUtil.getMessage("Venue", SuccessMessage.UPDATED), null));
             return new ResponseEntity(response, HttpStatus.OK);
         } catch (Exception ex) {
             throw new ControllerException(ex, ControllerName.UPDATE_VENUE);
