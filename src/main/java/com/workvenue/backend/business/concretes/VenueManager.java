@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -68,9 +67,9 @@ public class VenueManager implements VenueService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public UpdateVenueControllerResponse updateVenue(UUID id,UpdateVenueControllerRequest request) throws Exception {
+    public UpdateVenueControllerResponse updateVenue(UpdateVenueControllerRequest request) throws Exception {
 
-        Optional<Venue> optionalVenue = findById(id);
+        Optional<Venue> optionalVenue = getVenueByName(request.getVenueDTO().getName());
         UpdateVenueControllerResponse updateVenueControllerResponse = new UpdateVenueControllerResponse();
 
         if (optionalVenue.isPresent() && request.getVenueDTO()!=null) {
@@ -90,7 +89,7 @@ public class VenueManager implements VenueService {
             VenueDTO venueDTO = modelMapper.map(venue, VenueDTO.class);
             updateVenueControllerResponse.setVenueDTO(venueDTO);
         } else {
-            throw new Exception(ErrorMessage.VisitorError.GET_VENUE_BY_ID_ERROR);
+            throw new DatabaseException("Venue", "Find");
         }
         return updateVenueControllerResponse;
 
@@ -121,13 +120,9 @@ public class VenueManager implements VenueService {
 
     }
 
-    private Optional<Venue> findById(UUID id) throws Exception {
-        try {
-            Optional<Venue> venue = venueRepository.findById(id);
-            return venue;
-        } catch (Exception ex) {
-            throw new DatabaseException("Venue", "Find");
-        }
+    private Optional<Venue> getVenueByName(String name) throws Exception {
+        return Optional.ofNullable(venueRepository.getVenueByName(name)
+                .orElseThrow(() ->  new Exception(ErrorMessage.VisitorError.GET_VENUE_BY_NAME_ERROR)));
 
     }
 }
