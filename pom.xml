@@ -44,6 +44,9 @@
         <postgresql.version>42.5.0</postgresql.version>
         <javax.version>4.0.1</javax.version>
         <modelmapper.version>3.1.0</modelmapper.version>
+
+        <sonar.organization>mertbahardogan</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
     <dependencies>
