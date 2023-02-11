@@ -45,8 +45,9 @@
         <javax.version>4.0.1</javax.version>
         <modelmapper.version>3.1.0</modelmapper.version>
 
-        <sonar.organization>mertbahardogan</sonar.organization>
-        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.coverage.jacoco.xmlReportPaths>
+            ../app-it/target/site/jacoco-aggregate/jacoco.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
     <dependencies>
