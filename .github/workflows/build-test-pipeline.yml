@@ -36,6 +36,6 @@ jobs:
         with:
           fetch-depth: 0
       - name: SonarCloud Scan
-        run: mvn -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.coverage.jacoco.xmlReportPaths=../src/target/site/jacoco-aggregate/jacoco.xml sonar:sonar -Pcoverage
+        run: mvn -Pcoverage -Dsonar.login=${{ secrets.SONAR_TOKEN }} sonar:sonar
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
