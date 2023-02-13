@@ -113,11 +113,11 @@ public class VenueManager implements VenueService {
                     .map(venue -> modelMapper.map(venue, VenueDTO.class))
                     .collect(Collectors.toList());
             getAllVenueControllerResponse.setVenueDTOList(venueDTOSet);
+            System.out.println(getAllVenueControllerResponse.getVenueDTOList().get(0).getName());
             return getAllVenueControllerResponse;
         } catch (Exception exception) {
             throw new Exception(exception);
         }
-
     }
 
     private Optional<Venue> getVenueByName(String name) throws Exception {

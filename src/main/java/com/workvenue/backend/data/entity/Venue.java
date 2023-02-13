@@ -44,6 +44,14 @@ public class Venue {
         this.category = category;
         this.network = network;
     }
+    public Venue(String name, String address, OffsetDateTime openingTime, OffsetDateTime closingTime, Category category, Network network) {
+        this.name = name;
+        this.address = address;
+        this.openingTime = openingTime;
+        this.closingTime = closingTime;
+        this.category = category;
+        this.network = network;
+    }
 
     public UUID getId() {
         return id;
