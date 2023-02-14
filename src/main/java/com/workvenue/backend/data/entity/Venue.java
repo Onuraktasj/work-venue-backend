@@ -22,9 +22,9 @@ public class Venue {
     @Column(name = "address")
     private String address;
     @Column(name = "opening_time")
-    private OffsetDateTime openingTime;
+    private String openingTime;
     @Column(name = "closing_time")
-    private OffsetDateTime closingTime;
+    private String closingTime;
     @Column(name = "category")
     private Category category;
     @Column(name = "network")
@@ -35,30 +35,14 @@ public class Venue {
     public Venue() {
     }
 
-    public Venue(UUID id, String name, String address, OffsetDateTime openingTime, OffsetDateTime closingTime, Category category, Network network) {
-        this.id = id;
+    public Venue(String name, String address, String openingTime, String closingTime, Category category, Network network, Status status) {
         this.name = name;
         this.address = address;
         this.openingTime = openingTime;
         this.closingTime = closingTime;
         this.category = category;
         this.network = network;
-    }
-    public Venue(String name, String address, OffsetDateTime openingTime, OffsetDateTime closingTime, Category category, Network network) {
-        this.name = name;
-        this.address = address;
-        this.openingTime = openingTime;
-        this.closingTime = closingTime;
-        this.category = category;
-        this.network = network;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
+        this.status = status;
     }
 
     public String getName() {
@@ -77,19 +61,19 @@ public class Venue {
         this.address = address;
     }
 
-    public OffsetDateTime getOpeningTime() {
+    public String getOpeningTime() {
         return openingTime;
     }
 
-    public void setOpeningTime(OffsetDateTime openingTime) {
+    public void setOpeningTime(String openingTime) {
         this.openingTime = openingTime;
     }
 
-    public OffsetDateTime getClosingTime() {
+    public String getClosingTime() {
         return closingTime;
     }
 
-    public void setClosingTime(OffsetDateTime closingTime) {
+    public void setClosingTime(String closingTime) {
         this.closingTime = closingTime;
     }
 

@@ -2,21 +2,20 @@ package com.workvenue.backend.data.dto;
 
 import com.workvenue.backend.data.enums.Category;
 import com.workvenue.backend.data.enums.Network;
-import com.workvenue.backend.data.entity.Visitor;
 import com.workvenue.backend.data.enums.Status;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
 
 public class VenueDTO implements Serializable {
+
 
     private String name;
 
     private String address;
 
-    private OffsetDateTime openingTime;
+    private String openingTime;
 
-    private OffsetDateTime closingTime;
+    private String closingTime;
 
     private Category category;
 
@@ -27,7 +26,7 @@ public class VenueDTO implements Serializable {
     public VenueDTO() {
     }
 
-    public VenueDTO(String name, String address, OffsetDateTime openingTime, OffsetDateTime closingTime, Category category, Network network, Status status) {
+    public VenueDTO(String name, String address, String openingTime, String closingTime, Category category, Network network, Status status) {
         this.name = name;
         this.address = address;
         this.openingTime = openingTime;
@@ -53,19 +52,19 @@ public class VenueDTO implements Serializable {
         this.address = address;
     }
 
-    public OffsetDateTime getOpeningTime() {
+    public String getOpeningTime() {
         return openingTime;
     }
 
-    public void setOpeningTime(OffsetDateTime openingTime) {
+    public void setOpeningTime(String openingTime) {
         this.openingTime = openingTime;
     }
 
-    public OffsetDateTime getClosingTime() {
+    public String getClosingTime() {
         return closingTime;
     }
 
-    public void setClosingTime(OffsetDateTime closingTime) {
+    public void setClosingTime(String closingTime) {
         this.closingTime = closingTime;
     }
 
