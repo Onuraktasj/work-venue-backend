@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -99,7 +98,7 @@ public class VenueManager implements VenueService {
     public GetAllVenueControllerResponse getAllVenues() throws Exception {
         try {
             GetAllVenueControllerResponse getAllVenueControllerResponse = new GetAllVenueControllerResponse();
-            Set<Venue> allVenues;
+            List<Venue> allVenues;
             try {
                 allVenues = venueRepository.getAllVenues();
             } catch (Exception exception) {
@@ -108,12 +107,11 @@ public class VenueManager implements VenueService {
             if (allVenues.isEmpty() || allVenues == null)
                 throw new Exception(ErrorMessage.VisitorError.GET_VENUE_NULL_ERROR);
 
-            List<VenueDTO> venueDTOSet = allVenues
+            List<VenueDTO> venueDTOList = allVenues
                     .stream()
                     .map(venue -> modelMapper.map(venue, VenueDTO.class))
                     .collect(Collectors.toList());
-            getAllVenueControllerResponse.setVenueDTOList(venueDTOSet);
-            System.out.println(getAllVenueControllerResponse.getVenueDTOList().get(0).getName());
+            getAllVenueControllerResponse.setVenueDTOList(venueDTOList);
             return getAllVenueControllerResponse;
         } catch (Exception exception) {
             throw new Exception(exception);

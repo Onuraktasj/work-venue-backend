@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -14,8 +15,7 @@ public interface VenueRepository extends JpaRepository<Venue, UUID> {
 
     Optional<Venue> getVenueByName(String name);
 
-    @Query("SELECT i FROM Venue i")
-    Set<Venue> getAllVenues();
+    List<Venue> getAllVenues(); //BERKIN TODO: sadece active statü olanları dönecek şekilde yaz.
     @Query(nativeQuery = true, value = "SELECT * from venues order by random()")
     Set<Venue> getRandomVenues();
 }
