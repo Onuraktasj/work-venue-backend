@@ -1,4 +1,4 @@
-name: Docker Pipeline
+name: docker
 on:
   push:
     branches:
@@ -6,7 +6,7 @@ on:
 jobs:
   build-and-push:
     name: Build and Push
-    #needs: sonarcloud
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
