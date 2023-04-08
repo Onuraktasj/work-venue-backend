@@ -2,7 +2,10 @@ package com.workvenue.backend.data.response;
 
 import com.workvenue.backend.data.other.RestHeader;
 
-public class BaseControllerResponse {
+import java.io.Serializable;
+
+public class BaseControllerResponse implements Serializable {
+
 
     private RestHeader header;
 
