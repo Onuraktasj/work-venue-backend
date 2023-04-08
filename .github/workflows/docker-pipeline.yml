@@ -1,12 +1,14 @@
-name: docker
+name: Deploy
 on:
   push:
     branches:
       - main
+  workflow_run:
+    workflows: [ Build ]
+    types: [ completed ]
 jobs:
   build-and-push:
     name: Build and Push
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
