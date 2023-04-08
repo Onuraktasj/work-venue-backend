@@ -11,7 +11,7 @@ import com.workvenue.backend.data.request.venue.UpdateVenueControllerRequest;
 import com.workvenue.backend.data.response.venue.CreateVenueControllerResponse;
 import com.workvenue.backend.data.response.venue.GetAllVenueControllerResponse;
 import com.workvenue.backend.data.response.venue.UpdateVenueControllerResponse;
-import com.workvenue.backend.exception.custom.DatabaseException;
+import com.workvenue.backend.exception.custom.ControllerException;
 import com.workvenue.backend.repository.VenueRepository;
 import com.workvenue.backend.repository.VisitorRepository;
 import org.modelmapper.ModelMapper;
@@ -56,7 +56,7 @@ public class VenueManager implements VenueService {
             try {
                 venueRepository.save(venue);
             } catch (Exception ex) {
-                throw new DatabaseException("Venue", "save");
+                throw new ControllerException("Venue");
             }
 
             VenueDTO venueDTO = modelMapper.map(venue, VenueDTO.class);
@@ -84,12 +84,12 @@ public class VenueManager implements VenueService {
             try {
                 venueRepository.save(venue);
             } catch (Exception ex) {
-                throw new DatabaseException("Venue", "save");
+                throw new ControllerException("Venue");
             }
             VenueDTO venueDTO = modelMapper.map(venue, VenueDTO.class);
             updateVenueControllerResponse.setVenueDTO(venueDTO);
         } else {
-            throw new DatabaseException("Venue", "Find");
+            throw new ControllerException("Venue");
         }
         return updateVenueControllerResponse;
 

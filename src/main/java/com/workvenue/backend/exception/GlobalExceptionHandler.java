@@ -6,7 +6,6 @@ import com.workvenue.backend.data.other.ErrorDetail;
 import com.workvenue.backend.data.other.RestHeader;
 import com.workvenue.backend.data.response.BaseControllerResponse;
 import com.workvenue.backend.exception.custom.ControllerException;
-import com.workvenue.backend.exception.custom.DatabaseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -36,15 +35,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<BaseControllerResponse> handleControllerException(ControllerException ex, WebRequest request) {
         BaseControllerResponse baseControllerResponse = new BaseControllerResponse();
         ErrorDetail errorDetail = new ErrorDetail(ErrorCode.CONTROLLER_EXCEPTION.getValue(), ErrorCode.CONTROLLER_EXCEPTION.getReasonPhrase() + " " + ex.toString(), new Date());
-        baseControllerResponse.setHeader(new RestHeader(true, ex.getErrorMessage(), errorDetail));
-        LOGGER.error("An error occurred: " + errorDetail + " and request details: " + request.toString());
-        return new ResponseEntity<>(baseControllerResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(value = {DatabaseException.class})
-    public ResponseEntity<BaseControllerResponse> handleDatabaseException(ControllerException ex, WebRequest request) {
-        BaseControllerResponse baseControllerResponse = new BaseControllerResponse();
-        ErrorDetail errorDetail = new ErrorDetail(ErrorCode.DATABASE_EXCEPTION.getValue(), ErrorCode.DATABASE_EXCEPTION.getReasonPhrase() + " " + ex.toString(), new Date());
         baseControllerResponse.setHeader(new RestHeader(true, ex.getErrorMessage(), errorDetail));
         LOGGER.error("An error occurred: " + errorDetail + " and request details: " + request.toString());
         return new ResponseEntity<>(baseControllerResponse, HttpStatus.INTERNAL_SERVER_ERROR);

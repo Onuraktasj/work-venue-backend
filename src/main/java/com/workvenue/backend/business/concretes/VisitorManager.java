@@ -10,7 +10,7 @@ import com.workvenue.backend.data.request.visitor.UpdateVisitorControllerRequest
 import com.workvenue.backend.data.response.visitor.GetAllVisitorControllerResponse;
 import com.workvenue.backend.data.response.visitor.RegisterVisitorControllerResponse;
 import com.workvenue.backend.data.response.visitor.UpdateVisitorControllerResponse;
-import com.workvenue.backend.exception.custom.DatabaseException;
+import com.workvenue.backend.exception.custom.ControllerException;
 import com.workvenue.backend.repository.VisitorRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class VisitorManager implements VisitorService {
             try {
                 allVisitors = visitorRepository.getAllVisitors();
             } catch (Exception ex) {
-                throw new DatabaseException("Visitor and User", "get");
+                throw new ControllerException("Visitor and User");
             }
 
             if (allVisitors.isEmpty() || allVisitors == null)
@@ -79,7 +79,7 @@ public class VisitorManager implements VisitorService {
             try {
                 visitorRepository.save(newVisitor);
             } catch (Exception ex) {
-                throw new DatabaseException("Visitor", "save");
+                throw new ControllerException("Visitor");
             }
             VisitorDTO visitorDTO = modelMapper.map(newVisitor, VisitorDTO.class);
             registerVisitorControllerResponse.setVisitorDTO(visitorDTO);
