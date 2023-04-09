@@ -3,7 +3,7 @@ package com.workvenue.backend.data.request.visitor;
 import com.workvenue.backend.data.dto.VisitorDTO;
 import com.workvenue.backend.data.request.BaseControllerRequest;
 
-public class UpdateVisitorControllerRequest implements BaseControllerRequest {
+public class UpdateVisitorControllerRequest extends BaseControllerRequest {
 
     private VisitorDTO visitorDTO;
 

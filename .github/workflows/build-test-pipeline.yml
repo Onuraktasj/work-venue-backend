@@ -1,17 +1,14 @@
-name: Build-Test Pipeline
-
+name: Build
 on:
   push:
     branches:
       - main
   pull_request:
-    types: [opened, synchronize, reopened]
-
+    types: [ opened, synchronize, reopened ]
 jobs:
   test:
     name: Build - Test
     runs-on: ubuntu-latest
-    ## Job's steps
     steps:
       - uses: actions/checkout@v1
       - name: Set up JDK
@@ -26,7 +23,6 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Run Tests
         run: mvn -B test
-
   sonarcloud:
     name: Analyze with the SonarCloud
     needs: test

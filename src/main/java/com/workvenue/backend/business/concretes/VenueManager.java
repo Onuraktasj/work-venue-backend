@@ -2,6 +2,7 @@ package com.workvenue.backend.business.concretes;
 
 import com.workvenue.backend.business.abstracts.VenueService;
 import com.workvenue.backend.core.constant.ErrorMessage;
+import com.workvenue.backend.core.util.ValidationUtil;
 import com.workvenue.backend.data.dto.VenueDTO;
 import com.workvenue.backend.data.entity.Venue;
 import com.workvenue.backend.data.enums.Status;
@@ -43,7 +44,7 @@ public class VenueManager implements VenueService {
         Optional<Venue> optionalVenue = venueRepository.getVenueByName(request.getVenueDTO().getName());
         CreateVenueControllerResponse createVenueControllerResponse = new CreateVenueControllerResponse();
 
-        if (optionalVenue.isEmpty() && request.getVenueDTO() !=null) {
+        if (optionalVenue.isEmpty() && request.getVenueDTO() != null) {
             Venue venue = new Venue();
             venue.setName(request.getVenueDTO().getName());
             venue.setAddress(request.getVenueDTO().getAddress());
@@ -71,7 +72,7 @@ public class VenueManager implements VenueService {
         Optional<Venue> optionalVenue = getVenueByName(request.getVenueDTO().getName());
         UpdateVenueControllerResponse updateVenueControllerResponse = new UpdateVenueControllerResponse();
 
-        if (optionalVenue.isPresent() && request.getVenueDTO()!=null) {
+        if (optionalVenue.isPresent() && request.getVenueDTO() != null) {
             Venue venue = optionalVenue.get();
             venue.setOpeningTime(request.getVenueDTO().getOpeningTime());
             venue.setClosingTime(request.getVenueDTO().getClosingTime());
@@ -98,15 +99,8 @@ public class VenueManager implements VenueService {
     public GetAllVenueControllerResponse getAllVenues() throws Exception {
         try {
             GetAllVenueControllerResponse getAllVenueControllerResponse = new GetAllVenueControllerResponse();
-            List<Venue> allVenues;
-            try {
-                allVenues = venueRepository.getAllVenues();
-            } catch (Exception exception) {
-                throw new DatabaseException("Visitor and User", "get");
-            }
-            if (allVenues.isEmpty() || allVenues == null)
-                throw new Exception(ErrorMessage.VisitorError.GET_VENUE_NULL_ERROR);
-
+            List<Venue> allVenues = venueRepository.getAllVenues();
+            ValidationUtil.validateList(allVenues);
             List<VenueDTO> venueDTOList = allVenues
                     .stream()
                     .map(venue -> modelMapper.map(venue, VenueDTO.class))
@@ -120,7 +114,7 @@ public class VenueManager implements VenueService {
 
     private Optional<Venue> getVenueByName(String name) throws Exception {
         return Optional.ofNullable(venueRepository.getVenueByName(name)
-                .orElseThrow(() ->  new Exception(ErrorMessage.VisitorError.GET_VENUE_BY_NAME_ERROR)));
+                .orElseThrow(() -> new Exception(ErrorMessage.VisitorError.GET_VENUE_BY_NAME_ERROR)));
 
     }
 }

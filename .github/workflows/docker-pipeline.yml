@@ -1,13 +1,10 @@
-name: Docker Pipeline
-
+name: Deploy
 on:
-  push:
-    branches:
-      - main
-
+  workflow_run:
+    workflows: [ Build ]
+    branches: [ main ]
+    types: [ completed ]
 jobs:
-  ##  Build and Push the Docker Image
-
   build-and-push:
     name: Build and Push
     runs-on: ubuntu-latest
@@ -21,7 +18,6 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-
       - name: Dockerize & Push Docker Image
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
@@ -31,6 +27,5 @@ jobs:
           registry: docker.io
           ## Dockerfile Path
           dockerfile: Dockerfile
-          ## Keep these secrets on GitHub for the privacy of our information
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
