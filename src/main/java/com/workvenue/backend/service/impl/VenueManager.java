@@ -1,10 +1,10 @@
-package com.workvenue.backend.business.concretes;
+package com.workvenue.backend.service.impl;
 
-import com.workvenue.backend.business.abstracts.VenueService;
+import com.workvenue.backend.service.VenueService;
 import com.workvenue.backend.core.constant.ErrorMessage;
 import com.workvenue.backend.core.util.ValidationUtil;
 import com.workvenue.backend.data.dto.VenueDTO;
-import com.workvenue.backend.data.entity.Venue;
+import com.workvenue.backend.data.model.Venue;
 import com.workvenue.backend.data.enums.Status;
 import com.workvenue.backend.data.request.venue.CreateVenueControllerRequest;
 import com.workvenue.backend.data.request.venue.UpdateVenueControllerRequest;
@@ -54,6 +54,9 @@ public class VenueManager implements VenueService {
             venue.setOpeningTime(request.getVenueDTO().getOpeningTime());
             venue.setStatus(Status.ACTIVE);
             try {
+                //TODO: bunu servise ayırıp ona transaction vereceğiz.
+                //TODO: tüm repositoryleri servis olarak ayıracağız.
+                //TODO: heryerden tek exception, sabit vererek tanımlayacağız. Ve global logu elkya atacağız.
                 venueRepository.save(venue);
             } catch (Exception ex) {
                 throw new ControllerException("Venue");
@@ -115,6 +118,5 @@ public class VenueManager implements VenueService {
     private Optional<Venue> getVenueByName(String name) throws Exception {
         return Optional.ofNullable(venueRepository.getVenueByName(name)
                 .orElseThrow(() -> new Exception(ErrorMessage.VisitorError.GET_VENUE_BY_NAME_ERROR)));
-
     }
 }

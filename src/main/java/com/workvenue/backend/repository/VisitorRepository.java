@@ -1,6 +1,6 @@
 package com.workvenue.backend.repository;
 
-import com.workvenue.backend.data.entity.Visitor;
+import com.workvenue.backend.data.model.Visitor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

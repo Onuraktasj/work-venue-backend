@@ -1,4 +1,4 @@
-package com.workvenue.backend.data.other;
+package com.workvenue.backend.exception.util;
 
 public class RestHeader {
 

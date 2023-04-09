@@ -1,6 +1,6 @@
 package com.workvenue.backend.data.request;
 
-import com.workvenue.backend.data.other.RestHeader;
+import com.workvenue.backend.exception.util.RestHeader;
 
 public class BaseControllerRequest {
 

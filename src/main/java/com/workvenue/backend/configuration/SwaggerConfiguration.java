@@ -1,4 +1,4 @@
-package com.workvenue.backend.core.config;
+package com.workvenue.backend.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

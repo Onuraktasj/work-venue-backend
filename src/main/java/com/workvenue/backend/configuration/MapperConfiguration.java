@@ -1,4 +1,4 @@
-package com.workvenue.backend.core.config;
+package com.workvenue.backend.configuration;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

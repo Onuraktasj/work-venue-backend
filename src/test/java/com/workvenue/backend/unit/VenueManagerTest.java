@@ -1,8 +1,8 @@
 package com.workvenue.backend.unit;
 
-import com.workvenue.backend.business.concretes.VenueManager;
+import com.workvenue.backend.service.impl.VenueManager;
 import com.workvenue.backend.data.dto.VenueDTO;
-import com.workvenue.backend.data.entity.Venue;
+import com.workvenue.backend.data.model.Venue;
 import com.workvenue.backend.data.enums.Category;
 import com.workvenue.backend.data.enums.Network;
 import com.workvenue.backend.data.enums.Status;

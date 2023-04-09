@@ -1,6 +1,6 @@
 package com.workvenue.backend.data.response;
 
-import com.workvenue.backend.data.other.RestHeader;
+import com.workvenue.backend.exception.util.RestHeader;
 
 import java.io.Serializable;
 

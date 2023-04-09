@@ -1,4 +1,4 @@
-package com.workvenue.backend.business.abstracts;
+package com.workvenue.backend.service;
 
 import com.workvenue.backend.data.request.visitor.RegisterVisitorControllerRequest;
 import com.workvenue.backend.data.request.visitor.UpdateVisitorControllerRequest;

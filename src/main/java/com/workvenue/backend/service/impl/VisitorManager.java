@@ -1,9 +1,9 @@
-package com.workvenue.backend.business.concretes;
+package com.workvenue.backend.service.impl;
 
-import com.workvenue.backend.business.abstracts.VisitorService;
+import com.workvenue.backend.service.VisitorService;
 import com.workvenue.backend.core.constant.ErrorMessage;
 import com.workvenue.backend.data.dto.VisitorDTO;
-import com.workvenue.backend.data.entity.Visitor;
+import com.workvenue.backend.data.model.Visitor;
 import com.workvenue.backend.data.enums.Status;
 import com.workvenue.backend.data.request.visitor.RegisterVisitorControllerRequest;
 import com.workvenue.backend.data.request.visitor.UpdateVisitorControllerRequest;
@@ -41,7 +41,7 @@ public class VisitorManager implements VisitorService {
             try {
                 allVisitors = visitorRepository.getAllVisitors();
             } catch (Exception ex) {
-                throw new ControllerException("Visitor and User");
+                throw new ControllerException("Visitor and AppUser");
             }
 
             if (allVisitors.isEmpty() || allVisitors == null)
