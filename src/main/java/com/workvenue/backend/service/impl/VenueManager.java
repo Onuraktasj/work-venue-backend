@@ -14,8 +14,8 @@ import com.workvenue.backend.data.response.venue.UpdateVenueControllerResponse;
 import com.workvenue.backend.exception.custom.ControllerException;
 import com.workvenue.backend.repository.VenueRepository;
 import com.workvenue.backend.repository.VisitorRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,41 +23,30 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
 @Service
+@RequiredArgsConstructor
 public class VenueManager implements VenueService {
 
     private final VenueRepository venueRepository;
-    private final VisitorRepository visitorRepository;
     private final ModelMapper modelMapper;
+    private final VisitorRepository visitorRepository;
 
-    @Autowired
-    public VenueManager(VenueRepository venueRepository, VisitorRepository visitorRepository, ModelMapper modelMapper) {
-        this.venueRepository = venueRepository;
-        this.visitorRepository = visitorRepository;
-        this.modelMapper = modelMapper;
-    }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public CreateVenueControllerResponse createVenue(CreateVenueControllerRequest request) throws Exception {
         Optional<Venue> optionalVenue = venueRepository.getVenueByName(request.getVenueDTO().getName());
         CreateVenueControllerResponse createVenueControllerResponse = new CreateVenueControllerResponse();
 
         if (optionalVenue.isEmpty() && request.getVenueDTO() != null) {
-            Venue venue = new Venue();
-            venue.setName(request.getVenueDTO().getName());
-            venue.setAddress(request.getVenueDTO().getAddress());
-            venue.setCategory(request.getVenueDTO().getCategory());
-            venue.setNetwork(request.getVenueDTO().getNetwork());
-            venue.setClosingTime(request.getVenueDTO().getClosingTime());
-            venue.setOpeningTime(request.getVenueDTO().getOpeningTime());
-            venue.setStatus(Status.ACTIVE);
+            Venue venue = new Venue().setName(request.getVenueDTO().getName())
+                    .setAddress(request.getVenueDTO().getAddress())
+                    .setCategory(request.getVenueDTO().getCategory())
+                    .setNetwork(request.getVenueDTO().getNetwork())
+                    .setClosingTime(request.getVenueDTO().getClosingTime())
+                    .setOpeningTime(request.getVenueDTO().getOpeningTime())
+                    .setStatus(Status.ACTIVE);
             try {
-                //TODO: bunu servise ayırıp ona transaction vereceğiz.
-                //TODO: tüm repositoryleri servis olarak ayıracağız.
-                //TODO: heryerden tek exception, sabit vererek tanımlayacağız. Ve global logu elkya atacağız.
-                venueRepository.save(venue);
+                saveVenue(venue);
             } catch (Exception ex) {
                 throw new ControllerException("Venue");
             }
@@ -69,7 +58,6 @@ public class VenueManager implements VenueService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public UpdateVenueControllerResponse updateVenue(UpdateVenueControllerRequest request) throws Exception {
 
         Optional<Venue> optionalVenue = getVenueByName(request.getVenueDTO().getName());
@@ -85,7 +73,7 @@ public class VenueManager implements VenueService {
             venue.setCategory(request.getVenueDTO().getCategory());
             venue.setStatus(request.getVenueDTO().getStatus());
             try {
-                venueRepository.save(venue);
+                saveVenue(venue);
             } catch (Exception ex) {
                 throw new ControllerException("Venue");
             }
@@ -115,8 +103,19 @@ public class VenueManager implements VenueService {
         }
     }
 
-    private Optional<Venue> getVenueByName(String name) throws Exception {
+    @Override
+    public Optional<Venue> getVenueByName(String name) throws Exception {
         return Optional.ofNullable(venueRepository.getVenueByName(name)
                 .orElseThrow(() -> new Exception(ErrorMessage.VisitorError.GET_VENUE_BY_NAME_ERROR)));
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Venue saveVenue(Venue venue) {
+        return venueRepository.save(venue);
+    }
 }
+
+//TODO: bunu servise ayırıp ona transaction vereceğiz.
+//TODO: tüm repositoryleri servis olarak ayıracağız.
+//TODO: heryerden tek exception, sabit vererek tanımlayacağız. Ve global logu elkya atacağız.

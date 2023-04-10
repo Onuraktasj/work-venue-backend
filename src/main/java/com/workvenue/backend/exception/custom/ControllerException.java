@@ -8,7 +8,6 @@ public class ControllerException extends Exception {
     private ControllerName controllerName;
 
     public ControllerException() {
-
     }
 
     public ControllerException(Exception controllerException, ControllerName controllerName) {

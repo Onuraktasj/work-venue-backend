@@ -3,13 +3,19 @@ package com.workvenue.backend.data.model;
 import com.workvenue.backend.data.enums.Category;
 import com.workvenue.backend.data.enums.Network;
 import com.workvenue.backend.data.enums.Status;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
 
+@Data
 @Entity
 @Table(name = "venues")
+@NoArgsConstructor
+@Accessors(chain = true)
 public class Venue {
 
     @Id

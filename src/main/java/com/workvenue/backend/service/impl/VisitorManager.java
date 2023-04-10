@@ -1,5 +1,6 @@
 package com.workvenue.backend.service.impl;
 
+import com.workvenue.backend.data.model.AppUserRole;
 import com.workvenue.backend.service.VisitorService;
 import com.workvenue.backend.core.constant.ErrorMessage;
 import com.workvenue.backend.data.dto.VisitorDTO;
@@ -12,26 +13,22 @@ import com.workvenue.backend.data.response.visitor.RegisterVisitorControllerResp
 import com.workvenue.backend.data.response.visitor.UpdateVisitorControllerResponse;
 import com.workvenue.backend.exception.custom.ControllerException;
 import com.workvenue.backend.repository.VisitorRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class VisitorManager implements VisitorService {
-
     private final ModelMapper modelMapper;
     private final VisitorRepository visitorRepository;
-
-    @Autowired
-    public VisitorManager(ModelMapper modelMapper, VisitorRepository visitorRepository) {
-        this.modelMapper = modelMapper;
-        this.visitorRepository = visitorRepository;
-    }
 
     @Override
     public GetAllVisitorControllerResponse getAllVisitors() throws Exception {
@@ -44,7 +41,7 @@ public class VisitorManager implements VisitorService {
                 throw new ControllerException("Visitor and AppUser");
             }
 
-            if (allVisitors.isEmpty() || allVisitors == null)
+            if (allVisitors.isEmpty())
                 throw new Exception(ErrorMessage.VisitorError.GET_USER_NULL_ERROR);
 
             Set<VisitorDTO> visitorDTOSet = allVisitors
@@ -66,16 +63,15 @@ public class VisitorManager implements VisitorService {
         Visitor visitor = visitorRepository.getUserByEmail(request.getVisitorDTO().getEmail());
 
         if (visitor == null) {
-            Visitor newVisitor = new Visitor.VisitorBuilder()
-                    .email(request.getVisitorDTO().getEmail())
-                    .password(request.getVisitorDTO().getPassword())
-                    .firstName(request.getVisitorDTO().getFirstName())
-                    .lastName(request.getVisitorDTO().getLastName())
-                    .description(request.getVisitorDTO().getDescription())
-                    .link(request.getVisitorDTO().getLink())
-                    .status(Status.ACTIVE)
-                    .createdDate(OffsetDateTime.now())
-                    .build();
+            Visitor newVisitor = new Visitor();
+            newVisitor.setEmail(request.getVisitorDTO().getEmail());
+            newVisitor.setPassword(request.getVisitorDTO().getPassword());
+            newVisitor.setLastName(request.getVisitorDTO().getLastName());
+            newVisitor.setDescription(request.getVisitorDTO().getDescription());
+            newVisitor.setLink(request.getVisitorDTO().getLink());
+            newVisitor.setStatus(Status.ACTIVE);
+            newVisitor.setCreatedDate(OffsetDateTime.now());
+            newVisitor.setRoles(Set.of(AppUserRole.ROLE_VISITOR));
             try {
                 visitorRepository.save(newVisitor);
             } catch (Exception ex) {
@@ -104,14 +100,14 @@ public class VisitorManager implements VisitorService {
             try {
                 visitorRepository.save(visitor);
             } catch (Exception ex) {
-                throw new Exception(ErrorMessage.VisitorError.EMAIL_NOT_FOUND);
+                throw new ControllerException(ErrorMessage.VisitorError.EMAIL_NOT_FOUND);
             }
 
             VisitorDTO visitorDTO = modelMapper.map(visitor, VisitorDTO.class);
             updateVisitorControllerResponse.setVisitorDTO(visitorDTO);
             return updateVisitorControllerResponse;
         } else {
-            throw new Exception("Visitor bulunamadı.");
+            throw new ControllerException("Visitor bulunamadı.");
         }
     }
 }

@@ -1,6 +1,10 @@
 package com.workvenue.backend.data.model;
 
 import com.workvenue.backend.data.enums.Status;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -8,9 +12,13 @@ import javax.validation.constraints.Email;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "visitors")
-public class Visitor {
+@NoArgsConstructor
+@Accessors(chain = true)
+public class Visitor extends AppUser{
 
     @Id
     @GeneratedValue
