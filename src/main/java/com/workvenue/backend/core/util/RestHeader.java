@@ -1,4 +1,6 @@
-package com.workvenue.backend.exception.util;
+package com.workvenue.backend.core.util;
+
+import com.workvenue.backend.core.util.ErrorDetail;
 
 public class RestHeader {
 

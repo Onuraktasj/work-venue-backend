@@ -1,10 +1,10 @@
-package com.workvenue.backend.exception;
+package com.workvenue.backend.core.util.exception;
 
 import com.workvenue.backend.core.constant.ErrorCode;
 import com.workvenue.backend.core.constant.ErrorMessage;
-import com.workvenue.backend.exception.custom.ControllerException;
-import com.workvenue.backend.exception.util.ErrorDetail;
-import com.workvenue.backend.exception.util.RestHeader;
+import com.workvenue.backend.core.util.exception.custom.ControllerException;
+import com.workvenue.backend.core.util.ErrorDetail;
+import com.workvenue.backend.core.util.RestHeader;
 import com.workvenue.backend.data.response.BaseControllerResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

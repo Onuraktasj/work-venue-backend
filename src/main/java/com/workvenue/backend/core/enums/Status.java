@@ -1,4 +1,4 @@
-package com.workvenue.backend.data.enums;
+package com.workvenue.backend.core.enums;
 
 public enum Status {
     ACTIVE,

@@ -1,4 +1,4 @@
-package com.workvenue.backend.exception.util;
+package com.workvenue.backend.core.util;
 
 import java.util.Date;
 

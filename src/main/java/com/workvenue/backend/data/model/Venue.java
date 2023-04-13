@@ -1,14 +1,13 @@
 package com.workvenue.backend.data.model;
 
-import com.workvenue.backend.data.enums.Category;
-import com.workvenue.backend.data.enums.Network;
-import com.workvenue.backend.data.enums.Status;
+import com.workvenue.backend.core.enums.Category;
+import com.workvenue.backend.core.enums.Network;
+import com.workvenue.backend.core.enums.Status;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.util.Objects;
 import java.util.UUID;
 
 @Data

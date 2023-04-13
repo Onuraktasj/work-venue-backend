@@ -5,30 +5,36 @@ import com.workvenue.backend.service.VisitorService;
 import com.workvenue.backend.core.constant.ErrorMessage;
 import com.workvenue.backend.data.dto.VisitorDTO;
 import com.workvenue.backend.data.model.Visitor;
-import com.workvenue.backend.data.enums.Status;
+import com.workvenue.backend.core.enums.Status;
 import com.workvenue.backend.data.request.visitor.RegisterVisitorControllerRequest;
 import com.workvenue.backend.data.request.visitor.UpdateVisitorControllerRequest;
 import com.workvenue.backend.data.response.visitor.GetAllVisitorControllerResponse;
 import com.workvenue.backend.data.response.visitor.RegisterVisitorControllerResponse;
 import com.workvenue.backend.data.response.visitor.UpdateVisitorControllerResponse;
-import com.workvenue.backend.exception.custom.ControllerException;
+import com.workvenue.backend.core.util.exception.custom.ControllerException;
 import com.workvenue.backend.repository.VisitorRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class VisitorManager implements VisitorService {
+public class VisitorManager implements VisitorService, UserDetailsService {
     private final ModelMapper modelMapper;
     private final VisitorRepository visitorRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public GetAllVisitorControllerResponse getAllVisitors() throws Exception {
@@ -38,16 +44,15 @@ public class VisitorManager implements VisitorService {
             try {
                 allVisitors = visitorRepository.getAllVisitors();
             } catch (Exception ex) {
-                throw new ControllerException("Visitor and AppUser");
+                throw new ControllerException("Visitor " + "and AppUser");
             }
 
             if (allVisitors.isEmpty())
                 throw new Exception(ErrorMessage.VisitorError.GET_USER_NULL_ERROR);
 
-            Set<VisitorDTO> visitorDTOSet = allVisitors
-                    .stream()
-                    .map(visitor -> modelMapper.map(visitor, VisitorDTO.class))
-                    .collect(Collectors.toSet());
+            Set<VisitorDTO> visitorDTOSet = allVisitors.stream()
+                                                       .map(visitor -> modelMapper.map(visitor, VisitorDTO.class))
+                                                       .collect(Collectors.toSet());
 
             getAllVisitorControllerResponse.setGetVisitorDTOSet(visitorDTOSet);
             return getAllVisitorControllerResponse;
@@ -58,14 +63,15 @@ public class VisitorManager implements VisitorService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public RegisterVisitorControllerResponse registerVisitor(RegisterVisitorControllerRequest request) throws Exception {
+    public RegisterVisitorControllerResponse registerVisitor(RegisterVisitorControllerRequest request) throws
+                                                                                                       Exception {
         RegisterVisitorControllerResponse registerVisitorControllerResponse = new RegisterVisitorControllerResponse();
         Visitor visitor = visitorRepository.getUserByEmail(request.getVisitorDTO().getEmail());
 
         if (visitor == null) {
             Visitor newVisitor = new Visitor();
             newVisitor.setEmail(request.getVisitorDTO().getEmail());
-            newVisitor.setPassword(request.getVisitorDTO().getPassword());
+            newVisitor.setPassword(bCryptPasswordEncoder.encode(request.getVisitorDTO().getPassword()));
             newVisitor.setLastName(request.getVisitorDTO().getLastName());
             newVisitor.setDescription(request.getVisitorDTO().getDescription());
             newVisitor.setLink(request.getVisitorDTO().getLink());
@@ -79,7 +85,11 @@ public class VisitorManager implements VisitorService {
             }
             VisitorDTO visitorDTO = modelMapper.map(newVisitor, VisitorDTO.class);
             registerVisitorControllerResponse.setVisitorDTO(visitorDTO);
-            //TODO: helpera send email onayı servisi yazılcak, aktive edildikten sonra 1'e çek hesap kapatılcaksa 2'ye çek
+            //TODO: helpera send email onayı
+            // servisi
+            // yazılcak, aktive edildikten
+            // sonra 1'e çek
+            // hesap kapatılcaksa 2'ye çek
         } else {
             throw new Exception(ErrorMessage.VisitorError.USER_ALREADY_SAVED);
         }
@@ -107,7 +117,20 @@ public class VisitorManager implements VisitorService {
             updateVisitorControllerResponse.setVisitorDTO(visitorDTO);
             return updateVisitorControllerResponse;
         } else {
-            throw new ControllerException("Visitor bulunamadı.");
+            throw new ControllerException("Visitor " + "bulunamadı.");
         }
+    }
+
+    //springin metodunu ezmiş olduk.
+    @Override
+    public UserDetails loadUserByUsername(String username) throws Exception {
+        Visitor visitor = visitorRepository.findByUsername(username);
+        if (visitor == null) {
+            throw new ControllerException("error");
+        }
+        List<SimpleGrantedAuthority> authorities = visitor.getRoles().stream()
+                                                          .map(role -> new SimpleGrantedAuthority(role.getName()))
+                                                          .collect(Collectors.toList());
+        return new User(visitor.getUserName(), visitor.getPassword(), authorities);
     }
 }

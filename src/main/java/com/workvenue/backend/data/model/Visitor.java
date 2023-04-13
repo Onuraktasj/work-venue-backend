@@ -1,6 +1,6 @@
 package com.workvenue.backend.data.model;
 
-import com.workvenue.backend.data.enums.Status;
+import com.workvenue.backend.core.enums.Status;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +18,7 @@ import java.util.UUID;
 @Table(name = "visitors")
 @NoArgsConstructor
 @Accessors(chain = true)
-public class Visitor extends AppUser{
+public class Visitor extends AppUser {
 
     @Id
     @GeneratedValue

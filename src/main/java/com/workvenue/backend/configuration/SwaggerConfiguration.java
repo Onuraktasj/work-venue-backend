@@ -15,21 +15,22 @@ import java.util.ArrayList;
 public class SwaggerConfiguration {
 
     private ApiInfo apiInfo() {
-        return new ApiInfo(
-                "Spring Boot Simple REST API",
-                "Spring Boot Simple REST API Swagger Documentation",
-                "Version 1",
-                "urn:tos",
-                new Contact("Engineer", "medium.com/@mbahardogan", "mbahardogan@hotmail.com"),
-                "Apache 2.0",
-                "https://www.apache.org/licenses/LICENSE-2.0",
-                new ArrayList<>());
+        return new ApiInfo("Spring Boot Simple REST API",
+                           "Spring Boot Simple" + " REST API Swagger " +
+                                   "Documentation",
+                           "Version 1",
+                           "urn:tos",
+                           new Contact("Engineer",
+                                       "medium.com/@mbahardogan",
+                                       "mbahardogan@hotmail.com"),
+                           "Apache 2.0",
+                           "https" + "://www.apache.org/licenses/LICENSE-2.0",
+                           new ArrayList<>());
     }
 
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo())
+        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.workvenue.backend"))
                 .paths(PathSelectors.any())

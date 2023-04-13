@@ -3,9 +3,7 @@ package com.workvenue.backend.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.workvenue.backend.data.model.AppUser;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,29 +30,50 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 
     private final AuthenticationManager authenticationManager;
-    private final ModelMapper modelMapper;
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request,
+                                                HttpServletResponse response) throws
+                                                                              AuthenticationException {
         final String username = request.getParameter("username");
         final String password = request.getParameter("password");
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(
+                username, password);
         return authenticationManager.authenticate(authenticationToken);
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest request,
+                                            HttpServletResponse response,
+                                            FilterChain chain,
+                                            Authentication authResult) throws IOException,
+                                                                              ServletException {
         User user = (User) authResult.getPrincipal();
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes()); //TODO: vault veya passwordManager ile geçeceğiz.
-        final String accessToken = JWT.create().withExpiresAt(Date.from(Instant.now().plus(6, ChronoUnit.HOURS)))
-                .withIssuer(request.getRequestURL().toString()).withClaim("roles", user.getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority).collect(Collectors.toList())).sign(algorithm);
+        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes()); //TODO:
+        // vault veya passwordManager ile geçeceğiz.
+        final String accessToken = JWT.create().withExpiresAt(
+                                              Date.from(Instant.now().plus(6,
+                                                                           ChronoUnit.HOURS)))
+                                      .withIssuer(request.getRequestURL().toString())
+                                      .withClaim("roles", user.getAuthorities().stream()
+                                                              .map(GrantedAuthority::getAuthority)
+                                                              .collect(
+                                                                      Collectors.toList()))
+                                      .sign(algorithm);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        final String refreshToken = JWT.create().withExpiresAt(Date.from(Instant.now().plus(10, ChronoUnit.HOURS)))
-                .withIssuer(request.getRequestURL().toString()).withClaim("roles", user.getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority).collect(Collectors.toList())).sign(algorithm);
+        final String refreshToken = JWT.create().withExpiresAt(
+                                               Date.from(Instant.now().plus(10,
+                                                                            ChronoUnit.HOURS)))
+                                       .withIssuer(request.getRequestURL().toString())
+                                       .withClaim("roles", user.getAuthorities().stream()
+                                                               .map(GrantedAuthority::getAuthority)
+                                                               .collect(
+                                                                       Collectors.toList()))
+                                       .sign(algorithm);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-//        modelMapper.map(Map.of("access_token", accessToken, "refresh_token", refreshToken), response.getOutputStream()); //TODO: bunu dene
-        new ObjectMapper().writeValue(response.getOutputStream(), Map.of("access_token", accessToken, "refresh_token", refreshToken));
+        new ObjectMapper().writeValue(response.getOutputStream(),
+                                      Map.of("access_token", accessToken, "refresh_token",
+                                             refreshToken));
     }
 }

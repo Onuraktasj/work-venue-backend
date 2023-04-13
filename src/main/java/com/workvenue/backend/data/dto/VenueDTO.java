@@ -1,8 +1,8 @@
 package com.workvenue.backend.data.dto;
 
-import com.workvenue.backend.data.enums.Category;
-import com.workvenue.backend.data.enums.Network;
-import com.workvenue.backend.data.enums.Status;
+import com.workvenue.backend.core.enums.Category;
+import com.workvenue.backend.core.enums.Network;
+import com.workvenue.backend.core.enums.Status;
 
 import java.io.Serializable;
 
