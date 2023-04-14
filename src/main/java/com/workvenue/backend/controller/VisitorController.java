@@ -13,25 +13,21 @@ import com.workvenue.backend.core.util.exception.custom.ControllerException;
 import com.workvenue.backend.service.impl.VisitorManager;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Api("DENEME")
-@RequestMapping("/visitors")
 @RestController
+@RequestMapping("/visitors")
+@RequiredArgsConstructor
 public class VisitorController {
 
     private final VisitorManager visitorManager;
 
-    @Autowired
-    public VisitorController(VisitorManager visitorManager) {
-        this.visitorManager = visitorManager;
-    }
-
-    @PostMapping()
+    @PostMapping
     @ApiOperation(value = "Register New Visitor Account For AppUser.")
     public ResponseEntity<RegisterVisitorControllerResponse> registerVisitor(
             @RequestBody RegisterVisitorControllerRequest registerVisitorControllerRequest) throws Exception {
@@ -47,7 +43,7 @@ public class VisitorController {
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')") //TODO: constant and @customAnnotation - usera role tanımlarsak
-    // otomatik managerdaki metod buraya rolü getiriyor.
+    // otomatik managerdaki metod buraya rolü getiriyor. - class seviyesinde de olabilir
     @GetMapping()
     @ApiOperation(value = "Get All Visitors For Admin", notes = "Must adding " + "authorization for access just admin.")
     public ResponseEntity<GetAllVisitorControllerResponse> getAllVisitors() throws Exception {
@@ -62,7 +58,7 @@ public class VisitorController {
         }
     }
 
-    @PutMapping()
+    @PutMapping
     @ApiOperation(value = "Update Spesific Visitor For Admin and AppUser.")
     public ResponseEntity<UpdateVisitorControllerResponse> updateVisitor(
             @RequestBody UpdateVisitorControllerRequest updateVisitorControllerRequest) throws Exception {

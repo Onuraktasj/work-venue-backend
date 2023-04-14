@@ -1,25 +1,25 @@
 package com.workvenue.backend.service.impl;
 
-import com.workvenue.backend.data.model.AppUserRole;
-import com.workvenue.backend.service.VisitorService;
 import com.workvenue.backend.core.constant.ErrorMessage;
-import com.workvenue.backend.data.dto.VisitorDTO;
-import com.workvenue.backend.data.model.Visitor;
 import com.workvenue.backend.core.enums.Status;
+import com.workvenue.backend.core.util.exception.custom.ControllerException;
+import com.workvenue.backend.data.dto.VisitorDTO;
+import com.workvenue.backend.data.model.AppUserRole;
+import com.workvenue.backend.data.model.Visitor;
 import com.workvenue.backend.data.request.visitor.RegisterVisitorControllerRequest;
 import com.workvenue.backend.data.request.visitor.UpdateVisitorControllerRequest;
 import com.workvenue.backend.data.response.visitor.GetAllVisitorControllerResponse;
 import com.workvenue.backend.data.response.visitor.RegisterVisitorControllerResponse;
 import com.workvenue.backend.data.response.visitor.UpdateVisitorControllerResponse;
-import com.workvenue.backend.core.util.exception.custom.ControllerException;
 import com.workvenue.backend.repository.VisitorRepository;
+import com.workvenue.backend.service.VisitorService;
+import com.workvenue.backend.core.constant.ErrorMessage.VisitorError;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,37 +37,24 @@ public class VisitorManager implements VisitorService, UserDetailsService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public GetAllVisitorControllerResponse getAllVisitors() throws Exception {
-        try {
-            GetAllVisitorControllerResponse getAllVisitorControllerResponse = new GetAllVisitorControllerResponse();
-            Set<Visitor> allVisitors;
-            try {
-                allVisitors = visitorRepository.getAllVisitors();
-            } catch (Exception ex) {
-                throw new ControllerException("Visitor " + "and AppUser");
-            }
+    public GetAllVisitorControllerResponse getAllVisitors() throws ControllerException {
+        GetAllVisitorControllerResponse getAllVisitorControllerResponse = new GetAllVisitorControllerResponse();
+        Set<Visitor> allVisitors = visitorRepository.findAllVisitors();
+        if (allVisitors.isEmpty())
+            throw new ControllerException(VisitorError.GET_ALL_USER_NULL_ERROR);
 
-            if (allVisitors.isEmpty())
-                throw new Exception(ErrorMessage.VisitorError.GET_USER_NULL_ERROR);
-
-            Set<VisitorDTO> visitorDTOSet = allVisitors.stream()
-                                                       .map(visitor -> modelMapper.map(visitor, VisitorDTO.class))
-                                                       .collect(Collectors.toSet());
-
-            getAllVisitorControllerResponse.setGetVisitorDTOSet(visitorDTOSet);
-            return getAllVisitorControllerResponse;
-        } catch (Exception ex) {
-            throw new Exception(ex);
-        }
+        Set<VisitorDTO> visitorDTOSet = allVisitors.stream().map(visitor -> modelMapper.map(visitor, VisitorDTO.class))
+                                                   .collect(Collectors.toSet());
+        getAllVisitorControllerResponse.setGetVisitorDTOSet(visitorDTOSet);
+        return getAllVisitorControllerResponse;
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = ControllerException.class)
     public RegisterVisitorControllerResponse registerVisitor(RegisterVisitorControllerRequest request) throws
-                                                                                                       Exception {
+                                                                                                       ControllerException {
         RegisterVisitorControllerResponse registerVisitorControllerResponse = new RegisterVisitorControllerResponse();
-        Visitor visitor = visitorRepository.getUserByEmail(request.getVisitorDTO().getEmail());
-
+        Visitor visitor = visitorRepository.findByEmail(request.getVisitorDTO().getEmail());
         if (visitor == null) {
             Visitor newVisitor = new Visitor();
             newVisitor.setEmail(request.getVisitorDTO().getEmail());
@@ -81,7 +68,7 @@ public class VisitorManager implements VisitorService, UserDetailsService {
             try {
                 visitorRepository.save(newVisitor);
             } catch (Exception ex) {
-                throw new ControllerException("Visitor");
+                throw new ControllerException(VisitorError.SAVE_USER_ERROR);
             }
             VisitorDTO visitorDTO = modelMapper.map(newVisitor, VisitorDTO.class);
             registerVisitorControllerResponse.setVisitorDTO(visitorDTO);
@@ -91,16 +78,17 @@ public class VisitorManager implements VisitorService, UserDetailsService {
             // sonra 1'e çek
             // hesap kapatılcaksa 2'ye çek
         } else {
-            throw new Exception(ErrorMessage.VisitorError.USER_ALREADY_SAVED);
+            throw new ControllerException(VisitorError.USER_ALREADY_SAVED);
         }
         return registerVisitorControllerResponse;
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public UpdateVisitorControllerResponse updateVisitor(UpdateVisitorControllerRequest request) throws Exception {
+    @Transactional(rollbackFor = ControllerException.class)
+    public UpdateVisitorControllerResponse updateVisitor(UpdateVisitorControllerRequest request) throws
+                                                                                                 ControllerException {
         UpdateVisitorControllerResponse updateVisitorControllerResponse = new UpdateVisitorControllerResponse();
-        Visitor visitor = visitorRepository.getUserByEmail(request.getVisitorDTO().getEmail());
+        Visitor visitor = visitorRepository.findByEmail(request.getVisitorDTO().getEmail());
         if (visitor != null && visitor.getStatus() == Status.ACTIVE) {
             visitor.setFirstName(request.getVisitorDTO().getFirstName());
             visitor.setLastName(request.getVisitorDTO().getLastName());
@@ -117,19 +105,19 @@ public class VisitorManager implements VisitorService, UserDetailsService {
             updateVisitorControllerResponse.setVisitorDTO(visitorDTO);
             return updateVisitorControllerResponse;
         } else {
-            throw new ControllerException("Visitor " + "bulunamadı.");
+            throw new ControllerException(VisitorError.GET_USER_NULL_ERROR);
         }
     }
 
     //springin metodunu ezmiş olduk.
     @Override
-    public UserDetails loadUserByUsername(String username) throws Exception {
-        Visitor visitor = visitorRepository.findByUsername(username);
+    public UserDetails loadUserByUsername(String username) {
+        Visitor visitor = visitorRepository.findByUserName(username);
         if (visitor == null) {
-            throw new ControllerException("error");
+            System.out.println(VisitorError.SAVE_USER_ERROR);
         }
         List<SimpleGrantedAuthority> authorities = visitor.getRoles().stream()
-                                                          .map(role -> new SimpleGrantedAuthority(role.getName()))
+                                                          .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
                                                           .collect(Collectors.toList());
         return new User(visitor.getUserName(), visitor.getPassword(), authorities);
     }

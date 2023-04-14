@@ -1,13 +1,14 @@
 package com.workvenue.backend.core.util;
 
-import com.workvenue.backend.core.constant.ErrorMessage;
+import com.workvenue.backend.core.constant.ErrorMessage.GeneralError;
+import com.workvenue.backend.core.util.exception.custom.ControllerException;
 
 import java.util.List;
 
 public class ValidationUtil {
 
-    public static void validateList(List<?> list) throws Exception {
+    public static void validateIsListEmpty(List<?> list) throws ControllerException {
         if (list.isEmpty())
-            throw new Exception(ErrorMessage.VisitorError.GET_VENUE_NULL_ERROR);
+            throw new ControllerException(GeneralError.EMPTY_LIST_ERROR);
     }
 }

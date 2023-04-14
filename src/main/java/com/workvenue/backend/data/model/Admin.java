@@ -1,7 +1,6 @@
 package com.workvenue.backend.data.model;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
@@ -12,12 +11,11 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "admins")
-@NoArgsConstructor
 @Accessors(chain = true)
 public class Admin extends AppUser {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private UUID id;
 }

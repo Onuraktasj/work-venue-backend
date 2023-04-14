@@ -1,19 +1,18 @@
 package com.workvenue.backend.service.impl;
 
-import com.workvenue.backend.service.VenueService;
 import com.workvenue.backend.core.constant.ErrorMessage;
+import com.workvenue.backend.core.enums.Status;
 import com.workvenue.backend.core.util.ValidationUtil;
+import com.workvenue.backend.core.util.exception.custom.ControllerException;
 import com.workvenue.backend.data.dto.VenueDTO;
 import com.workvenue.backend.data.model.Venue;
-import com.workvenue.backend.core.enums.Status;
 import com.workvenue.backend.data.request.venue.CreateVenueControllerRequest;
 import com.workvenue.backend.data.request.venue.UpdateVenueControllerRequest;
 import com.workvenue.backend.data.response.venue.CreateVenueControllerResponse;
 import com.workvenue.backend.data.response.venue.GetAllVenueControllerResponse;
 import com.workvenue.backend.data.response.venue.UpdateVenueControllerResponse;
-import com.workvenue.backend.core.util.exception.custom.ControllerException;
 import com.workvenue.backend.repository.VenueRepository;
-import com.workvenue.backend.repository.VisitorRepository;
+import com.workvenue.backend.service.VenueService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,6 @@ public class VenueManager implements VenueService {
 
     private final VenueRepository venueRepository;
     private final ModelMapper modelMapper;
-    private final VisitorRepository visitorRepository;
 
 
     @Override
@@ -39,12 +37,11 @@ public class VenueManager implements VenueService {
 
         if (optionalVenue.isEmpty() && request.getVenueDTO() != null) {
             Venue venue = new Venue().setName(request.getVenueDTO().getName())
-                    .setAddress(request.getVenueDTO().getAddress())
-                    .setCategory(request.getVenueDTO().getCategory())
-                    .setNetwork(request.getVenueDTO().getNetwork())
-                    .setClosingTime(request.getVenueDTO().getClosingTime())
-                    .setOpeningTime(request.getVenueDTO().getOpeningTime())
-                    .setStatus(Status.ACTIVE);
+                                     .setAddress(request.getVenueDTO().getAddress())
+                                     .setCategory(request.getVenueDTO().getCategory())
+                                     .setNetwork(request.getVenueDTO().getNetwork())
+                                     .setClosingTime(request.getVenueDTO().getClosingTime())
+                                     .setOpeningTime(request.getVenueDTO().getOpeningTime()).setStatus(Status.ACTIVE);
             try {
                 saveVenue(venue);
             } catch (Exception ex) {
@@ -91,11 +88,9 @@ public class VenueManager implements VenueService {
         try {
             GetAllVenueControllerResponse getAllVenueControllerResponse = new GetAllVenueControllerResponse();
             List<Venue> allVenues = venueRepository.getAllVenues();
-            ValidationUtil.validateList(allVenues);
-            List<VenueDTO> venueDTOList = allVenues
-                    .stream()
-                    .map(venue -> modelMapper.map(venue, VenueDTO.class))
-                    .collect(Collectors.toList());
+            ValidationUtil.validateIsListEmpty(allVenues);
+            List<VenueDTO> venueDTOList = allVenues.stream().map(venue -> modelMapper.map(venue, VenueDTO.class))
+                                                   .collect(Collectors.toList());
             getAllVenueControllerResponse.setVenueDTOList(venueDTOList);
             return getAllVenueControllerResponse;
         } catch (Exception exception) {
@@ -105,8 +100,8 @@ public class VenueManager implements VenueService {
 
     @Override
     public Optional<Venue> getVenueByName(String name) throws Exception {
-        return Optional.ofNullable(venueRepository.getVenueByName(name)
-                .orElseThrow(() -> new Exception(ErrorMessage.VisitorError.GET_VENUE_BY_NAME_ERROR)));
+        return Optional.ofNullable(venueRepository.getVenueByName(name).orElseThrow(
+                () -> new Exception(ErrorMessage.VenueError.GET_VENUE_BY_NAME_ERROR)));
     }
 
     @Transactional(rollbackFor = Exception.class)
