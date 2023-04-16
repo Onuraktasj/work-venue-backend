@@ -6,28 +6,23 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Set;
-import java.util.UUID;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "users")
-public class AppUser {
+@MappedSuperclass
+public abstract class BaseUser {
 
     @Id
-    @GeneratedValue
-    @Column(name = "id")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Size(min = 6, max = 25, message = "6-25 karakter arasında olmalıdır.")
-    @Column(name = "user_name", unique = true, nullable = false)
-    private String userName;
+    @Size(min = 6, max = 25, message = "6-25 karakter arasında olmalıdır.") // unique = true, nullable = false
+    private String username;
 
     //TODO: password custom annotation, regex.
     @Size(min = 8, max = 50, message = "8-50 karakter arasında olmalıdır.")
-    @Column(name = "password")
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<AppUserRole> roles;
+    private Set<UserRole> roles;
 }

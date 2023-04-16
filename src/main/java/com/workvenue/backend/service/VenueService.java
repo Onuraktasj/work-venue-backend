@@ -1,5 +1,6 @@
 package com.workvenue.backend.service;
 
+import com.workvenue.backend.core.util.exception.custom.ControllerException;
 import com.workvenue.backend.data.model.Venue;
 import com.workvenue.backend.data.request.venue.CreateVenueControllerRequest;
 import com.workvenue.backend.data.request.venue.UpdateVenueControllerRequest;
@@ -13,13 +14,13 @@ import java.util.Optional;
 @Service
 public interface VenueService {
 
-    CreateVenueControllerResponse createVenue(CreateVenueControllerRequest request) throws Exception;
+    CreateVenueControllerResponse createVenue(CreateVenueControllerRequest request) throws ControllerException;
 
-    UpdateVenueControllerResponse updateVenue(UpdateVenueControllerRequest request) throws Exception;
+    UpdateVenueControllerResponse updateVenue(UpdateVenueControllerRequest request) throws ControllerException;
 
-    GetAllVenueControllerResponse getAllVenues() throws Exception;
+    GetAllVenueControllerResponse findAllByIsActive() throws ControllerException;
 
-    Optional<Venue> getVenueByName(String name) throws Exception;
+    Optional<Venue> getVenueByName(String name) throws ControllerException;
 
     Venue saveVenue(Venue venue);
 }

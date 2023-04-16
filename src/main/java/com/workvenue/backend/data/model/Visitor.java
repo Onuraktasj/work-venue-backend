@@ -7,10 +7,12 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
+import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -18,12 +20,7 @@ import java.util.UUID;
 @Table(name = "visitors")
 @NoArgsConstructor
 @Accessors(chain = true)
-public class Visitor extends AppUser {
-
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
-    private UUID id;
+public class Visitor extends BaseUser implements Serializable {
 
     @Email(message = "Bu mail adresi zaten kayıtlı.")
     @Column(name = "email", unique = true, nullable = false)

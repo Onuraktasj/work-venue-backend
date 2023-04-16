@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
     ILLEGAL_STATE_EXCEPTION(10500,"Illegal State"),
     CONTROLLER_EXCEPTION(10100,"Controller Exception"),
-    DATABASE_EXCEPTION(10600,"Database Exception");
+    ACCESS_DENIED_EXCEPTION(403,"Access Denied Exception");
 
     private final int value;
     private final String reasonPhrase;

@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Unit Test Methods for VenueManager Class")
+@DisplayName("Unit Test for the VenueManager Class")
 @ExtendWith(MockitoExtension.class)
 class VenueManagerTest {
     @InjectMocks
@@ -38,17 +38,19 @@ class VenueManagerTest {
 
         // Given
         List<Venue> allVenues = new ArrayList<>();
-        Venue venue = new Venue("XRestorant", "Ankara", "10:30", "22:00", Category.COFFEE, Network.PRIVATE, Status.ACTIVE);
+        Venue venue = new Venue().setName("name");
         allVenues.add(venue);
 
         List<VenueDTO> venueDTOList = new ArrayList<>();
-        VenueDTO venueDTO = new VenueDTO(venue.getName(), venue.getAddress(), venue.getOpeningTime(), venue.getClosingTime(), venue.getCategory(), venue.getNetwork(), venue.getStatus());
+        VenueDTO venueDTO = new VenueDTO(venue.getName(), venue.getAddress(), venue.getOpeningTime(),
+                                         venue.getClosingTime(), venue.getCategory(), venue.getNetwork(),
+                                         venue.getStatus());
         venueDTOList.add(venueDTO);
 
         // When
-        when(venueRepository.getAllVenues()).thenReturn(allVenues);
+        when(venueRepository.findAll()).thenReturn(allVenues);
         when(modelMapper.map(any(), any())).thenReturn(venueDTO);
-        GetAllVenueControllerResponse response = venueManager.getAllVenues();
+        GetAllVenueControllerResponse response = venueManager.findAllByIsActive();
 
         // Then
         assertEquals(response.getVenueDTOList().get(0), venueDTOList.get(0));

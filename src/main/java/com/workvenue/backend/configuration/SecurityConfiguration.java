@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static com.workvenue.backend.security.HttpConfigurer.httpConfigurer;
+import static com.workvenue.backend.security.SecurityConfigurer.httpConfigurer;
 
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)

@@ -3,14 +3,14 @@ package com.workvenue.backend.data.model;
 import com.workvenue.backend.core.enums.Category;
 import com.workvenue.backend.core.enums.Network;
 import com.workvenue.backend.core.enums.Status;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "venues")
 @NoArgsConstructor

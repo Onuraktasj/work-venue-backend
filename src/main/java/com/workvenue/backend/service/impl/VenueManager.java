@@ -31,7 +31,7 @@ public class VenueManager implements VenueService {
 
 
     @Override
-    public CreateVenueControllerResponse createVenue(CreateVenueControllerRequest request) throws Exception {
+    public CreateVenueControllerResponse createVenue(CreateVenueControllerRequest request) throws ControllerException {
         Optional<Venue> optionalVenue = venueRepository.getVenueByName(request.getVenueDTO().getName());
         CreateVenueControllerResponse createVenueControllerResponse = new CreateVenueControllerResponse();
 
@@ -55,7 +55,7 @@ public class VenueManager implements VenueService {
     }
 
     @Override
-    public UpdateVenueControllerResponse updateVenue(UpdateVenueControllerRequest request) throws Exception {
+    public UpdateVenueControllerResponse updateVenue(UpdateVenueControllerRequest request) throws ControllerException {
 
         Optional<Venue> optionalVenue = getVenueByName(request.getVenueDTO().getName());
         UpdateVenueControllerResponse updateVenueControllerResponse = new UpdateVenueControllerResponse();
@@ -84,24 +84,24 @@ public class VenueManager implements VenueService {
     }
 
     @Override
-    public GetAllVenueControllerResponse getAllVenues() throws Exception {
+    public GetAllVenueControllerResponse findAllByIsActive() throws ControllerException {
         try {
             GetAllVenueControllerResponse getAllVenueControllerResponse = new GetAllVenueControllerResponse();
-            List<Venue> allVenues = venueRepository.getAllVenues();
+            List<Venue> allVenues = venueRepository.findAll();
             ValidationUtil.validateIsListEmpty(allVenues);
             List<VenueDTO> venueDTOList = allVenues.stream().map(venue -> modelMapper.map(venue, VenueDTO.class))
                                                    .collect(Collectors.toList());
             getAllVenueControllerResponse.setVenueDTOList(venueDTOList);
             return getAllVenueControllerResponse;
         } catch (Exception exception) {
-            throw new Exception(exception);
+            throw new ControllerException(exception.getMessage());
         }
     }
 
     @Override
-    public Optional<Venue> getVenueByName(String name) throws Exception {
+    public Optional<Venue> getVenueByName(String name) throws ControllerException {
         return Optional.ofNullable(venueRepository.getVenueByName(name).orElseThrow(
-                () -> new Exception(ErrorMessage.VenueError.GET_VENUE_BY_NAME_ERROR)));
+                () -> new ControllerException(ErrorMessage.VenueError.GET_VENUE_BY_NAME_ERROR)));
     }
 
     @Transactional(rollbackFor = Exception.class)

@@ -13,20 +13,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.Date;
 
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class.getName());
 
+    //TODO: ELK impl and util metod.
+    //false UI'da gösterilmez sistemsel hata denir. true direkt basılır gibi.
     @ExceptionHandler(value = {IllegalArgumentException.class, IllegalStateException.class, NullPointerException.class, HttpServerErrorException.InternalServerError.class, Exception.class})
     public ResponseEntity<BaseControllerResponse> handleIllegalStateException(IllegalStateException ex, WebRequest request) {
         BaseControllerResponse baseControllerResponse = new BaseControllerResponse();
         ErrorDetail errorDetail = new ErrorDetail(ErrorCode.ILLEGAL_STATE_EXCEPTION.getValue(), ErrorCode.ILLEGAL_STATE_EXCEPTION.getReasonPhrase() + " " + ex.getMessage(), new Date());
-        baseControllerResponse.setHeader(new RestHeader(true, ErrorMessage.GeneralError.UNEXPECTED_ERROR, errorDetail));
+        baseControllerResponse.setHeader(new RestHeader(false, ErrorMessage.GeneralError.UNEXPECTED_ERROR, errorDetail));
         LOGGER.error("An error occurred: " + errorDetail + " and request details: " + request.toString());
         return new ResponseEntity<>(baseControllerResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -38,5 +42,14 @@ public class GlobalExceptionHandler {
         baseControllerResponse.setHeader(new RestHeader(true, ex.getErrorMessage(), errorDetail));
         LOGGER.error("An error occurred: " + errorDetail + " and request details: " + request.toString());
         return new ResponseEntity<>(baseControllerResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(value = {AccessDeniedException.class})
+    public ResponseEntity<BaseControllerResponse> handleAccessDeniedException(ControllerException ex, WebRequest request) {
+        BaseControllerResponse baseControllerResponse = new BaseControllerResponse();
+        ErrorDetail errorDetail = new ErrorDetail(ErrorCode.ACCESS_DENIED_EXCEPTION.getValue(), ErrorCode.ACCESS_DENIED_EXCEPTION.getReasonPhrase() + " " + ex.toString(), new Date());
+        baseControllerResponse.setHeader(new RestHeader(false, ex.getErrorMessage(), errorDetail));
+        LOGGER.error("An error occurred: " + errorDetail + " and request details: " + request.toString());
+        return new ResponseEntity<>(baseControllerResponse, HttpStatus.FORBIDDEN);
     }
 }
