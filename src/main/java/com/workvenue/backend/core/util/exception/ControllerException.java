@@ -1,4 +1,4 @@
-package com.workvenue.backend.core.util.exception.custom;
+package com.workvenue.backend.core.util.exception;
 
 import com.workvenue.backend.core.constant.ControllerName;
 

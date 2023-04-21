@@ -3,7 +3,7 @@ package com.workvenue.backend.service.impl;
 import com.workvenue.backend.core.constant.ErrorMessage;
 import com.workvenue.backend.core.constant.ErrorMessage.VisitorError;
 import com.workvenue.backend.core.enums.Status;
-import com.workvenue.backend.core.util.exception.custom.ControllerException;
+import com.workvenue.backend.core.util.exception.ControllerException;
 import com.workvenue.backend.data.dto.VisitorDTO;
 import com.workvenue.backend.data.model.UserRole;
 import com.workvenue.backend.data.model.Visitor;

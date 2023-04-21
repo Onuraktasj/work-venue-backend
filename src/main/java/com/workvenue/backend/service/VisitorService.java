@@ -1,6 +1,6 @@
 package com.workvenue.backend.service;
 
-import com.workvenue.backend.core.util.exception.custom.ControllerException;
+import com.workvenue.backend.core.util.exception.ControllerException;
 import com.workvenue.backend.data.request.visitor.RegisterVisitorControllerRequest;
 import com.workvenue.backend.data.request.visitor.UpdateVisitorControllerRequest;
 import com.workvenue.backend.data.response.visitor.GetAllVisitorControllerResponse;

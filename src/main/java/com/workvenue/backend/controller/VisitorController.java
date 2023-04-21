@@ -4,7 +4,7 @@ import com.workvenue.backend.core.constant.ControllerName;
 import com.workvenue.backend.core.constant.SuccessMessage;
 import com.workvenue.backend.core.util.MessageUtil;
 import com.workvenue.backend.core.util.RestHeader;
-import com.workvenue.backend.core.util.exception.custom.ControllerException;
+import com.workvenue.backend.core.util.exception.ControllerException;
 import com.workvenue.backend.data.request.visitor.RegisterVisitorControllerRequest;
 import com.workvenue.backend.data.request.visitor.UpdateVisitorControllerRequest;
 import com.workvenue.backend.data.response.visitor.GetAllVisitorControllerResponse;

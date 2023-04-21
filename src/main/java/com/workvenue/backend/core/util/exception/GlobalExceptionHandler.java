@@ -2,7 +2,6 @@ package com.workvenue.backend.core.util.exception;
 
 import com.workvenue.backend.core.constant.ErrorCode;
 import com.workvenue.backend.core.constant.ErrorMessage;
-import com.workvenue.backend.core.util.exception.custom.ControllerException;
 import com.workvenue.backend.core.util.ErrorDetail;
 import com.workvenue.backend.core.util.RestHeader;
 import com.workvenue.backend.data.response.BaseControllerResponse;
@@ -42,14 +41,5 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         baseControllerResponse.setHeader(new RestHeader(true, ex.getErrorMessage(), errorDetail));
         LOGGER.error("An error occurred: " + errorDetail + " and request details: " + request.toString());
         return new ResponseEntity<>(baseControllerResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(value = {AccessDeniedException.class})
-    public ResponseEntity<BaseControllerResponse> handleAccessDeniedException(ControllerException ex, WebRequest request) {
-        BaseControllerResponse baseControllerResponse = new BaseControllerResponse();
-        ErrorDetail errorDetail = new ErrorDetail(ErrorCode.ACCESS_DENIED_EXCEPTION.getValue(), ErrorCode.ACCESS_DENIED_EXCEPTION.getReasonPhrase() + " " + ex.toString(), new Date());
-        baseControllerResponse.setHeader(new RestHeader(false, ex.getErrorMessage(), errorDetail));
-        LOGGER.error("An error occurred: " + errorDetail + " and request details: " + request.toString());
-        return new ResponseEntity<>(baseControllerResponse, HttpStatus.FORBIDDEN);
     }
 }

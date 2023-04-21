@@ -3,7 +3,7 @@ package com.workvenue.backend.service.impl;
 import com.workvenue.backend.core.constant.ErrorMessage;
 import com.workvenue.backend.core.enums.Status;
 import com.workvenue.backend.core.util.ValidationUtil;
-import com.workvenue.backend.core.util.exception.custom.ControllerException;
+import com.workvenue.backend.core.util.exception.ControllerException;
 import com.workvenue.backend.data.dto.VenueDTO;
 import com.workvenue.backend.data.model.Venue;
 import com.workvenue.backend.data.request.venue.CreateVenueControllerRequest;

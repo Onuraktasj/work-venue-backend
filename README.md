@@ -8,12 +8,12 @@
 
 * Sonarcloud: https://sonarcloud.io/project/overview?id=mertbahardogan_work-venue-backend
 
-* Swagger Local: http://localhost:8000/local/api/v1/swagger-ui/
-* Swagger Test: http://localhost:8000/test/api/v1/swagger-ui/
+* Swagger Local: http://localhost:8000/api/v1/swagger-ui/
+* Swagger Test: http://localhost:8000/api/v1/swagger-ui/
 
 ## Deployment Utils
-* Firstly, pull the latest docker image on docker hub. After that, adjust the following
- setting before running container.
+* Firstly, pull the latest docker image on docker hub. Adjust the following
+ setting before running container??
 
 ## APIs Design
 * Visitor 
@@ -26,3 +26,14 @@
 * mb/feature/create-swagger
 * mb/bugfix/visitor-service-uuid
 * mb/refactor/user-service
+
+### TODO List
+* Handler util method
+* controller ad. util method
+* unit test (same or different context and custom annotation?)
+* Integration test
+
+
+### Target List
+* SonarCloud, ELK, Kafka, Docker Size, Docker Compose, K8S, Rest Calls
+

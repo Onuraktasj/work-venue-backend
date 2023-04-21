@@ -1,7 +1,7 @@
 package com.workvenue.backend.core.util;
 
 import com.workvenue.backend.core.constant.ErrorMessage.GeneralError;
-import com.workvenue.backend.core.util.exception.custom.ControllerException;
+import com.workvenue.backend.core.util.exception.ControllerException;
 
 import java.util.List;
 
