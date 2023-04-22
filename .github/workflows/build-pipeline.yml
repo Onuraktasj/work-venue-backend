@@ -24,7 +24,7 @@ jobs:
       - name: Run Tests
         run: mvn -B test
   sonarcloud:
-    name: Analyze with the SonarCloud
+    name: Analyze with the SonarCloud X
     needs: test
     runs-on: ubuntu-latest
     #    steps:
