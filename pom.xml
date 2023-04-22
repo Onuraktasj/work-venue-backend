@@ -126,10 +126,12 @@
                             <goal>report</goal>
                         </goals>
                         <configuration>
+                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-xml</outputDirectory>
+                            <dataFile>${project.build.directory}/jacoco.exec</dataFile>
+                            <outputEncoding>UTF-8</outputEncoding>
                             <formats>
-                                <format>XML</format>
+                                <format>xml</format>
                             </formats>
-                            <outputFormat>xml</outputFormat>
                         </configuration>
                     </execution>
                 </executions>
