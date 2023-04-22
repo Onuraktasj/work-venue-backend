@@ -38,9 +38,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml
+          properties: sonar-project.properties
+      - name: Coverage with Jacoco
+        run: mvn jacoco:report
       - name: Run SonarCloud
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
