@@ -32,7 +32,7 @@ jobs:
       - name: Generate Jacoco Report
         run: mvn jacoco:report
       - name: Analyze with SonarCloud
-        run: mvn -B verify sonar:sonar -Dsonar.projectKey=mertbahardogan_work-venue-backend -Dsonar.organization=work-venue-backend -Dsonar.host.url=https://sonarcloud.io
+        run: mvn -B verify sonar:sonar
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
