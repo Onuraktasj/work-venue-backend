@@ -22,5 +22,5 @@ public interface VenueService {
 
     Optional<Venue> getVenueByName(String name) throws ControllerException;
 
-    Venue saveVenue(Venue venue);
+    void saveVenue(Venue venue) throws ControllerException;
 }

@@ -1,14 +1,17 @@
 package com.workvenue.backend.core.util.exception;
 
 import com.workvenue.backend.core.constant.ControllerName;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class ControllerException extends Exception {
     private Exception controllerException;
     private String errorMessage;
     private ControllerName controllerName;
-
-    public ControllerException() {
-    }
 
     public ControllerException(Exception controllerException, ControllerName controllerName) {
         this.controllerException = controllerException;
@@ -18,22 +21,6 @@ public class ControllerException extends Exception {
 
     public ControllerException(String errorMessage) {
         this.errorMessage = errorMessage;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
-
-    public Exception getControllerException() {
-        return controllerException;
-    }
-
-    public void setControllerException(Exception controllerException) {
-        this.controllerException = controllerException;
     }
 
     @Override

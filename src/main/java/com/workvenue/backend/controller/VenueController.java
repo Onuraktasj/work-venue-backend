@@ -17,7 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Api("DENEME")
+@Api(tags = "Venue")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/venues")

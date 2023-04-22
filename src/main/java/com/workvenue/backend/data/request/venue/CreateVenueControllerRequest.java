@@ -1,23 +1,14 @@
 package com.workvenue.backend.data.request.venue;
 
 import com.workvenue.backend.data.dto.VenueDTO;
+import com.workvenue.backend.data.request.BaseControllerRequest;
+import lombok.*;
+import lombok.experimental.Accessors;
 
-public class CreateVenueControllerRequest {
-
+@Getter
+@Setter
+@RequiredArgsConstructor
+@Accessors(chain = true)
+public class CreateVenueControllerRequest extends BaseControllerRequest {
     private VenueDTO venueDTO;
-
-    public CreateVenueControllerRequest() {
-    }
-
-    public CreateVenueControllerRequest(VenueDTO venueDTO) {
-        this.venueDTO = venueDTO;
-    }
-
-    public VenueDTO getVenueDTO() {
-        return venueDTO;
-    }
-
-    public void setVenueDTO(VenueDTO venueDTO) {
-        this.venueDTO = venueDTO;
-    }
 }

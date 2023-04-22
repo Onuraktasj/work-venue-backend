@@ -1,7 +1,6 @@
 package com.workvenue.backend.core.util.exception;
 
 import com.google.gson.JsonObject;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

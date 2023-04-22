@@ -1,24 +1,17 @@
 package com.workvenue.backend.data.request;
 
 import com.workvenue.backend.core.util.RestHeader;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public class BaseControllerRequest {
+import java.io.Serializable;
 
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class BaseControllerRequest implements Serializable {
     private RestHeader header;
-
-    public BaseControllerRequest() {}
-
-    public BaseControllerRequest(RestHeader header) {
-        this.header = header;
-    }
-
-
-    public RestHeader getHeader() {
-        return header;
-    }
-
-    public void setHeader(RestHeader header) {
-        this.header = header;
-    }
 }

@@ -28,12 +28,17 @@
 * mb/refactor/user-service
 
 ### TODO List
+* fix pom.xml
 * Handler util method
 * controller ad. util method
 * unit test (same or different context and custom annotation?)
 * Integration test
+* spring security
 
 
 ### Target List
-* SonarCloud, ELK, Kafka, Docker Size, Docker Compose, K8S, Rest Calls
+* SonarCloud, ELK, Kafka, Docker Size, Docker Compose, K8S, Rest Calls, Jaeger
+
+### Happy Target List
+* load test, grafana-promet, ssh and project sec., version flags.
 

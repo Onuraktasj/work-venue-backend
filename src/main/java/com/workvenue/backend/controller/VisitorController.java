@@ -19,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-@Api("DENEME")
+@Api(tags = "Visitor")
 @RestController
 @RequestMapping("/visitors")
 @RequiredArgsConstructor
@@ -44,7 +44,7 @@ public class VisitorController {
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')") //TODO: constant and @customAnnotation - usera role tanımlarsak
     // otomatik managerdaki metod buraya rolü getiriyor. - class seviyesinde de olabilir
     @GetMapping()
-    @ApiOperation(value = "Get All Visitors For Admin", notes = "Must adding " + "authorization for access just admin.")
+    @ApiOperation(value = "Get All Visitors - Admin", notes = "Must adding " + "authorization for access just admin.")
     public ResponseEntity<GetAllVisitorControllerResponse> findAll() throws Exception {
         try {
             GetAllVisitorControllerResponse setOfGetAllVisitorControllerResponse;
@@ -58,7 +58,7 @@ public class VisitorController {
     }
 
     @PutMapping
-    @ApiOperation(value = "Update Spesific Visitor For Admin and BaseUser.")
+    @ApiOperation(value = "Update Spesific Visitor")
     public ResponseEntity<UpdateVisitorControllerResponse> update(
             @RequestBody UpdateVisitorControllerRequest updateVisitorControllerRequest) throws Exception {
         try {

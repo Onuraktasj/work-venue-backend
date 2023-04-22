@@ -32,34 +32,28 @@ public class VenueManager implements VenueService {
 
     @Override
     public CreateVenueControllerResponse createVenue(CreateVenueControllerRequest request) throws ControllerException {
-        Optional<Venue> optionalVenue = venueRepository.getVenueByName(request.getVenueDTO().getName());
+        Optional<Venue> optionalVenue = venueRepository.findVenueByName(request.getVenueDTO().getName());
         CreateVenueControllerResponse createVenueControllerResponse = new CreateVenueControllerResponse();
-
-        if (optionalVenue.isEmpty() && request.getVenueDTO() != null) {
+        if (optionalVenue.isEmpty()) {
             Venue venue = new Venue().setName(request.getVenueDTO().getName())
                                      .setAddress(request.getVenueDTO().getAddress())
                                      .setCategory(request.getVenueDTO().getCategory())
                                      .setNetwork(request.getVenueDTO().getNetwork())
                                      .setClosingTime(request.getVenueDTO().getClosingTime())
                                      .setOpeningTime(request.getVenueDTO().getOpeningTime()).setStatus(Status.ACTIVE);
-            try {
-                saveVenue(venue);
-            } catch (Exception ex) {
-                throw new ControllerException("Venue");
-            }
-
+            saveVenue(venue);
             VenueDTO venueDTO = modelMapper.map(venue, VenueDTO.class);
             createVenueControllerResponse.setVenueDTO(venueDTO);
+        } else {
+            throw new ControllerException("Venue name exist in the system.");
         }
         return createVenueControllerResponse;
     }
 
     @Override
     public UpdateVenueControllerResponse updateVenue(UpdateVenueControllerRequest request) throws ControllerException {
-
         Optional<Venue> optionalVenue = getVenueByName(request.getVenueDTO().getName());
         UpdateVenueControllerResponse updateVenueControllerResponse = new UpdateVenueControllerResponse();
-
         if (optionalVenue.isPresent() && request.getVenueDTO() != null) {
             Venue venue = optionalVenue.get();
             venue.setOpeningTime(request.getVenueDTO().getOpeningTime());
@@ -69,15 +63,11 @@ public class VenueManager implements VenueService {
             venue.setNetwork(request.getVenueDTO().getNetwork());
             venue.setCategory(request.getVenueDTO().getCategory());
             venue.setStatus(request.getVenueDTO().getStatus());
-            try {
-                saveVenue(venue);
-            } catch (Exception ex) {
-                throw new ControllerException("Venue");
-            }
+            saveVenue(venue);
             VenueDTO venueDTO = modelMapper.map(venue, VenueDTO.class);
             updateVenueControllerResponse.setVenueDTO(venueDTO);
         } else {
-            throw new ControllerException("Venue");
+            throw new ControllerException("Venue could not find.");
         }
         return updateVenueControllerResponse;
 
@@ -94,23 +84,24 @@ public class VenueManager implements VenueService {
             getAllVenueControllerResponse.setVenueDTOList(venueDTOList);
             return getAllVenueControllerResponse;
         } catch (Exception exception) {
-            throw new ControllerException(exception.getMessage());
+            throw new ControllerException("Error occured in the Venue-findAllByIsActive: " + exception.getMessage());
         }
     }
 
     @Override
     public Optional<Venue> getVenueByName(String name) throws ControllerException {
-        return Optional.ofNullable(venueRepository.getVenueByName(name).orElseThrow(
+        return Optional.ofNullable(venueRepository.findVenueByName(name).orElseThrow(
                 () -> new ControllerException(ErrorMessage.VenueError.GET_VENUE_BY_NAME_ERROR)));
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Venue saveVenue(Venue venue) {
-        return venueRepository.save(venue);
+    public void saveVenue(Venue venue) throws ControllerException {
+        try {
+            venueRepository.save(venue);
+        } catch (Exception exception) {
+            throw new ControllerException("Venue could not save: " + exception.getMessage());
+        }
     }
 }
-
-//TODO: bunu servise ayırıp ona transaction vereceğiz.
-//TODO: tüm repositoryleri servis olarak ayıracağız.
-//TODO: heryerden tek exception, sabit vererek tanımlayacağız. Ve global logu elkya atacağız.
+//TODO: commond error management.
