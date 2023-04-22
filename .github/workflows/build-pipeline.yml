@@ -24,7 +24,7 @@ jobs:
       - name: Run Tests
         run: mvn -B test
   sonarcloud:
-    name: Analyze with the SonarCloud X
+    name: Analyze with the SonarCloud
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -32,7 +32,7 @@ jobs:
       - name: Generate Jacoco Report
         run: mvn jacoco:report
       - name: Analyze with SonarCloud
-        run: mvn -B clean verify
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=mertbahardogan_work-venue-backend -Dsonar.organization=work-venue-backend -Dsonar.host.url=https://sonarcloud.io
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
