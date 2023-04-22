@@ -29,8 +29,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Generate Jacoco Report
-        run: mvn jacoco:report
+#      - name: Generate Jacoco Report
+#        run: mvn jacoco:report
       - name: Analyze with SonarCloud
         run: mvn -B clean verify
         env:
