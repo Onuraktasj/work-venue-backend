@@ -20,6 +20,10 @@
         <swagger.version>3.0.0</swagger.version>
         <modelmapper.version>3.1.1</modelmapper.version>
         <java-jwt.version>4.4.0</java-jwt.version>
+
+        <!-- SonarCloud -->
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     </properties>
 
     <dependencies>
@@ -91,12 +95,6 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
-        </dependency>
-        <!-- SonarCloud -->
-        <dependency>
-            <groupId>org.sonarsource.scanner.maven</groupId>
-            <artifactId>sonar-maven-plugin</artifactId>
-            <version>3.9.1.2184</version>
         </dependency>
 
         <dependency>
