@@ -129,6 +129,7 @@
                             <formats>
                                 <format>XML</format>
                             </formats>
+                            <outputFormat>xml</outputFormat>
                         </configuration>
                     </execution>
                 </executions>
