@@ -1,4 +1,4 @@
-name: Deploy
+name: Dockerize-Delivery
 on:
   workflow_run:
     workflows: [ Build ]

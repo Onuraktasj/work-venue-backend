@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -23,8 +22,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class.getName());
 
-    //TODO: ELK impl and util metod.
-    //false UI'da gösterilmez sistemsel hata denir. true direkt basılır gibi.
     @ExceptionHandler(value = {IllegalArgumentException.class, IllegalStateException.class, NullPointerException.class, HttpServerErrorException.InternalServerError.class, Exception.class})
     public ResponseEntity<BaseControllerResponse> handleIllegalStateException(IllegalStateException ex, WebRequest request) {
         BaseControllerResponse baseControllerResponse = new BaseControllerResponse();
@@ -43,3 +40,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(baseControllerResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
+
+//TODO: ELK impl and util metod. Req and Resp.
+//TODO: false UI'da gösterilmez sistemsel hata denir. true direkt basılır gibi.
