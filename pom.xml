@@ -136,8 +136,8 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <excludes>
-                    <exclude>com/workvenue/backend/core/**</exclude>
-                    <exclude>com/workvenue/backend/data/**</exclude>
+                    <exclude>**/core/**</exclude>
+                    <exclude>**/data/**</exclude>
                     <exclude>**/*.properties</exclude>
                     <exclude>**/*.json</exclude>
                     <exclude>**/*.xml</exclude>
