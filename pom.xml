@@ -132,6 +132,18 @@
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>com/workvenue/backend/core/**</exclude>
+                    <exclude>com/workvenue/backend/data/**</exclude>
+                    <exclude>**/*.properties</exclude>
+                    <exclude>**/*.json</exclude>
+                    <exclude>**/*.xml</exclude>
+                </excludes>
+            </resource>
+        </resources>
         <finalName>workvenue-backend</finalName>
     </build>
 </project>
