@@ -28,6 +28,7 @@
 * mb/refactor/user-service
 
 ### TODO List
+* sonarcloud exlude files and code coverage limit.
 * fix pom.xml
 * Handler util method
 * controller ad. util method
@@ -41,4 +42,7 @@
 
 ### Happy Target List
 * load test, grafana-promet, ssh and project sec., version flags.
+
+### Currenct Tech Stack
+* Spring Boot, Security, Docker, GitHub Actions CI/CD, SonarCloud, PostgreSQL
 

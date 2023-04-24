@@ -26,6 +26,10 @@
         <!-- SonarCloud -->
         <sonar.organization>mertbahardogan</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.coverage.exclusions>
+            src/main/java/com/workvenue/backend/core/**,
+            src/main/java/com/workvenue/backend/data/**,
+        </sonar.coverage.exclusions>
     </properties>
 
     <dependencies>
@@ -132,18 +136,18 @@
                 </executions>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <excludes>
-                    <exclude>**/core/**</exclude>
-                    <exclude>**/data/**</exclude>
-                    <exclude>**/*.properties</exclude>
-                    <exclude>**/*.json</exclude>
-                    <exclude>**/*.xml</exclude>
-                </excludes>
-            </resource>
-        </resources>
+<!--        <resources>-->
+<!--            <resource>-->
+<!--                <directory>src/main/resources</directory>-->
+<!--                <excludes>-->
+<!--                    <exclude>**/core/**</exclude>-->
+<!--                    <exclude>**/data/**</exclude>-->
+<!--                    <exclude>**/*.properties</exclude>-->
+<!--                    <exclude>**/*.json</exclude>-->
+<!--                    <exclude>**/*.xml</exclude>-->
+<!--                </excludes>-->
+<!--            </resource>-->
+<!--        </resources>-->
         <finalName>workvenue-backend</finalName>
     </build>
 </project>
