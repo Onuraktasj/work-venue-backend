@@ -72,22 +72,30 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
             <version>${swagger.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-boot-starter</artifactId>
             <version>${swagger.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${swagger.version}</version>
+            <scope>provided</scope>
         </dependency>
         <!-- Database Dependencies -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
         </dependency>
         <!-- Additional -->
         <dependency>
@@ -136,18 +144,6 @@
                 </executions>
             </plugin>
         </plugins>
-<!--        <resources>-->
-<!--            <resource>-->
-<!--                <directory>src/main/resources</directory>-->
-<!--                <excludes>-->
-<!--                    <exclude>**/core/**</exclude>-->
-<!--                    <exclude>**/data/**</exclude>-->
-<!--                    <exclude>**/*.properties</exclude>-->
-<!--                    <exclude>**/*.json</exclude>-->
-<!--                    <exclude>**/*.xml</exclude>-->
-<!--                </excludes>-->
-<!--            </resource>-->
-<!--        </resources>-->
         <finalName>workvenue-backend</finalName>
     </build>
 </project>

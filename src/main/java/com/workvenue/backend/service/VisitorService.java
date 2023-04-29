@@ -8,7 +8,10 @@ import com.workvenue.backend.data.response.visitor.RegisterVisitorControllerResp
 import com.workvenue.backend.data.response.visitor.UpdateVisitorControllerResponse;
 
 public interface VisitorService {
-    GetAllVisitorControllerResponse findAll() throws ControllerException;
+
     RegisterVisitorControllerResponse register(RegisterVisitorControllerRequest request) throws ControllerException;
+
     UpdateVisitorControllerResponse update(UpdateVisitorControllerRequest request) throws ControllerException;
+
+    GetAllVisitorControllerResponse findAll() throws ControllerException;
 }

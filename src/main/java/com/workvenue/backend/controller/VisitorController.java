@@ -10,7 +10,7 @@ import com.workvenue.backend.data.request.visitor.UpdateVisitorControllerRequest
 import com.workvenue.backend.data.response.visitor.GetAllVisitorControllerResponse;
 import com.workvenue.backend.data.response.visitor.RegisterVisitorControllerResponse;
 import com.workvenue.backend.data.response.visitor.UpdateVisitorControllerResponse;
-import com.workvenue.backend.service.impl.VisitorManager;
+import com.workvenue.backend.service.impl.VisitorServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -25,20 +25,15 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class VisitorController {
 
-    private final VisitorManager visitorManager;
+    private final VisitorServiceImpl visitorServiceImpl;
 
     @PostMapping
     @ApiOperation(value = "Register New Visitor Account For BaseUser.")
     public ResponseEntity<RegisterVisitorControllerResponse> register(
             @RequestBody RegisterVisitorControllerRequest registerVisitorControllerRequest) throws Exception {
-
-        try {
-            RegisterVisitorControllerResponse response = visitorManager.register(registerVisitorControllerRequest);
-            response.setHeader(new RestHeader(true, MessageUtil.getMessage("Kullanıcı", SuccessMessage.CREATED), null));
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
-        } catch (Exception ex) {
-            throw new ControllerException(ex, ControllerName.REGISTER_VISITOR);
-        }
+        RegisterVisitorControllerResponse response = visitorServiceImpl.register(registerVisitorControllerRequest);
+        response.setHeader(new RestHeader(true, MessageUtil.getMessage("Kullanıcı", SuccessMessage.CREATED), null));
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')") //TODO: constant and @customAnnotation - usera role tanımlarsak
@@ -48,7 +43,7 @@ public class VisitorController {
     public ResponseEntity<GetAllVisitorControllerResponse> findAll() throws Exception {
         try {
             GetAllVisitorControllerResponse setOfGetAllVisitorControllerResponse;
-            setOfGetAllVisitorControllerResponse = visitorManager.findAll();
+            setOfGetAllVisitorControllerResponse = visitorServiceImpl.findAll();
             setOfGetAllVisitorControllerResponse.setHeader(
                     new RestHeader(true, MessageUtil.getMessage("Kullanıcı", SuccessMessage.FOUND), null));
             return new ResponseEntity<>(setOfGetAllVisitorControllerResponse, HttpStatus.CREATED);
@@ -63,7 +58,7 @@ public class VisitorController {
             @RequestBody UpdateVisitorControllerRequest updateVisitorControllerRequest) throws Exception {
         try {
             UpdateVisitorControllerResponse updateVisitorControllerResponse;
-            updateVisitorControllerResponse = visitorManager.update(updateVisitorControllerRequest);
+            updateVisitorControllerResponse = visitorServiceImpl.update(updateVisitorControllerRequest);
             updateVisitorControllerResponse.setHeader(
                     new RestHeader(true, MessageUtil.getMessage("Kullanıcı", SuccessMessage.UPDATED), null));
             return new ResponseEntity<>(updateVisitorControllerResponse, HttpStatus.CREATED);

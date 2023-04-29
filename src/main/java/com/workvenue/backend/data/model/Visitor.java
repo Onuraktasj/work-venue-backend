@@ -42,14 +42,14 @@ public class Visitor extends BaseUser implements Serializable {
     @Column(name = "link")
     private String link;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private Status status;
 
     @Column(name = "image")
     private String image;
 
     @Column(name = "created_date")
-    private OffsetDateTime createdDate;
+    private OffsetDateTime createdDate; //TODO: ortak yap ve util metodda oluşturup at, kod tekrar yapma.
 
     @Column(name = "updated_date")
     private OffsetDateTime updatedDate;

@@ -20,7 +20,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,23 +31,11 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class VisitorManager implements VisitorService, UserDetailsService {
+public class VisitorServiceImpl implements VisitorService, UserDetailsService {
     private final ModelMapper modelMapper;
     private final VisitorRepository visitorRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Override
-    public GetAllVisitorControllerResponse findAll() throws ControllerException {
-        GetAllVisitorControllerResponse getAllVisitorControllerResponse = new GetAllVisitorControllerResponse();
-        List<Visitor> allVisitors = visitorRepository.findAll();
-        if (allVisitors.isEmpty())
-            throw new ControllerException(VisitorError.GET_ALL_USER_NULL_ERROR);
-
-        Set<VisitorDTO> visitorDTOSet = allVisitors.stream().map(visitor -> modelMapper.map(visitor, VisitorDTO.class))
-                                                   .collect(Collectors.toSet());
-        getAllVisitorControllerResponse.setGetVisitorDTOSet(visitorDTOSet);
-        return getAllVisitorControllerResponse;
-    }
+    private final CryptServiceImpl cryptService;
 
     @Override
     @Transactional(rollbackFor = ControllerException.class)
@@ -59,7 +46,8 @@ public class VisitorManager implements VisitorService, UserDetailsService {
         if (visitor == null) {
             Visitor newVisitor = new Visitor();
             newVisitor.setEmail(request.getVisitorDTO().getEmail());
-            newVisitor.setPassword(bCryptPasswordEncoder.encode(request.getVisitorDTO().getPassword()));
+            newVisitor.setPassword(cryptService.encode(request.getVisitorDTO().getPassword()));
+            newVisitor.setFirstName(request.getVisitorDTO().getFirstName());
             newVisitor.setLastName(request.getVisitorDTO().getLastName());
             newVisitor.setDescription(request.getVisitorDTO().getDescription());
             newVisitor.setLink(request.getVisitorDTO().getLink());
@@ -67,7 +55,7 @@ public class VisitorManager implements VisitorService, UserDetailsService {
             newVisitor.setCreatedDate(OffsetDateTime.now());
             newVisitor.setRoles(Set.of(UserRole.ROLE_VISITOR));
             try {
-                visitorRepository.save(newVisitor);
+                visitorRepository.save(newVisitor); //transaction ayırılacak
             } catch (Exception ex) {
                 throw new ControllerException(VisitorError.SAVE_USER_ERROR);
             }
@@ -108,6 +96,19 @@ public class VisitorManager implements VisitorService, UserDetailsService {
         } else {
             throw new ControllerException(VisitorError.GET_USER_NULL_ERROR);
         }
+    }
+
+    @Override
+    public GetAllVisitorControllerResponse findAll() throws ControllerException {
+        GetAllVisitorControllerResponse getAllVisitorControllerResponse = new GetAllVisitorControllerResponse();
+        List<Visitor> allVisitors = visitorRepository.findAll();
+        if (allVisitors.isEmpty())
+            throw new ControllerException(VisitorError.GET_ALL_USER_NULL_ERROR);
+
+        Set<VisitorDTO> visitorDTOSet = allVisitors.stream().map(visitor -> modelMapper.map(visitor, VisitorDTO.class))
+                                                   .collect(Collectors.toSet());
+        getAllVisitorControllerResponse.setGetVisitorDTOSet(visitorDTOSet);
+        return getAllVisitorControllerResponse;
     }
 
     @Override

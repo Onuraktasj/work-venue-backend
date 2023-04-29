@@ -20,7 +20,7 @@ public abstract class BaseUser {
     private String username;
 
     //TODO: password custom annotation, regex.
-    @Size(min = 8, max = 50, message = "8-50 karakter arasında olmalıdır.")
+//    @Size(min = 8, max = 50, message = "8-50 karakter arasında olmalıdır.") //frontendde olmalı encrypt data geliyor
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
