@@ -1,4 +1,4 @@
-package com.workvenue.backend.core.constant;
+package com.workvenue.backend.core.enums;
 
 public enum ControllerName {
     REGISTER_VISITOR(1, "Register Visitor"),

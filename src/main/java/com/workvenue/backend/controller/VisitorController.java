@@ -1,6 +1,6 @@
 package com.workvenue.backend.controller;
 
-import com.workvenue.backend.core.constant.ControllerName;
+import com.workvenue.backend.core.enums.ControllerName;
 import com.workvenue.backend.core.constant.SuccessMessage;
 import com.workvenue.backend.core.util.MessageUtil;
 import com.workvenue.backend.core.util.RestHeader;

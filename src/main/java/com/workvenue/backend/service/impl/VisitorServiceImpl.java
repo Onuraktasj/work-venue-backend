@@ -32,15 +32,15 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class VisitorServiceImpl implements VisitorService, UserDetailsService {
+
     private final ModelMapper modelMapper;
     private final VisitorRepository visitorRepository;
-
     private final CryptServiceImpl cryptService;
 
     @Override
     @Transactional(rollbackFor = ControllerException.class)
     public RegisterVisitorControllerResponse register(RegisterVisitorControllerRequest request) throws
-                                                                                                       ControllerException {
+                                                                                                ControllerException{
         RegisterVisitorControllerResponse registerVisitorControllerResponse = new RegisterVisitorControllerResponse();
         Visitor visitor = visitorRepository.findByEmail(request.getVisitorDTO().getEmail());
         if (visitor == null) {

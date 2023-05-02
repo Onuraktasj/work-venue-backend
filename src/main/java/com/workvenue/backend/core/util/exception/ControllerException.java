@@ -1,13 +1,11 @@
 package com.workvenue.backend.core.util.exception;
 
-import com.workvenue.backend.core.constant.ControllerName;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.workvenue.backend.core.enums.ControllerName;
+import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@ToString
 public class ControllerException extends Exception {
     private Exception controllerException;
     private String errorMessage;
@@ -21,10 +19,5 @@ public class ControllerException extends Exception {
 
     public ControllerException(String errorMessage) {
         this.errorMessage = errorMessage;
-    }
-
-    @Override
-    public String toString() {
-        return controllerName.getName() + " Controller Exception: " + errorMessage + "| Error Detail(" + controllerException+")";
     }
 }
