@@ -34,7 +34,7 @@ class VisitorServiceIT {
     private CryptServiceImpl cryptService;
 
     @Test
-    void testRegister_thenReturnSuccess() throws ControllerException {
+    void testRegister_givenCorrectRequest_thenSaveVisitor() throws ControllerException {
         // given
         RegisterVisitorControllerRequest request = new RegisterVisitorControllerRequest();
         VisitorDTO visitorDTO = getVisitorDTO();
@@ -48,3 +48,4 @@ class VisitorServiceIT {
         assertTrue(cryptService.isMatched(visitorDTO.getPassword(), foundedVisitor.getPassword()));
     }
 }
+//TODO: transaction test, exception tests.

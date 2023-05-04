@@ -25,9 +25,10 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("VenueManager Unit Test ")
+@DisplayName("VenueManager Unit Test")
 @ExtendWith(MockitoExtension.class)
 class VenueManagerTest {
+
     @InjectMocks
     private VenueManager venueManager;
     @Mock

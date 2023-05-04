@@ -42,5 +42,5 @@
 * load test, grafana-promet, ssh and project sec., version flags.
 
 ### Currenct Tech Stack
-* Spring Boot, Security, Docker, GitHub Actions CI/CD, SonarCloud, PostgreSQL
+* Spring Boot, Security, Docker, GitHub Actions CI/CD, SonarCloud, PostgreSQL, JUnit5 - Mockito (Unit/Integration Tests), Swagger
 

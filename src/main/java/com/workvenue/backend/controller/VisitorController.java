@@ -36,7 +36,7 @@ public class VisitorController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')") //TODO: constant and @customAnnotation - usera role tanımlarsak
+//    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')") //TODO: constant and @customAnnotation - usera role tanımlarsak
     // otomatik managerdaki metod buraya rolü getiriyor. - class seviyesinde de olabilir
     @GetMapping()
     @ApiOperation(value = "Get All Visitors - Admin", notes = "Must adding " + "authorization for access just admin.")

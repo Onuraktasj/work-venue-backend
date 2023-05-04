@@ -40,7 +40,7 @@ public class VisitorServiceImpl implements VisitorService, UserDetailsService {
     @Override
     @Transactional(rollbackFor = ControllerException.class)
     public RegisterVisitorControllerResponse register(RegisterVisitorControllerRequest request) throws
-                                                                                                ControllerException{
+            ControllerException {
         RegisterVisitorControllerResponse registerVisitorControllerResponse = new RegisterVisitorControllerResponse();
         Visitor visitor = visitorRepository.findByEmail(request.getVisitorDTO().getEmail());
         if (visitor == null) {
@@ -55,7 +55,7 @@ public class VisitorServiceImpl implements VisitorService, UserDetailsService {
             newVisitor.setCreatedDate(OffsetDateTime.now());
             newVisitor.setRoles(Set.of(UserRole.ROLE_VISITOR));
             try {
-                visitorRepository.save(newVisitor); //transaction ayırılacak
+                visitorRepository.save(newVisitor); //TODO: transaction ayırılacak
             } catch (Exception ex) {
                 throw new ControllerException(VisitorError.SAVE_USER_ERROR);
             }
@@ -75,7 +75,7 @@ public class VisitorServiceImpl implements VisitorService, UserDetailsService {
     @Override
     @Transactional(rollbackFor = ControllerException.class)
     public UpdateVisitorControllerResponse update(UpdateVisitorControllerRequest request) throws
-                                                                                                 ControllerException {
+            ControllerException {
         UpdateVisitorControllerResponse updateVisitorControllerResponse = new UpdateVisitorControllerResponse();
         Visitor visitor = visitorRepository.findByEmail(request.getVisitorDTO().getEmail());
         if (visitor != null && visitor.getStatus() == Status.ACTIVE) {
@@ -102,11 +102,12 @@ public class VisitorServiceImpl implements VisitorService, UserDetailsService {
     public GetAllVisitorControllerResponse findAll() throws ControllerException {
         GetAllVisitorControllerResponse getAllVisitorControllerResponse = new GetAllVisitorControllerResponse();
         List<Visitor> allVisitors = visitorRepository.findAll();
-        if (allVisitors.isEmpty())
+        if (allVisitors.isEmpty()) {
             throw new ControllerException(VisitorError.GET_ALL_USER_NULL_ERROR);
+        }
 
         Set<VisitorDTO> visitorDTOSet = allVisitors.stream().map(visitor -> modelMapper.map(visitor, VisitorDTO.class))
-                                                   .collect(Collectors.toSet());
+                .collect(Collectors.toSet());
         getAllVisitorControllerResponse.setGetVisitorDTOSet(visitorDTOSet);
         return getAllVisitorControllerResponse;
     }
@@ -114,13 +115,13 @@ public class VisitorServiceImpl implements VisitorService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         Optional<Visitor> visitor2 = visitorRepository.findByUsername(username);
-        Visitor visitor=visitor2.get();
+        Visitor visitor = visitor2.get();
         if (visitor == null) {
             System.out.println(VisitorError.SAVE_USER_ERROR);
         }
         List<SimpleGrantedAuthority> authorities = visitor.getRoles().stream()
-                                                          .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
-                                                          .collect(Collectors.toList());
+                .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
+                .collect(Collectors.toList());
         return new User(visitor.getUsername(), visitor.getPassword(), authorities);
     }
 }
