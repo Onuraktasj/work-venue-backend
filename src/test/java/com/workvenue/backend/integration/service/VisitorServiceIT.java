@@ -13,30 +13,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import static com.workvenue.backend.core.util.ModelGenerator.getVisitorDTO;
 import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Service IT Classes start testing the service layer and continue up to the temp database.
+ */
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class VisitorServiceIT {
 
-    //Burası servisten repoya ordan dbye gitsin ve geri gelsin
-    //diğerinde request vericez
-
     @Autowired
-    private VisitorServiceImpl visitorServiceImpl; //TODO: Service-Impl isimlendirmesine geçelim.
+    private VisitorServiceImpl visitorServiceImpl;
 
     @Autowired
     private VisitorRepository visitorRepository;
 
-    @Autowired //gerekli mi
+    @Autowired
     private CryptServiceImpl cryptService;
 
     @Test
-    void testRegister() throws ControllerException {
+    void testRegister_thenReturnSuccess() throws ControllerException {
         // given
-        //TODO: req util
-        RegisterVisitorControllerRequest request = new RegisterVisitorControllerRequest(); //utile taşı
-        VisitorDTO visitorDTO = new VisitorDTO("mbahardogan@g.com", "password", "mert", "bahardoğan", "dec", "link");
+        RegisterVisitorControllerRequest request = new RegisterVisitorControllerRequest();
+        VisitorDTO visitorDTO = getVisitorDTO();
         request.setVisitorDTO(visitorDTO);
         // when
         RegisterVisitorControllerResponse registerVisitorControllerResponse = visitorServiceImpl.register(request);
