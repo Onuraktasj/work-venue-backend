@@ -30,7 +30,7 @@ public class SecurityConfigurer extends AbstractHttpConfigurer<SecurityConfigure
                     .and()
                     .httpBasic();
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException(e); //TODO: catch
             }
         }).sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }

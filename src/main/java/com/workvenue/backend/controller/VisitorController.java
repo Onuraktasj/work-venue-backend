@@ -15,6 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/visitors")
 @RequiredArgsConstructor
+@PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
 public class VisitorController {
 
     private final VisitorServiceImpl visitorServiceImpl;
@@ -36,7 +38,7 @@ public class VisitorController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-//    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')") //TODO: constant and @customAnnotation - usera role tanımlarsak
+    //    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')") //TODO: constant and @customAnnotation - usera role tanımlarsak
     // otomatik managerdaki metod buraya rolü getiriyor. - class seviyesinde de olabilir
     @GetMapping()
     @ApiOperation(value = "Get All Visitors - Admin", notes = "Must adding " + "authorization for access just admin.")
