@@ -1,6 +1,4 @@
-package com.workvenue.backend.core.constant;
-
-import org.springframework.http.HttpStatus;
+package com.workvenue.backend.core.enums;
 
 public enum ErrorCode {
     ILLEGAL_STATE_EXCEPTION(10500,"Illegal State"),

@@ -17,7 +17,6 @@ public class CryptServiceImpl implements CryptService {
         try {
             encodedValue = bCryptPasswordEncoder.encode(value);
         } catch (Exception exception) {
-            //TODO: systemexception
             throw new ControllerException("encode has error: " + exception);
         }
         return encodedValue;
@@ -31,7 +30,6 @@ public class CryptServiceImpl implements CryptService {
                 result = bCryptPasswordEncoder.matches(inputValue, savedAndEncodedValue);
             }
         } catch (Exception exception) {
-            //TODO: systemexception
             throw new ControllerException("isMatched has error: " + exception);
         }
         return result;

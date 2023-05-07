@@ -1,6 +1,6 @@
 package com.workvenue.backend.core.util.exception;
 
-import com.workvenue.backend.core.constant.ErrorCode;
+import com.workvenue.backend.core.enums.ErrorCode;
 import com.workvenue.backend.core.constant.ErrorMessage;
 import com.workvenue.backend.core.util.ErrorDetail;
 import com.workvenue.backend.core.util.RestHeader;
