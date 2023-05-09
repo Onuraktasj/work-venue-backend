@@ -55,17 +55,12 @@ public class VisitorServiceImpl implements VisitorService, UserDetailsService {
             newVisitor.setCreatedDate(OffsetDateTime.now());
             newVisitor.setRoles(Set.of(UserRole.ROLE_VISITOR));
             try {
-                visitorRepository.save(newVisitor); //TODO: transaction ayırılacak
+                visitorRepository.save(newVisitor);
             } catch (Exception ex) {
                 throw new ControllerException(VisitorError.SAVE_USER_ERROR);
             }
             VisitorDTO visitorDTO = modelMapper.map(newVisitor, VisitorDTO.class);
             registerVisitorControllerResponse.setVisitorDTO(visitorDTO);
-            //TODO: helpera send email onayı
-            // servisi
-            // yazılcak, aktive edildikten
-            // sonra 1'e çek
-            // hesap kapatılcaksa 2'ye çek
         } else {
             throw new ControllerException(VisitorError.USER_ALREADY_SAVED);
         }

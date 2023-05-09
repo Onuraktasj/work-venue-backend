@@ -1,4 +1,4 @@
-package com.workvenue.backend.core.util.exception;
+package com.workvenue.backend.core.util.security;
 
 import com.google.gson.JsonObject;
 import org.springframework.http.MediaType;
@@ -17,7 +17,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
                          AuthenticationException authException) throws IOException {
         JsonObject header = new JsonObject();
         header.addProperty("success", false);
-        header.addProperty("message", "Bu servise yetkiniz bulunmamaktadir.");
+        header.addProperty("message", "Giriş bilgileriniz bulunamadı/doğrulanamadı.");
 
         JsonObject body = new JsonObject();
         body.add("header", header);
@@ -27,4 +27,4 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.getWriter().write(body.toString());
     }
 }
-//TODO: errorDetail add, charset, util method 401,403.
+// TODO: errorDetail add, charset, util method 401,403.

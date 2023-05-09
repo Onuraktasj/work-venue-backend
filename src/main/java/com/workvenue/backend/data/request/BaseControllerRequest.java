@@ -13,5 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BaseControllerRequest implements Serializable {
+
+    //TODO: serialversion uid
     private RestHeader header;
 }

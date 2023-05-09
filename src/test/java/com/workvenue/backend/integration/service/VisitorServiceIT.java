@@ -9,8 +9,12 @@ import com.workvenue.backend.data.response.visitor.RegisterVisitorControllerResp
 import com.workvenue.backend.repository.VisitorRepository;
 import com.workvenue.backend.service.impl.VisitorServiceImpl;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 
 import static com.workvenue.backend.core.util.ModelGenerator.getVisitorDTO;
@@ -21,6 +25,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 @ActiveProfiles("test")
+@TestInstance(Lifecycle.PER_CLASS)
+@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class VisitorServiceIT {
 
@@ -48,4 +54,4 @@ class VisitorServiceIT {
         assertTrue(cryptService.isMatched(visitorDTO.getPassword(), foundedVisitor.getPassword()));
     }
 }
-//TODO: transaction test, exception tests.
+// TODO: transaction test, exception tests.

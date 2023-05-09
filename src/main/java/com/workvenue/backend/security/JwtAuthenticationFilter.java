@@ -28,52 +28,73 @@ import java.util.stream.Collectors;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     //Kimlik Doğrulama, ilk aşama, bu kullanıcı var mı
 
-
     private final AuthenticationManager authenticationManager;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws
-                                                                              AuthenticationException {
-        final String username = request.getParameter("username");
-        final String password = request.getParameter("password");
+            AuthenticationException {
+        final String username = obtainUsername(request);
+        final String password = obtainPassword(request);
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(
-                username, password);
+                        username, password);
         return authenticationManager.authenticate(authenticationToken);
     }
+
+    @Override
+    protected String obtainUsername(HttpServletRequest request) {
+        String username = null;
+        try {
+            username = request.getParameter("username");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return username;
+    }
+
+    @Override
+    protected String obtainPassword(HttpServletRequest request) {
+        String password = null;
+        try {
+            password = request.getParameter("password");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return password;
+    }
+
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
                                             FilterChain chain,
-                                            Authentication authResult) throws IOException,
-                                                                              ServletException {
+                                            Authentication authResult) throws IOException {
         User user = (User) authResult.getPrincipal();
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes()); //TODO:
-        // vault veya passwordManager ile geçeceğiz.
+        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+        //TODO: vault veya passwordManager ile geçeceğiz.
         final String accessToken = JWT.create().withExpiresAt(
-                                              Date.from(Instant.now().plus(6,
-                                                                           ChronoUnit.HOURS)))
-                                      .withIssuer(request.getRequestURL().toString())
-                                      .withClaim("roles", user.getAuthorities().stream()
-                                                              .map(GrantedAuthority::getAuthority)
-                                                              .collect(
-                                                                      Collectors.toList()))
-                                      .sign(algorithm);
+                        Date.from(Instant.now().plus(6,
+                                ChronoUnit.HOURS)))
+                .withIssuer(request.getRequestURL().toString())
+                .withClaim("roles", user.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(
+                                Collectors.toList()))
+                .sign(algorithm);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         final String refreshToken = JWT.create().withExpiresAt(
-                                               Date.from(Instant.now().plus(10,
-                                                                            ChronoUnit.HOURS)))
-                                       .withIssuer(request.getRequestURL().toString())
-                                       .withClaim("roles", user.getAuthorities().stream()
-                                                               .map(GrantedAuthority::getAuthority)
-                                                               .collect(
-                                                                       Collectors.toList()))
-                                       .sign(algorithm);
+                        Date.from(Instant.now().plus(10,
+                                ChronoUnit.HOURS)))
+                .withIssuer(request.getRequestURL().toString())
+                .withClaim("roles", user.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(
+                                Collectors.toList()))
+                .sign(algorithm);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(),
-                                      Map.of("access_token", accessToken, "refresh_token",
-                                             refreshToken));
+                Map.of("access_token", accessToken, "refresh_token",
+                        refreshToken));
     }
 }
