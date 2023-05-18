@@ -2,23 +2,38 @@ package com.workvenue.backend.core.util.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.workvenue.backend.data.request.login.LoginControllerRequest;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProvider {
+
+    private final AuthenticationManager authenticationManager;
 
 //    @Value("${app.jwtSecret}")
 //    private String jwtSecret;
 //
 //    @Value("${app.jwtExpirationInMs}")
 //    private int jwtExpirationInMs;
+
+    public Authentication authenticate(LoginControllerRequest request) {
+        return authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(),
+                        request.getPassword()
+                )
+        );
+    }
 
     //JwtAuthenticationFilter
     public String generateAccessToken(Authentication authentication) {
@@ -28,13 +43,10 @@ public class JwtTokenProvider {
                         java.sql.Date.from(Instant.now().plus(6,
                                 ChronoUnit.HOURS)))
 //                .withIssuer(request.getRequestURL().toString())
-                .withClaim("roles", user.getAuthorities().stream()
+                .withClaim("roles", user.getAuthorities().stream()//TODO: roles util with authFilter
                         .map(GrantedAuthority::getAuthority)
                         .collect(
                                 Collectors.toList()))
                 .sign(Algorithm.HMAC256("secret".getBytes()));
     }
-    //JwtAuthenticationFilter silinebilir olacak. buraya taşıncak.
-    //JwtAuthorizationFilter doFilterInternal ise direkt oradan kullanılabilir olcak.
-    // oradaki filtera uygun şekilde token gönderilmeli.
 }

@@ -5,7 +5,15 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,45 +21,34 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-@RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
-    // yetki ve token kontrolü, 2 aşama gibi düşünülebilir
-    // request endpointe gelmeden buradan geçiyor.
-
-
-    //Her requestte - login hariç - burası çalışacak.
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+
         if (request.getServletPath().contains("/login")) {
             filterChain.doFilter(request, response);
         } else {
-            final String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+            String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
-                    final String token = authorizationHeader.split("Bearer ")[1];
-                    final Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-                    final JWTVerifier jwtVerifier = JWT.require(algorithm).build();
-                    final DecodedJWT decodedJWT = jwtVerifier.verify(token);
-                    final String username = decodedJWT.getSubject();
-                    List<SimpleGrantedAuthority> authorities = Stream.of(decodedJWT.getClaim("roles").asArray(String.class))
+                    String token = authorizationHeader.split("Bearer ")[1];
+                    Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                    JWTVerifier jwtVerifier = JWT.require(algorithm).build();
+                    DecodedJWT decodedJWT = jwtVerifier.verify(token);
+                    String username = decodedJWT.getSubject();
+                    List<SimpleGrantedAuthority> authorities = Stream.of(
+                                    decodedJWT.getClaim("roles").asArray(String.class)) //TODO
                             .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
+                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                            username, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                     filterChain.doFilter(request, response);
                 } catch (Exception exception) {
                     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                    new ObjectMapper().writeValue(response.getOutputStream(), Map.of("message", exception.getMessage()));
+                    new ObjectMapper().writeValue(response.getOutputStream(),
+                            Map.of("message", exception.getMessage()));
                 }
             } else {
                 filterChain.doFilter(request, response);

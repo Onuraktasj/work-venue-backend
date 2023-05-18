@@ -16,8 +16,6 @@ public class SecurityConfigurer extends AbstractHttpConfigurer<SecurityConfigure
             try {
                 auth.antMatchers("/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs", "/webjars/**", "/api/**")
                         .permitAll()
-                        .antMatchers("/visitors").hasAnyAuthority("ROLE_ADMIN")
-                        .anyRequest().authenticated()
                         .and()
                         .exceptionHandling()
                         .accessDeniedHandler(new CustomAccessDeniedHandler())
@@ -35,8 +33,7 @@ public class SecurityConfigurer extends AbstractHttpConfigurer<SecurityConfigure
     @Override
     public void configure(HttpSecurity builder) {
         AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
-        builder.addFilter(new JwtAuthenticationFilter(authenticationManager))
-                .addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        builder.addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     public static SecurityConfigurer httpConfigurer() {

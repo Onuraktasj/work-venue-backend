@@ -1,8 +1,11 @@
 package com.workvenue.backend.core.util;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ErrorDetail {
+public class ErrorDetail implements Serializable {
+
+    static final long serialVersionUID = 2562135292733411909L;
     private int errorCode;
     private String errorMessage;
     private Date timestamp;

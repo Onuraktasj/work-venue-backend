@@ -8,5 +8,7 @@ import lombok.Setter;
 @Setter
 public class LoginControllerResponse extends BaseControllerResponse {
 
+    static final long serialVersionUID = -1646689267763405555L;
+
     private String accessToken;
 }

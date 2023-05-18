@@ -14,5 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class BaseControllerResponse implements Serializable {
 
+    static final long serialVersionUID = 2110624253610660320L;
+
     private RestHeader header;
 }
