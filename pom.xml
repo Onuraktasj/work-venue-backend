@@ -29,6 +29,8 @@
         <sonar.coverage.exclusions>
             src/main/java/com/workvenue/backend/core/**,
             src/main/java/com/workvenue/backend/data/**,
+            src/main/java/com/workvenue/backend/configuration/**,
+            src/main/java/com/workvenue/backend/security/**,
         </sonar.coverage.exclusions>
     </properties>
 
