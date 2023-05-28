@@ -54,4 +54,3 @@ class VisitorServiceIT {
         assertTrue(cryptService.isMatched(visitorDTO.getPassword(), foundedVisitor.getPassword()));
     }
 }
-// TODO: transaction test, exception tests.

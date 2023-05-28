@@ -1,7 +1,7 @@
 package com.workvenue.backend.configuration;
 
-import com.workvenue.backend.core.util.security.CustomAccessDeniedHandler;
-import com.workvenue.backend.core.util.security.CustomAuthenticationEntryPoint;
+import com.workvenue.backend.security.CustomAccessDeniedHandler;
+import com.workvenue.backend.security.CustomAuthenticationEntryPoint;
 import com.workvenue.backend.security.JwtAuthorizationFilter;
 import com.workvenue.backend.service.impl.UserService;
 import org.springframework.context.annotation.Bean;

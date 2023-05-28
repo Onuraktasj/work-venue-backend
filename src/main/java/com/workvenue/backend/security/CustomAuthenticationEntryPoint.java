@@ -1,4 +1,4 @@
-package com.workvenue.backend.core.util.security;
+package com.workvenue.backend.security;
 
 import com.google.gson.JsonObject;
 import org.springframework.http.MediaType;
@@ -27,4 +27,3 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.getWriter().write(body.toString());
     }
 }
-// TODO: errorDetail add, charset, util method 401,403.

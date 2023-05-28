@@ -14,15 +14,13 @@ import com.workvenue.backend.data.response.visitor.RegisterVisitorControllerResp
 import com.workvenue.backend.data.response.visitor.UpdateVisitorControllerResponse;
 import com.workvenue.backend.repository.VisitorRepository;
 import com.workvenue.backend.service.VisitorService;
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +31,6 @@ public class VisitorServiceImpl implements VisitorService {
     private final CryptServiceImpl cryptService;
 
     @Override
-    @Transactional(rollbackFor = ControllerException.class)
     public RegisterVisitorControllerResponse register(RegisterVisitorControllerRequest request) throws
                                                                                                 ControllerException {
         RegisterVisitorControllerResponse registerVisitorControllerResponse = new RegisterVisitorControllerResponse();
@@ -63,7 +60,6 @@ public class VisitorServiceImpl implements VisitorService {
     }
 
     @Override
-    @Transactional(rollbackFor = ControllerException.class)
     public UpdateVisitorControllerResponse update(UpdateVisitorControllerRequest request) throws ControllerException {
         UpdateVisitorControllerResponse updateVisitorControllerResponse = new UpdateVisitorControllerResponse();
         Visitor visitor = visitorRepository.findByEmail(request.getVisitorDTO().getEmail());

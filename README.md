@@ -11,9 +11,9 @@
 * Swagger Local: http://localhost:8000/api/v1/swagger-ui/
 * Swagger Test: http://localhost:8000/api/v1/swagger-ui/
 
-## Deployment Utils
-* Firstly, pull the latest docker image on docker hub. Adjust the following
- setting before running container??
+## DEV Env Utils
+* Postgres:
+docker run --name postgresWV -e POSTGRES_USER=workvenue -e POSTGRES_PASSWORD=1357 -p 5432:5432 postgres
 
 ## APIs Design
 * Visitor 

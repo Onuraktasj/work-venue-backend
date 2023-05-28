@@ -34,12 +34,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
                     String token = authorizationHeader.split("Bearer ")[1];
-                    Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                    Algorithm algorithm = Algorithm.HMAC256(JWTConfig.getJwtSecret().getBytes());
                     JWTVerifier jwtVerifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = jwtVerifier.verify(token);
                     String username = decodedJWT.getSubject();
                     List<SimpleGrantedAuthority> authorities = Stream.of(
-                                    decodedJWT.getClaim("roles").asArray(String.class)) //TODO
+                                    decodedJWT.getClaim("roles").asArray(String.class))
                             .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                             username, null, authorities);

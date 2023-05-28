@@ -1,8 +1,12 @@
-package com.workvenue.backend.core.util.security;
+package com.workvenue.backend.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.workvenue.backend.data.request.login.LoginControllerRequest;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,21 +15,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.stream.Collectors;
-
 @Component
 @RequiredArgsConstructor
-public class JwtTokenProvider {
+public class JWTTokenProvider {
 
     private final AuthenticationProvider authenticationManager;
-
-//    @Value("${app.jwtSecret}")
-//    private String jwtSecret;
-//
-//    @Value("${app.jwtExpirationInMs}")
-//    private int jwtExpirationInMs;
 
     public Authentication authenticate(LoginControllerRequest request) {
         return authenticationManager.authenticate(
@@ -36,18 +30,16 @@ public class JwtTokenProvider {
         );
     }
 
-    //JwtAuthenticationFilter
     public String generateAccessToken(Authentication authentication) {
 
         User user = (User) authentication.getPrincipal();
         return JWT.create().withExpiresAt(
-                        java.sql.Date.from(Instant.now().plus(6,
+                       Date.from(Instant.now().plus(1,
                                 ChronoUnit.HOURS)))
-//                .withIssuer(request.getRequestURL().toString())
-                .withClaim("roles", user.getAuthorities().stream()//TODO: roles util with authFilter
+                .withClaim("roles", user.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .collect(
                                 Collectors.toList()))
-                .sign(Algorithm.HMAC256("secret".getBytes()));
+                .sign(Algorithm.HMAC256(JWTConfig.getJwtSecret().getBytes()));
     }
 }

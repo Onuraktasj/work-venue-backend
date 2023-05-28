@@ -1,4 +1,4 @@
-package com.workvenue.backend.core.util.security;
+package com.workvenue.backend.security;
 
 import com.google.gson.JsonObject;
 import org.springframework.http.MediaType;

@@ -13,14 +13,12 @@ import com.workvenue.backend.data.response.venue.GetAllVenueControllerResponse;
 import com.workvenue.backend.data.response.venue.UpdateVenueControllerResponse;
 import com.workvenue.backend.repository.VenueRepository;
 import com.workvenue.backend.service.VenueService;
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -94,7 +92,6 @@ public class VenueManager implements VenueService {
                 () -> new ControllerException(ErrorMessage.VenueError.GET_VENUE_BY_NAME_ERROR)));
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public void saveVenue(Venue venue) throws ControllerException {
         try {
@@ -104,4 +101,3 @@ public class VenueManager implements VenueService {
         }
     }
 }
-//TODO: commond error management.
