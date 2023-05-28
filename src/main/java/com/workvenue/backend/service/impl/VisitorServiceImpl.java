@@ -16,22 +16,17 @@ import com.workvenue.backend.repository.VisitorRepository;
 import com.workvenue.backend.service.VisitorService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class VisitorServiceImpl implements VisitorService, UserDetailsService {
+public class VisitorServiceImpl implements VisitorService {
 
     private final ModelMapper modelMapper;
     private final VisitorRepository visitorRepository;
@@ -40,7 +35,7 @@ public class VisitorServiceImpl implements VisitorService, UserDetailsService {
     @Override
     @Transactional(rollbackFor = ControllerException.class)
     public RegisterVisitorControllerResponse register(RegisterVisitorControllerRequest request) throws
-            ControllerException {
+                                                                                                ControllerException {
         RegisterVisitorControllerResponse registerVisitorControllerResponse = new RegisterVisitorControllerResponse();
         Visitor visitor = visitorRepository.findByEmail(request.getVisitorDTO().getEmail());
         if (visitor == null) {
@@ -69,8 +64,7 @@ public class VisitorServiceImpl implements VisitorService, UserDetailsService {
 
     @Override
     @Transactional(rollbackFor = ControllerException.class)
-    public UpdateVisitorControllerResponse update(UpdateVisitorControllerRequest request) throws
-            ControllerException {
+    public UpdateVisitorControllerResponse update(UpdateVisitorControllerRequest request) throws ControllerException {
         UpdateVisitorControllerResponse updateVisitorControllerResponse = new UpdateVisitorControllerResponse();
         Visitor visitor = visitorRepository.findByEmail(request.getVisitorDTO().getEmail());
         if (visitor != null && visitor.getStatus() == Status.ACTIVE) {
@@ -102,21 +96,10 @@ public class VisitorServiceImpl implements VisitorService, UserDetailsService {
         }
 
         Set<VisitorDTO> visitorDTOSet = allVisitors.stream().map(visitor -> modelMapper.map(visitor, VisitorDTO.class))
-                .collect(Collectors.toSet());
+                                                   .collect(Collectors.toSet());
         getAllVisitorControllerResponse.setGetVisitorDTOSet(visitorDTOSet);
         return getAllVisitorControllerResponse;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) {
-        Optional<Visitor> visitor2 = visitorRepository.findByUsername(username);
-        Visitor visitor = visitor2.get();
-        if (visitor == null) {
-            System.out.println(VisitorError.SAVE_USER_ERROR);
-        }
-        List<SimpleGrantedAuthority> authorities = visitor.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
-                .collect(Collectors.toList());
-        return new User(visitor.getUsername(), visitor.getPassword(), authorities);
-    }
+
 }

@@ -1,7 +1,7 @@
 package com.workvenue.backend.controller;
 
-import com.workvenue.backend.core.enums.ControllerName;
 import com.workvenue.backend.core.constant.SuccessMessage;
+import com.workvenue.backend.core.enums.ControllerName;
 import com.workvenue.backend.core.util.MessageUtil;
 import com.workvenue.backend.core.util.RestHeader;
 import com.workvenue.backend.core.util.exception.ControllerException;
@@ -15,7 +15,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

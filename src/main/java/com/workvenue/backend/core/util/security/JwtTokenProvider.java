@@ -3,22 +3,23 @@ package com.workvenue.backend.core.util.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.workvenue.backend.data.request.login.LoginControllerRequest;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.stream.Collectors;
+
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    private final AuthenticationManager authenticationManager;
+    private final AuthenticationProvider authenticationManager;
 
 //    @Value("${app.jwtSecret}")
 //    private String jwtSecret;
