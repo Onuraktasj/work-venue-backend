@@ -9,6 +9,7 @@ public class ErrorMessage {
         public final static String UNEXPECTED_ERROR = "Beklenmedik bir hata oluştu.";
         public final static String SYSTEM_ERROR = "Sistemsel bir hata oluştu.";
         public final static String EMPTY_LIST_ERROR = "Herhangi bir veri bulunamadı.";
+        public final static String NULL_OBJECT_ERROR = "Herhangi bir nesne bulunamadı.";
     }
 
     @UtilityClass

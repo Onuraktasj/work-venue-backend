@@ -20,7 +20,7 @@ import java.time.OffsetDateTime;
 @Table(name = "visitors")
 @NoArgsConstructor
 @Accessors(chain = true)
-public class Visitor extends BaseUser implements Serializable {
+public class Visitor extends BaseUser {
 
     @Email(message = "Bu mail adresi zaten kayıtlı.")
     @Column(name = "email", unique = true, nullable = false)

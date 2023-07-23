@@ -17,7 +17,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
                          AuthenticationException authException) throws IOException {
         JsonObject header = new JsonObject();
         header.addProperty("success", false);
-        header.addProperty("message", "Giriş bilgileriniz bulunamadı/doğrulanamadı.");
+        header.addProperty("message", "Giris bilgileriniz bulunamadi/dogrulanamadi.");
 
         JsonObject body = new JsonObject();
         body.add("header", header);

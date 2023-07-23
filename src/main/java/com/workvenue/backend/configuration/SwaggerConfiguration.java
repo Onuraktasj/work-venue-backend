@@ -13,17 +13,20 @@ import java.util.ArrayList;
 @Configuration
 public class SwaggerConfiguration {
 
-    private ApiInfo apiInfo() {
-        return new ApiInfo("Work Venue APIs", "Work Venue" + " REST API Swagger " + "Documentation", "Version 1",
-                           "urn:tos", ApiInfo.DEFAULT_CONTACT, "Apache 2.0",
-                           "https" + "://www.apache.org/licenses/LICENSE-2.0", new ArrayList<>());
-    }
-
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
-                                                      .apis(RequestHandlerSelectors.basePackage(
-                                                              "com.workvenue.backend")).paths(PathSelectors.any())
-                                                      .build();
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo()).select()
+                .apis(RequestHandlerSelectors.basePackage(
+                        "com.workvenue.backend")).paths(PathSelectors.any())
+                .build();
+    }
+
+
+
+    private ApiInfo apiInfo() {
+        return new ApiInfo("Work Venue APIs", "Work Venue" + " REST API Swagger " + "Documentation", "Version 1",
+                "urn:tos", ApiInfo.DEFAULT_CONTACT, "Apache 2.0",
+                "https" + "://www.apache.org/licenses/LICENSE-2.0", new ArrayList<>());
     }
 }

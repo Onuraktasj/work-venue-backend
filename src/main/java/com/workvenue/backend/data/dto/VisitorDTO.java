@@ -13,6 +13,7 @@ public class VisitorDTO implements Serializable {
     static final long serialVersionUID = -5027714984030359297L;
 
     private String email;
+    private String username;
     private String password;
     private String firstName;
     private String lastName;

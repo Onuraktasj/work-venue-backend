@@ -5,22 +5,11 @@ import com.workvenue.backend.core.util.RestHeader;
 import com.workvenue.backend.data.response.BaseControllerResponse;
 
 public class RegisterVisitorControllerResponse extends BaseControllerResponse {
-
-    private VisitorDTO visitorDTO;
-
+    //TODO: refactor
     public RegisterVisitorControllerResponse() {
     }
 
     public RegisterVisitorControllerResponse(RestHeader header, VisitorDTO visitorDTO) {
         super(header);
-        this.visitorDTO = visitorDTO;
-    }
-
-    public VisitorDTO getVisitorDTO() {
-        return visitorDTO;
-    }
-
-    public void setVisitorDTO(VisitorDTO visitorDTO) {
-        this.visitorDTO = visitorDTO;
     }
 }

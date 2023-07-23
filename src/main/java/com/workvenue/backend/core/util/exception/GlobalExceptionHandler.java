@@ -17,10 +17,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.Date;
 
+/**
+ * The UI does not show the error message if the success status is false, but shows it if it is true.
+ */
+
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class.getName());
 
     @ExceptionHandler(value = {IllegalArgumentException.class, IllegalStateException.class, NullPointerException.class,
             RuntimeException.class, HttpServerErrorException.InternalServerError.class, Exception.class})
@@ -31,7 +33,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 ErrorCode.ILLEGAL_STATE_EXCEPTION.getReasonPhrase() + " " + ex.getMessage(), new Date());
         baseControllerResponse.setHeader(
                 new RestHeader(false, ErrorMessage.GeneralError.UNEXPECTED_ERROR, errorDetail));
-        LOGGER.error("An error occurred: " + errorDetail + " and request details: " + request.toString());
         return new ResponseEntity<>(baseControllerResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -42,10 +43,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorDetail errorDetail = new ErrorDetail(ErrorCode.CONTROLLER_EXCEPTION.getValue(),
                 ErrorCode.CONTROLLER_EXCEPTION.getReasonPhrase() + " " + ex.toString(), new Date());
         baseControllerResponse.setHeader(new RestHeader(true, ex.getErrorMessage(), errorDetail));
-        LOGGER.error("An error occurred: " + errorDetail + " and request details: " + request.toString());
         return new ResponseEntity<>(baseControllerResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
-
-//TODO: ELK impl and util metod. Req and Resp.
-//TODO: false UI'da gösterilmez sistemsel hata denir. true direkt basılır gibi.

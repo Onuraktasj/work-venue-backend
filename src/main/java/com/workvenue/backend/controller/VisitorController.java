@@ -1,7 +1,6 @@
 package com.workvenue.backend.controller;
 
 import com.workvenue.backend.core.constant.SuccessMessage;
-import com.workvenue.backend.core.enums.ControllerName;
 import com.workvenue.backend.core.util.MessageUtil;
 import com.workvenue.backend.core.util.RestHeader;
 import com.workvenue.backend.core.util.exception.ControllerException;
@@ -17,55 +16,51 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Api(tags = "Visitor")
 @RestController
 @RequestMapping("/visitors")
 @RequiredArgsConstructor
-@PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
 public class VisitorController {
 
     private final VisitorServiceImpl visitorServiceImpl;
 
-    @PostMapping
-    @ApiOperation(value = "Register New Visitor Account For BaseUser.")
+    @PostMapping("/register")
+    @ApiOperation(value = "Register New Visitor Account For BaseUser.", notes = " Register New Visitor Account For BaseUser")
     public ResponseEntity<RegisterVisitorControllerResponse> register(
-            @RequestBody RegisterVisitorControllerRequest registerVisitorControllerRequest) throws Exception {
+            @RequestBody RegisterVisitorControllerRequest registerVisitorControllerRequest) throws ControllerException {
         RegisterVisitorControllerResponse response = visitorServiceImpl.register(registerVisitorControllerRequest);
         response.setHeader(new RestHeader(true, MessageUtil.getMessage("Kullanıcı", SuccessMessage.CREATED), null));
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_VISITOR')")
     //    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')") //TODO: constant and @customAnnotation - usera role tanımlarsak
     // otomatik managerdaki metod buraya rolü getiriyor. - class seviyesinde de olabilir
-    @GetMapping()
-    @ApiOperation(value = "Get All Visitors - Admin", notes = "Must adding " + "authorization for access just admin.")
-    public ResponseEntity<GetAllVisitorControllerResponse> findAll() throws Exception {
-        try {
-            GetAllVisitorControllerResponse setOfGetAllVisitorControllerResponse;
-            setOfGetAllVisitorControllerResponse = visitorServiceImpl.findAll();
-            setOfGetAllVisitorControllerResponse.setHeader(
-                    new RestHeader(true, MessageUtil.getMessage("Kullanıcı", SuccessMessage.FOUND), null));
-            return new ResponseEntity<>(setOfGetAllVisitorControllerResponse, HttpStatus.CREATED);
-        } catch (Exception ex) {
-            throw new ControllerException(ex, ControllerName.GET_ALL_VISITOR);
-        }
+    @GetMapping("/all")
+    @ApiOperation(value = "Get All Visitors - Admin", notes = "Must adding authorization for access just admin.")
+    public ResponseEntity<GetAllVisitorControllerResponse> findAll() throws ControllerException {
+        GetAllVisitorControllerResponse setOfGetAllVisitorControllerResponse;
+        setOfGetAllVisitorControllerResponse = visitorServiceImpl.findAll();
+        setOfGetAllVisitorControllerResponse.setHeader(
+                new RestHeader(true, MessageUtil.getMessage("Kullanıcı", SuccessMessage.FOUND), null));
+        return new ResponseEntity<>(setOfGetAllVisitorControllerResponse, HttpStatus.CREATED);
     }
 
-    @PutMapping
+    @PutMapping("/update")
     @ApiOperation(value = "Update Spesific Visitor")
     public ResponseEntity<UpdateVisitorControllerResponse> update(
-            @RequestBody UpdateVisitorControllerRequest updateVisitorControllerRequest) throws Exception {
-        try {
-            UpdateVisitorControllerResponse updateVisitorControllerResponse;
-            updateVisitorControllerResponse = visitorServiceImpl.update(updateVisitorControllerRequest);
-            updateVisitorControllerResponse.setHeader(
-                    new RestHeader(true, MessageUtil.getMessage("Kullanıcı", SuccessMessage.UPDATED), null));
-            return new ResponseEntity<>(updateVisitorControllerResponse, HttpStatus.CREATED);
-        } catch (Exception ex) {
-            throw new ControllerException(ex, ControllerName.GET_ALL_VISITOR);
-        }
+            @RequestBody UpdateVisitorControllerRequest updateVisitorControllerRequest) throws ControllerException {
+        UpdateVisitorControllerResponse updateVisitorControllerResponse;
+        updateVisitorControllerResponse = visitorServiceImpl.update(updateVisitorControllerRequest);
+        updateVisitorControllerResponse.setHeader(
+                new RestHeader(true, MessageUtil.getMessage("Kullanıcı", SuccessMessage.UPDATED), null));
+        return new ResponseEntity<>(updateVisitorControllerResponse, HttpStatus.CREATED);
     }
-
 }

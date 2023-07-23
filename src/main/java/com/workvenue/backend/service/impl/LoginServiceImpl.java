@@ -16,7 +16,7 @@ public class LoginServiceImpl implements LoginService {
     private final JWTTokenProvider jwtTokenProvider;
 
     @Override
-    public LoginControllerResponse login(LoginControllerRequest request) throws ControllerException {
+    public LoginControllerResponse login(final LoginControllerRequest request) throws ControllerException {
         LoginControllerResponse response = new LoginControllerResponse();
         Authentication authentication = jwtTokenProvider.authenticate(request);
         if (authentication.isAuthenticated()) {

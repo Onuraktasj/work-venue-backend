@@ -16,6 +16,7 @@ import com.workvenue.backend.repository.VisitorRepository;
 import com.workvenue.backend.service.VisitorService;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -32,12 +33,16 @@ public class VisitorServiceImpl implements VisitorService {
 
     @Override
     public RegisterVisitorControllerResponse register(RegisterVisitorControllerRequest request) throws
-                                                                                                ControllerException {
+            ControllerException {
         RegisterVisitorControllerResponse registerVisitorControllerResponse = new RegisterVisitorControllerResponse();
-        Visitor visitor = visitorRepository.findByEmail(request.getVisitorDTO().getEmail());
-        if (visitor == null) {
+        try {
+            Visitor visitor = visitorRepository.findByEmail(request.getVisitorDTO().getEmail());
+            if (Objects.nonNull(visitor)) {
+                throw new ControllerException(VisitorError.USER_ALREADY_SAVED);
+            }
             Visitor newVisitor = new Visitor();
             newVisitor.setEmail(request.getVisitorDTO().getEmail());
+            newVisitor.setUsername(request.getVisitorDTO().getUsername());
             newVisitor.setPassword(cryptService.encode(request.getVisitorDTO().getPassword()));
             newVisitor.setFirstName(request.getVisitorDTO().getFirstName());
             newVisitor.setLastName(request.getVisitorDTO().getLastName());
@@ -46,15 +51,9 @@ public class VisitorServiceImpl implements VisitorService {
             newVisitor.setStatus(Status.ACTIVE);
             newVisitor.setCreatedDate(OffsetDateTime.now());
             newVisitor.setRoles(Set.of(UserRole.ROLE_VISITOR));
-            try {
-                visitorRepository.save(newVisitor);
-            } catch (Exception ex) {
-                throw new ControllerException(VisitorError.SAVE_USER_ERROR);
-            }
-            VisitorDTO visitorDTO = modelMapper.map(newVisitor, VisitorDTO.class);
-            registerVisitorControllerResponse.setVisitorDTO(visitorDTO);
-        } else {
-            throw new ControllerException(VisitorError.USER_ALREADY_SAVED);
+            visitorRepository.save(newVisitor);
+        } catch (Exception ex) {
+            throw new ControllerException(VisitorError.SAVE_USER_ERROR);
         }
         return registerVisitorControllerResponse;
     }
@@ -92,10 +91,8 @@ public class VisitorServiceImpl implements VisitorService {
         }
 
         Set<VisitorDTO> visitorDTOSet = allVisitors.stream().map(visitor -> modelMapper.map(visitor, VisitorDTO.class))
-                                                   .collect(Collectors.toSet());
+                .collect(Collectors.toSet());
         getAllVisitorControllerResponse.setGetVisitorDTOSet(visitorDTOSet);
         return getAllVisitorControllerResponse;
     }
-
-
 }

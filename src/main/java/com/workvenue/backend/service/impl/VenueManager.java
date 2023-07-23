@@ -27,7 +27,6 @@ public class VenueManager implements VenueService {
     private final VenueRepository venueRepository;
     private final ModelMapper modelMapper;
 
-
     @Override
     public CreateVenueControllerResponse createVenue(CreateVenueControllerRequest request) throws ControllerException {
         Optional<Venue> optionalVenue = venueRepository.findVenueByName(request.getVenueDTO().getName());

@@ -19,9 +19,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class JWTTokenProvider {
 
+    private static String jwtSecret = "qweqwe";
     private final AuthenticationProvider authenticationManager;
 
-    public Authentication authenticate(LoginControllerRequest request) {
+    public Authentication authenticate(final LoginControllerRequest request) {
         return authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
@@ -30,16 +31,15 @@ public class JWTTokenProvider {
         );
     }
 
-    public String generateAccessToken(Authentication authentication) {
-
+    public String generateAccessToken(final Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         return JWT.create().withExpiresAt(
-                       Date.from(Instant.now().plus(1,
+                        Date.from(Instant.now().plus(1,
                                 ChronoUnit.HOURS)))
                 .withClaim("roles", user.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .collect(
                                 Collectors.toList()))
-                .sign(Algorithm.HMAC256(JWTConfig.getJwtSecret().getBytes()));
+                .sign(Algorithm.HMAC256(jwtSecret.getBytes()));
     }
 }

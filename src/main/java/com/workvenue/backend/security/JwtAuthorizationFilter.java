@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.workvenue.backend.core.util.ValidationUtil;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
+    private static String jwtSecret = "qweqwe";
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -33,8 +36,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
+                    ValidationUtil.isObjectNull(jwtSecret);
                     String token = authorizationHeader.split("Bearer ")[1];
-                    Algorithm algorithm = Algorithm.HMAC256(JWTConfig.getJwtSecret().getBytes());
+                    Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes());
                     JWTVerifier jwtVerifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = jwtVerifier.verify(token);
                     String username = decodedJWT.getSubject();
