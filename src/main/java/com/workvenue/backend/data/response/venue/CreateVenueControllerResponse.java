@@ -1,7 +1,7 @@
 package com.workvenue.backend.data.response.venue;
 
 import com.workvenue.backend.data.dto.VenueDTO;
-import com.workvenue.backend.data.other.RestHeader;
+import com.workvenue.backend.core.util.RestHeader;
 import com.workvenue.backend.data.response.BaseControllerResponse;
 
 public class CreateVenueControllerResponse extends BaseControllerResponse {
